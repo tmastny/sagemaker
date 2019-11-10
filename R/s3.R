@@ -14,3 +14,10 @@ download_file <- function(file, bucket = default_bucket(), key) {
   s3 <- boto3$client('s3')
   s3$download_file(bucket, key, file)
 }
+
+#' @export
+get_sagemaker_role <- function(
+  var_name = "role_arn", profile_name = "sagemaker"
+) {
+  system(paste0("aws configure get ", var_name, " --profile ", profile_name))
+}

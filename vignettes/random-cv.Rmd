@@ -17,3 +17,16 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(sagemaker)
 ```
+
+You need an aws account and a sagemaker role, with permissions to S3: 
+https://stackoverflow.com/a/47767351/6637133
+
+1. Start an sagemaker notebook instance.
+   - before you create, you will be prompted to make
+     a sagemaker role. Do so
+```{r}
+sess <- boto3$Session()
+sess$
+```
+
+

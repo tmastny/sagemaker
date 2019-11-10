@@ -2,5 +2,6 @@
 
 export(default_bucket)
 export(download_file)
+export(get_sagemaker_role)
 export(install_sagemaker)
 export(upload_file)
