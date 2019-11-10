@@ -1,0 +1,34 @@
+---
+title: "Uploading to S3"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{uploading_to_s3}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r}
+library(sagemaker)
+library(readr)
+
+temp <- tempfile()
+write_csv(sagemaker::abalone, temp, col_names = FALSE)
+```
+
+```{r}
+upload_file(temp, key = "abalone.csv")
+```
+
+```{r}
+temp2 <- tempfile()
+
+download_file(temp2, key = "abalone.csv")
+read_csv(temp2)
+```
