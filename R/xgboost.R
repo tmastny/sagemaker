@@ -96,9 +96,6 @@ sagemaker_hyperparameter_tuner <- function(
     filter(training_job_name == model_name) %>%
     select_at(one_of(tuning_parameter_names))
 
-  # TODO: Include estimator name (e.g. xgboost)
-  # probably have to attach a trained estimator
-  # and pull it from there.
   model_obj <- list(
     model_name = model_name,
     eval_metric = tuner$static_hyperparameters$eval_metric,
