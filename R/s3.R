@@ -9,6 +9,9 @@ upload_file <- function(file, bucket = default_bucket(), key) {
   s3$upload_file(file, bucket, key)
 }
 
+# TODO:
+# needs to be able to take a single path
+# I think the path should be first
 #' @export
 download_file <- function(file, bucket = default_bucket(), key) {
   s3 <- boto3$client('s3')

@@ -136,6 +136,8 @@ sagemaker_hyperparameter_tuner <- function(
   # TODO: attached trained tune job, rather than
   #       start from stratch
 
+
+  # TODO: can use the analytics() method
   tuner_stats <- sagemaker$HyperparameterTuningJobAnalytics(
     tuner$latest_tuning_job$job_name
   )

@@ -109,7 +109,19 @@ upload_file(temp_train, key = "abalone-train.csv")
 temp_test <- tempfile()
 write_csv(testing(splits), temp_test, col_names = FALSE)
 upload_file(temp_test, key = "abalone-test.csv")
+
+temp_inference <- tempfile()
+sagemaker::abalone %>%
+  select(-1) %>%
+  write_csv(temp_inference, col_names = FALSE)
+upload_file(temp_inference, key = "abalone-inference.csv")
 ```
+
+```{r}
+sagemaker::abalone
+```
+
+
 
 ```{r}
 train_data <- sagemaker$s3_input(
@@ -270,5 +282,71 @@ training_logs <- job_logs %>%
 training_logs
 ```
 
+## Transformers
 
+sagemaker.deploy is a realtime predictor. 
+Let's focus on batch for now.
+
+This will be for the `predict` generic.
+
+```{r}
+best_tuned_model
+```
+
+Transformer doesn't work. 
+Need to attach trained estimator and use the transformer method.
+
+Good example to give in justification for package.
+
+```{r}
+# prints out logs, need to suppress noise if possible
+xf_estimator <- sagemaker$estimator$Estimator$attach(
+  training_job_name = best_tuned_model
+)
+```
+
+```{r}
+xfer <- xf_estimator$transformer(
+  instance_count = 1L,
+  instance_type = "ml.c4.xlarge",
+  output_path = paste0("s3://", default_bucket(), "/abalone-transform.csv"),
+  assemble_with = 'Line'
+)
+```
+
+```{r}
+xfer
+```
+
+
+```{r}
+xfer$transform(
+  paste0("s3://", default_bucket(), "/abalone-inference.csv"),
+  content_type = "text/csv",
+  split_type = "Line",
+  wait = TRUE,
+  logs = FALSE
+)
+```
+
+```{r}
+xfer$output_path
+```
+
+
+```{r}
+download_file(
+  "test-inference.csv", "sagemaker-us-east-2-495577990003",
+  "abalone-transform.csv/abalone-transform.csv.out"
+)
+```
+
+```{r}
+system(
+  paste0(
+    "aws s3 cp ", 
+    "s3://sagemaker-us-east-2-495577990003/abalone-transform.csv"
+  )
+)
+```
 
