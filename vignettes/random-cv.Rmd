@@ -50,6 +50,11 @@ xgb
 ```
 
 ```{r}
+class(xgb)
+```
+
+
+```{r}
 xgb$set_hyperparameters(
   eval_metric = "rmse",
   objective = "reg:linear",

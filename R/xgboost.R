@@ -56,6 +56,8 @@ sagemaker_get_execution_role <- function(
   )
 }
 
+
+# is class for generics
 #' @export
 sagemaker_estimator <- function(
   container = sagemaker_xgb_container(),
@@ -90,13 +92,19 @@ sagemaker_estimator <- function(
     num_round = 100L,
     early_stopping_rounds = 50L
   )
+
+  estimator
 }
 
 # resamples resamples rsplit object, or a python dictionary with
 #           train/test keys pointing to sagemaker$s3_input paths
 
+# TODO:
 # also make it generic based on job name:
 # if job name, attach. Otherwise fit.
+# if pass "sagemaker.estimator.Estimator" class,
+# will need to build. Otherwise, if character attach
+# on jobname.
 #' @export
 sagemaker_hyperparameter_tuner <- function(
   estimator,
