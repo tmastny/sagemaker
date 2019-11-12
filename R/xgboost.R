@@ -11,7 +11,7 @@ sagemaker_xgb_container <- function(repo_version = "latest") {
 sagemaker_save_execution_role <- function(role_arn, profile_name = "sagemaker") {
   # TODO: this function writes the sagemaker exeuction
   #       role to ~/.aws/config for future use.
-  stopifnot(.Platform$OS.type != "unix")
+  stopifnot(.Platform$OS.type == "unix")
 
   profile_name <- "test"
   role_arn <- "role"
