@@ -7,6 +7,23 @@ sagemaker_xgb_container <- function(repo_version = "latest") {
   )
 }
 
+#' @export
+sagemaker_save_execution_role <- function(role_arn, profile_name = "sagemaker") {
+  # TODO: this function writes the sagemaker exeuction
+  #       role to ~/.aws/config for future use.
+  stopifnot(.Platform$OS.type != "unix")
+
+  profile_name <- "test"
+  role_arn <- "role"
+
+  system(
+    paste0(
+      "echo '\n[profile ", profile_name, "]\n",
+      "role_arn = ", role_arn, "' >> ~/.aws/config"
+    )
+  )
+}
+
 # use sagemaker.get_execution_role() if on sagemaker notebook instance
 # requires `pip install awscli`
 #' @export
@@ -20,7 +37,10 @@ sagemaker_get_execution_role <- function(
     sagemaker$get_execution_role(),
     error = function(condition) {
       warning(condition)
-      warning("\n\nSearching for local role in ~/.aws/config")
+      warning(
+        "\n\nThis means you are not in a Sagemaker notebook instance.\n",
+        "Searching for local role in ~/.aws/config"
+      )
 
       NULL
     }
