@@ -7,6 +7,35 @@ sagemaker_xgb_container <- function(repo_version = "latest") {
   )
 }
 
+# use sagemaker.get_execution_role() if on sagemaker notebook instance
+# requires `pip install awscli`
+#' @export
+sagemaker_get_execution_role <- function(
+  var_name = "role_arn", profile_name = "sagemaker"
+) {
+
+  role <- NULL
+
+  role <- tryCatch(
+    sagemaker$get_execution_role(),
+    error = function(condition) {
+      warning(condition)
+      warning("\n\nSearching for local role in ~/.aws/config")
+
+      NULL
+    }
+  )
+
+  if (!is.null(role)) {
+    return(role)
+  }
+
+  system(
+    paste0("aws configure get ", var_name, " --profile ", profile_name),
+    intern = TRUE
+  )
+}
+
 #' @export
 sagemaker_estimator <- function(
   container = sagemaker_xgb_container(),
@@ -45,6 +74,9 @@ sagemaker_estimator <- function(
 
 # resamples resamples rsplit object, or a python dictionary with
 #           train/test keys pointing to sagemaker$s3_input paths
+
+# also make it generic based on job name:
+# if job name, attach. Otherwise fit.
 #' @export
 sagemaker_hyperparameter_tuner <- function(
   estimator,
@@ -57,6 +89,7 @@ sagemaker_hyperparameter_tuner <- function(
   max_parallel_jobs = 2L,
   early_stopping_type = "Auto"
 ) {
+
   tuner <- sagemaker$tuner$HyperparameterTuner(
     estimator = estimator,
     objective_metric_name = objective_metric_name,
