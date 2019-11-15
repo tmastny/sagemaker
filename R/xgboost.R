@@ -36,10 +36,9 @@ sagemaker_get_execution_role <- function(
   role <- tryCatch(
     sagemaker$get_execution_role(),
     error = function(condition) {
-      warning(condition)
-      warning(
-        "\n\nThis means you are not in a Sagemaker notebook instance.\n",
-        "Searching for local role in ~/.aws/config"
+      message(
+        "\n\nYou are not in a sagemaker hosted notebook.\n",
+        "Pulling local role in ~/.aws/config"
       )
 
       NULL
@@ -60,8 +59,8 @@ sagemaker_get_execution_role <- function(
 # is class for generics
 #' @export
 sagemaker_estimator <- function(
-  container = sagemaker_xgb_container(),
-  role = sagemaker_role(),
+  container,
+  role = sagemaker_get_execution_role(),
   train_instance_count = 1L,
   train_instance_type = "ml.m4.xlarge",
   output_path = s3_path(default_bucket(), "models/"),
@@ -108,9 +107,7 @@ sagemaker_estimator <- function(
 #' @export
 sagemaker_hyperparameter_tuner <- function(
   estimator,
-  resamples,
-  objective_metric_name,
-  objective_type,
+  split,
   hyperparameter_ranges,
   strategy = "Random",
   max_jobs = 10L,
@@ -120,8 +117,8 @@ sagemaker_hyperparameter_tuner <- function(
 
   tuner <- sagemaker$tuner$HyperparameterTuner(
     estimator = estimator,
-    objective_metric_name = objective_metric_name,
-    objective_type = objective_type,
+    objective_metric_name = objective_metric_name(estimator$hyperparam_dict$eval_metric),
+    objective_type = objective_metric_type(objective_metric),
     hyperparameter_ranges = hyperparameter_ranges,
     strategy = strategy,
     max_jobs = max_jobs,
@@ -130,7 +127,16 @@ sagemaker_hyperparameter_tuner <- function(
   )
 
   # TODO: if given a rsplit object, need to upload it s3
-  tuner$fit(resamples)
+
+  stopifnot("train" %in% names(split))
+  stopifnot("validation" %in% names(split))
+
+  split_dict <- reticulate::dict(
+    train = sagemaker$s3_input(split$train, content_type = "text/csv"),
+    validation = sagemaker$s3_input(split$validation, content_type = "text/csv")
+  )
+
+  tuner$fit(split_dict)
   tuner$wait()
 
   # TODO: attached trained tune job, rather than
@@ -142,7 +148,7 @@ sagemaker_hyperparameter_tuner <- function(
     tuner$latest_tuning_job$job_name
   )
 
-  tuner_df <- tuning_stats$dataframe() %>%
+  tuner_df <- tuner_stats$dataframe() %>%
     janitor::clean_names()
 
   model_name <- tuner_df %>%
@@ -275,4 +281,44 @@ predict.sagemaker <- function(
 
   download_file(s3_predictions_path, temp)
   readr::read_csv(temp)
+}
+
+# https://docs.aws.amazon.com/sagemaker/latest/dg/xgboost-tuning.html
+objective_metric_type <- function(objective_metric) {
+  objective_metric_optimization <- list(
+    `validation:accuracy` = "Maximize",
+    `validation:auc` = "Maximize",
+    `validation:error` = "Minimize",
+    `validation:f1` = "Maximize",
+    `validation:logloss` = "Minimize",
+    `validation:mae` = "Minimize",
+    `validation:map` = "Maximize",
+    `validation:merror` = "Minimize",
+    `validation:mlogloss` = "Minimize",
+    `validation:mse` = "Minimize",
+    `validation:ndcg` = "Maximize",
+    `validation:rmse` = "Minimize",
+  )
+
+  objective_metric_optimization[[objective_metric]]
+}
+
+objective_metric_name <- function(estimator_eval_metric) {
+  objective_metrics <- c(
+    "validation:accuracy",
+    "validation:auc",
+    "validation:error",
+    "validation:f1",
+    "validation:logloss",
+    "validation:mae",
+    "validation:map",
+    "validation:merror",
+    "validation:mlogloss",
+    "validation:mse",
+    "validation:ndcg",
+    "validation:rmse"
+  )
+
+  objective_metrics %>%
+    purrr::keep(~stringr::str_detect(., estimator_eval_metric))
 }

@@ -17,3 +17,31 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(sagemaker)
 ```
+
+```{r}
+estimator <- sagemaker_estimator(sagemaker_xgb_container())
+```
+
+```{r}
+estimator$hyperparam_dict$eval_metric
+```
+
+
+```{r}
+split <- list(
+  train = s3_path(default_bucket(), "abalone-train.csv"),
+  validation = s3_path(default_bucket(), "abalone-test.csv")
+)
+
+grid <- list(
+  max_depth = sagemaker$tuner$IntegerParameter(3L, 20L),
+  colsample_bytree = sagemaker$tuner$ContinuousParameter(0, 1),
+  subsample = sagemaker$tuner$ContinuousParameter(0, 1)
+)
+
+tune <- sagemaker_hyperparameter_tuner(
+  estimator, split, "validation:rmse", "Minimize", grid
+)
+```
+
+
