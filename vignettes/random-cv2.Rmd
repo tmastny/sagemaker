@@ -44,6 +44,7 @@ tune <- sagemaker_hyperparameter_tuner(estimator, split, grid, max_jobs = 1)
 
 ```{r}
 model <- sagemaker_attach_tuner("xgboost-191114-2052")
+model
 ```
 
 
@@ -53,5 +54,9 @@ tuner <- sagemaker$tuner$HyperparameterTuner$attach("xgboost-191114-2052")
 
 ```{r}
 tuner$latest_tuning_job$job_name
+```
+
+```{r}
+tuner$estimator$hyperparam_dict$eval_metric
 ```
 
