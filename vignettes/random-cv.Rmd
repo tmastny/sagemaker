@@ -333,20 +333,28 @@ xfer$transform(
 xfer$output_path
 ```
 
+```{r}
+xf_test <- sagemaker$transformer$Transformer$attach(
+  "xgboost-191110-1612-007-23030f47-2019-11-12-02-37-08-525"
+)
+```
+
+```{r}
+xf_test$output_path
+```
+
 
 ```{r}
 download_file(
   "test-inference.csv", "sagemaker-us-east-2-495577990003",
-  "abalone-transform.csv/abalone-transform.csv.out"
+  "abalone-transform.csv/abalone-inference.csv.out"
 )
 ```
 
 ```{r}
-system(
-  paste0(
-    "aws s3 cp ", 
-    "s3://sagemaker-us-east-2-495577990003/abalone-transform.csv"
-  )
-)
+library(readr)
+pred <- read_csv("test-inference.csv", col_names = FALSE)
+pred
 ```
+
 

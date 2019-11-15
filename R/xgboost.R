@@ -231,3 +231,48 @@ sagemaker_training_logs <- function(job_name) {
     filter_all(all_vars(!is.na(.))) %>%
     arrange(iteration)
 }
+
+#' @export
+predict.sagemaker <- function(
+  object,
+  new_data,
+  output_path,
+  return_data = TRUE,
+  instance_count = 1L,
+  instance_type = "ml.c4.xlarge"
+) {
+
+  predict_estimator <- sagemaker$estimator$Estimator$attach(
+    training_job_name = object$model_name
+  )
+
+  predict_transformer <- predict_estimator$transformer(
+    instance_count = instance_count,
+    instance_type = instance_type,
+    output_path = output_path,
+    assemble_with = 'Line'
+  )
+
+  predict_transformer$transform(
+    new_data,
+    content_type = "text/csv",
+    split_type = "Line",
+    wait = TRUE,
+    logs = FALSE
+  )
+
+
+  s3_predictions_path <- file.path(
+    predict_transformer$output_path,
+    paste0(basename(new_data), ".out")
+  )
+
+  if (!return_data) {
+    return(s3_predictions_path)
+  }
+
+  temp <- tempfile()
+
+  download_file(s3_predictions_path, temp)
+  readr::read_csv(temp)
+}
