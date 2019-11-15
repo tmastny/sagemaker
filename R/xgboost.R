@@ -67,6 +67,9 @@ sagemaker_estimator <- function(
   sagemaker_session = sagemaker$Session()
 
 ) {
+
+  train_instance_count <- as.integer(train_instance_count)
+
   estimator <- sagemaker$estimator$Estimator(
     image_name = container,
     role = role,
@@ -82,6 +85,8 @@ sagemaker_estimator <- function(
   # TODO: during the `train` method, make sure
   #       the objective metric and eval metric make sense
   #       for the outcome type.
+  #
+  # TODO: have a wrapper to cast to int?
   estimator$set_hyperparameters(
     eval_metric = "rmse",
     objective = "reg:linear",
@@ -115,9 +120,14 @@ sagemaker_hyperparameter_tuner <- function(
   early_stopping_type = "Auto"
 ) {
 
+  max_jobs <- as.integer(max_jobs)
+  max_parallel_jobs <- as.integer(max_parallel_jobs)
+
+  objective_metric <- objective_metric_name(estimator$hyperparam_dict$eval_metric)
+
   tuner <- sagemaker$tuner$HyperparameterTuner(
     estimator = estimator,
-    objective_metric_name = objective_metric_name(estimator$hyperparam_dict$eval_metric),
+    objective_metric_name = objective_metric,
     objective_type = objective_metric_type(objective_metric),
     hyperparameter_ranges = hyperparameter_ranges,
     strategy = strategy,
@@ -139,31 +149,31 @@ sagemaker_hyperparameter_tuner <- function(
   tuner$fit(split_dict)
   tuner$wait()
 
-  # TODO: attached trained tune job, rather than
-  #       start from stratch
+  sagemaker_attach_tuner(tuner$latest_tuning_job$job_name)
+}
 
 
-  # TODO: can use the analytics() method
-  tuner_stats <- sagemaker$HyperparameterTuningJobAnalytics(
-    tuner$latest_tuning_job$job_name
-  )
+#' @export
+sagemaker_attach_tuner <- function(tuning_job_name) {
+  tuner_stats <- sagemaker$HyperparameterTuningJobAnalytics(tuning_job_name)
 
   tuner_df <- tuner_stats$dataframe() %>%
-    janitor::clean_names()
+    janitor::clean_names() %>%
+    tibble::as_tibble()
 
   model_name <- tuner_df %>%
-    filter(final_objective_value == min(final_objective_value)) %>%
-    pull(training_job_name)
+    dplyr::filter(final_objective_value == min(final_objective_value)) %>%
+    dplyr::pull(training_job_name)
 
   tuning_parameter_names <- tuner$hyperparameter_ranges() %>%
-    discard(is_empty) %>%
-    flatten() %>%
-    map_chr(pluck, "Name") %>%
-    set_names(NULL)
+    purrr::discard(purrr::is_empty) %>%
+    purrr::flatten() %>%
+    purrr::map_chr(purrr::pluck, "Name") %>%
+    purrr::set_names(NULL)
 
   best_tune <- tuner_df %>%
-    filter(training_job_name == model_name) %>%
-    select_at(one_of(tuning_parameter_names))
+    dplyr::filter(training_job_name == model_name) %>%
+    dplyr::select_at(dplyr::one_of(tuning_parameter_names))
 
   model_obj <- list(
     model_name = model_name,
@@ -178,9 +188,10 @@ sagemaker_hyperparameter_tuner <- function(
   model_obj
 }
 
+
 # Advice: use format generic: http://adv-r.had.co.nz/S3.html
 # print.class <- function(x, ...) cat(format(x, ...), "\n".
-
+#' @export
 print.sagemaker <- function(x, ...) {
   cat(
     "Name:", x$model_name, "\n",
@@ -224,18 +235,24 @@ sagemaker_training_logs <- function(job_name) {
     purrr::map_chr(purrr::pluck, "MetricName")
 
   metric_regex <- job_description$AlgorithmSpecification$MetricDefinitions %>%
-    keep(~pluck(., "Name") %in% metric_names) %>%
-    map_chr(pluck, "Regex")
+    purrr::keep(~purrr::pluck(., "Name") %in% metric_names) %>%
+    purrr::map_chr(purrr::pluck, "Regex")
 
   job_logs %>%
     tibble::enframe(NULL, "logs") %>%
-    mutate(iteration = stringr::str_match(logs, ".*\\[([0-9]+)\\].*")[, 2]) %>%
-    mutate(iteration = as.numeric(iteration)) %>%
-    mutate(!!metric_names[1] := stringr::str_match(logs, metric_regex[1])[, 2]) %>%
-    mutate(!!metric_names[2] := stringr::str_match(logs, metric_regex[2])[, 2]) %>%
-    select(-logs) %>%
-    filter_all(all_vars(!is.na(.))) %>%
-    arrange(iteration)
+    dplyr::mutate(
+      iteration = stringr::str_match(logs, ".*\\[([0-9]+)\\].*")[, 2]
+    ) %>%
+    dplyr::mutate(iteration = as.numeric(iteration)) %>%
+    dplyr::mutate(
+      !!metric_names[1] := stringr::str_match(logs, metric_regex[1])[, 2]
+    ) %>%
+    dplyr::mutate(
+      !!metric_names[2] := stringr::str_match(logs, metric_regex[2])[, 2]
+    ) %>%
+    dplyr::select(-logs) %>%
+    dplyr::filter_all(dplyr::all_vars(!is.na(.))) %>%
+    dplyr::arrange(iteration)
 }
 
 #' @export
@@ -267,7 +284,6 @@ predict.sagemaker <- function(
     logs = FALSE
   )
 
-
   s3_predictions_path <- file.path(
     predict_transformer$output_path,
     paste0(basename(new_data), ".out")
@@ -297,7 +313,7 @@ objective_metric_type <- function(objective_metric) {
     `validation:mlogloss` = "Minimize",
     `validation:mse` = "Minimize",
     `validation:ndcg` = "Maximize",
-    `validation:rmse` = "Minimize",
+    `validation:rmse` = "Minimize"
   )
 
   objective_metric_optimization[[objective_metric]]
