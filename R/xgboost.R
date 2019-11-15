@@ -203,6 +203,7 @@ print.sagemaker <- function(x, ...) {
     "Evaluation Metric:", x$eval_metric, "\n\n",
     "Best hyperparameters:\n\n"
   )
+  # TODO: https://stackoverflow.com/a/49312947/6637133
   print(x$best_tune)
   invisible(x)
 }
