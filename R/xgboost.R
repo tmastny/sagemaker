@@ -204,7 +204,14 @@ print.sagemaker <- function(x, ...) {
     "Best hyperparameters:\n\n"
   )
   # TODO: https://stackoverflow.com/a/49312947/6637133
-  print(x$best_tune)
+
+  cat(
+    paste(
+      capture.output(print(x$best_tune))[c(-1, -3)],
+      collapse = "\n"
+    )
+  )
+
   invisible(x)
 }
 
