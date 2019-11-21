@@ -155,6 +155,9 @@ sagemaker_hyperparameter_tuner <- function(
 
 #' @export
 sagemaker_attach_tuner <- function(tuning_job_name) {
+
+  # tuner_df <- sagemaker_tuning_job_logs()
+
   tuner_stats <- sagemaker$HyperparameterTuningJobAnalytics(tuning_job_name)
 
   tuner_df <- tuner_stats$dataframe() %>%
@@ -184,6 +187,7 @@ sagemaker_attach_tuner <- function(tuning_job_name) {
 
   model_obj <- list(
     model_name = model_name,
+    tuning_job_name = tuning_job_name,
     eval_metric = tuner$estimator$hyperparam_dict$eval_metric,
     strategy = tuner$strategy,
     best_eval_metric = best_eval_metric,
@@ -219,13 +223,35 @@ print.sagemaker <- function(x, ...) {
   invisible(x)
 }
 
+#' @export
+sagemaker_tuning_job_logs <- function(sagemaker_tuner) {
+  UseMethod("sagemaker_tuning_job_logs")
+}
+
+#' @export
+sagemaker_tuning_job_logs.sagemaker <- function(sagemaker_tuner) {
+  sagemaker_tuning_job_logs(sagemaker_tuner$tuning_job_name)
+}
+
+#' @export
+sagemaker_tuning_job_logs.character <- function(sagemaker_tuner) {
+  tuner_stats <- sagemaker$HyperparameterTuningJobAnalytics(sagemaker_tuner)
+
+  tuner_stats$dataframe() %>%
+    janitor::clean_names() %>%
+    tibble::as_tibble()
+}
+
 # TODO: This is a generic function.
 #       Will pull the best tuned models
 #       training log if of class sagemaker,
 #       or if class character will lookup
 #       based on job name.
+# TODO: evaluate this. I'm not sure this is a good idea.
+#       I think it's important to destiguish between the
+#       training job and the tuning job.
 #' @export
-sagemaker_training_logs <- function(job_name) {
+sagemaker_training_job_logs <- function(job_name) {
 
   # have to lookup based on job name prefix,
   # no way to get log stream name with sagemaker api
