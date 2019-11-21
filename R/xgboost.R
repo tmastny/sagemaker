@@ -175,6 +175,10 @@ sagemaker_attach_tuner <- function(tuning_job_name) {
     dplyr::filter(training_job_name == model_name) %>%
     dplyr::select(dplyr::one_of(tuning_parameter_names))
 
+  best_eval_metric <- tuner_df %>%
+    dplyr::filter(training_job_name == model_name) %>%
+    dplyr::pull(final_objective_value)
+
   # TODO: cv method should be here
   tuner <- sagemaker$tuner$HyperparameterTuner$attach(tuning_job_name)
 
@@ -182,6 +186,7 @@ sagemaker_attach_tuner <- function(tuning_job_name) {
     model_name = model_name,
     eval_metric = tuner$estimator$hyperparam_dict$eval_metric,
     strategy = tuner$strategy,
+    best_eval_metric = best_eval_metric,
     best_tune = best_tune,
     metrics = tuner_df
   )
@@ -200,7 +205,7 @@ print.sagemaker <- function(x, ...) {
   cat(
     "Name:", x$model_name,
     "\nTuning Strategy:", x$strategy,
-    "\nEvaluation Metric:", x$eval_metric, "\n",
+    "\nEvaluation Metric:", x$eval_metric, ",", x$best_eval_metric, "\n",
     "\nBest hyperparameters:\n"
   )
 
