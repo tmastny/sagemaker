@@ -283,6 +283,11 @@ predict.sagemaker <- function(
     training_job_name = object$model_name
   )
 
+  # TODO: deploy and kill sagemaker endpoint to return data
+  #       locally. Use this option if an output path is specificed.
+  #       Otherwise there is unnecessary read/write to s3 which
+  #       may not be desirable
+
   predict_transformer <- predict_estimator$transformer(
     instance_count = instance_count,
     instance_type = instance_type,
