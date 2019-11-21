@@ -397,6 +397,11 @@ predict.sagemaker <- function(
 
     sagemaker_deploy_endpoint(object)
     predictor <- try_loading_endpoint(object)
+  } else if (is.null(predictor)) {
+    stop(
+      "No existing endpoint to deploy to. ",
+      "Endpoint should have the same name as the model."
+    )
   }
 
   predictor$content_type <- "text/csv"
