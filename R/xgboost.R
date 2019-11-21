@@ -228,12 +228,10 @@ sagemaker_tuning_job_logs <- function(sagemaker_tuner) {
   UseMethod("sagemaker_tuning_job_logs")
 }
 
-#' @export
 sagemaker_tuning_job_logs.sagemaker <- function(sagemaker_tuner) {
   sagemaker_tuning_job_logs(sagemaker_tuner$tuning_job_name)
 }
 
-#' @export
 sagemaker_tuning_job_logs.character <- function(sagemaker_tuner) {
   tuner_stats <- sagemaker$HyperparameterTuningJobAnalytics(sagemaker_tuner)
 
@@ -292,12 +290,12 @@ sagemaker_training_job_logs <- function(job_name) {
     dplyr::arrange(iteration)
 }
 
+# returns the s3_output_path
 #' @export
-predict.sagemaker <- function(
+batch_predict <- function(
   object,
-  new_data,
-  output_path,
-  return_data = TRUE,
+  s3_input_path,
+  s3_output_path,
   instance_count = 1L,
   instance_type = "ml.c4.xlarge"
 ) {
@@ -306,39 +304,118 @@ predict.sagemaker <- function(
     training_job_name = object$model_name
   )
 
-  # TODO: deploy and kill sagemaker endpoint to return data
-  #       locally. Use this option if an output path is specificed.
-  #       Otherwise there is unnecessary read/write to s3 which
-  #       may not be desirable
-
   predict_transformer <- predict_estimator$transformer(
     instance_count = instance_count,
     instance_type = instance_type,
-    output_path = output_path,
+    output_path = s3_output_path,
     assemble_with = 'Line'
   )
 
   predict_transformer$transform(
-    new_data,
+    s3_input_path,
     content_type = "text/csv",
     split_type = "Line",
     wait = TRUE,
     logs = FALSE
   )
 
-  s3_predictions_path <- file.path(
-    predict_transformer$output_path,
-    paste0(basename(new_data), ".out")
+  # TODO: make s3_path generic so it knows how
+  #       to take a s3_path object and not double
+  #       transform it like "s3://s3://".
+  #       I think there are some examples in Shiny
+  #       or htmltools.
+  s3_predictions_path <- paste0(
+    predict_transformer$output_path, "/",
+    paste0(basename(s3_input_path), ".out")
   )
 
-  if (!return_data) {
-    return(s3_predictions_path)
+  s3_predictions_path
+}
+
+try_loading_endpoint <- function(object) {
+  tryCatch(
+    sagemaker$predictor$RealTimePredictor(endpoint = object$model_name),
+    error = function(condition) {
+      if (!stringr::str_detect(condition$message, "Could not find endpoint")) {
+        stop(condition)
+      }
+
+      NULL
+    }
+  )
+}
+
+#' @export
+sagemaker_has_endpoint <- function(object) {
+  predictor <- try_loading_endpoint(object)
+
+  !is.null(predictor)
+}
+
+#' @export
+sagemaker_delete_endpoint <- function(object) {
+  predictor <- sagemaker$predictor$RealTimePredictor(
+    endpoint = object$model_name
+  )
+
+  predictor$delete_endpoint()
+
+  object
+}
+
+#' @export
+sagemaker_deploy_endpoint <- function(object) {
+  predict_estimator <- sagemaker$estimator$Estimator$attach(
+    training_job_name = object$model_name
+  )
+
+  predict_estimator$deploy(
+    initial_instance_count = instance_count,
+    instance_type = instance_type
+  )
+
+  object
+}
+
+# these interfaces are too different.
+# predict needs to be the same API in R
+# batch_predict has a different API that should
+# suit that function
+predict.sagemaker <- function(
+  object,
+  new_data,
+  instance_count = 1L,
+  instance_type = "ml.t2.medium",
+  deploy_endpoint = FALSE,
+  delete_endpoint = FALSE
+) {
+
+  predictor <- try_loading_endpoint(object)
+
+  if (deploy_endpoint & is.null(predictor)) {
+    message("Deploying Sagemaker endpoint. This will take a few minutes...")
+
+    sagemaker_deploy_endpoint(object)
+    predictor <- try_loading_endpoint(object)
   }
 
-  temp <- tempfile()
+  predictor$content_type <- "text/csv"
+  predictor$serializer <- sagemaker$predictor$csv_serializer
 
-  download_file(s3_predictions_path, temp)
-  readr::read_csv(temp)
+  new_data <- as.matrix(new_data)
+  dimnames(new_data)[[2]] <- NULL
+
+  predictions <- predictor$predict(new_data)
+
+  predictions <- predictions %>%
+    stringr::str_split(pattern = ",", simplify = TRUE) %>%
+    as.numeric()
+
+  if (delete_endpoint) {
+    predictor$delete_endpoint()
+  }
+
+  predictions
 }
 
 # https://docs.aws.amazon.com/sagemaker/latest/dg/xgboost-tuning.html

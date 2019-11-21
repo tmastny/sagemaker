@@ -30,6 +30,9 @@ download_file <- function(s3_path_name, file_name) {
 
 #' @export
 s3_path <- function(...) {
-  file.path(..., fsep = "/") %>%
+  path <- file.path(..., fsep = "/") %>%
     paste0("s3://", .)
+
+  class(path) <- c("s3_path", class(path))
+  path
 }
