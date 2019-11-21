@@ -242,14 +242,6 @@ sagemaker_tuning_job_logs.character <- function(sagemaker_tuner) {
     tibble::as_tibble()
 }
 
-# TODO: This is a generic function.
-#       Will pull the best tuned models
-#       training log if of class sagemaker,
-#       or if class character will lookup
-#       based on job name.
-# TODO: evaluate this. I'm not sure this is a good idea.
-#       I think it's important to destiguish between the
-#       training job and the tuning job.
 #' @export
 sagemaker_training_job_logs <- function(job_name) {
 
