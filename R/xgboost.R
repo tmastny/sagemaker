@@ -198,12 +198,11 @@ sagemaker_attach_tuner <- function(tuning_job_name) {
 #' @export
 print.sagemaker <- function(x, ...) {
   cat(
-    "Name:", x$model_name, "\n",
-    "Tuning Strategy:", x$strategy, "\n",
-    "Evaluation Metric:", x$eval_metric, "\n\n",
-    "Best hyperparameters:\n\n"
+    "Name:", x$model_name,
+    "\nTuning Strategy:", x$strategy,
+    "\nEvaluation Metric:", x$eval_metric, "\n",
+    "\nBest hyperparameters:\n"
   )
-  # TODO: https://stackoverflow.com/a/49312947/6637133
 
   cat(
     paste(
