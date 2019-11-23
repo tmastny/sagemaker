@@ -12,12 +12,8 @@ upload_file <- function(file, bucket = default_bucket(), key) {
 
 #' @export
 download_file <- function(s3_path_name, file_name) {
-  # TODO:
-  #   needs to be able to take a single path
-  #   I think the path should be first
-
-  # s3 <- boto3$client('s3')
-  # s3$download_file(bucket, key, file)
+  # TODO: is it possible to download to R session, without
+  #       going through a file?
 
   system(
     paste0(
