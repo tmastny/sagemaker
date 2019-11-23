@@ -169,7 +169,6 @@ sagemaker_attach_tuner <- function(tuning_job_name) {
     dplyr::filter(training_job_name == model_name) %>%
     dplyr::pull(final_objective_value)
 
-  # TODO: cv method should be here
   tuner <- sagemaker$tuner$HyperparameterTuner$attach(tuning_job_name)
 
   model_obj <- list(
