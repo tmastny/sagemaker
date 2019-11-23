@@ -156,13 +156,7 @@ sagemaker_hyperparameter_tuner <- function(
 #' @export
 sagemaker_attach_tuner <- function(tuning_job_name) {
 
-  # tuner_df <- sagemaker_tuning_job_logs()
-
-  tuner_stats <- sagemaker$HyperparameterTuningJobAnalytics(tuning_job_name)
-
-  tuner_df <- tuner_stats$dataframe() %>%
-    janitor::clean_names() %>%
-    tibble::as_tibble()
+  tuner_df <- sagemaker_tuning_job_logs(tuning_job_name)
 
   model_name <- tuner_df %>%
     dplyr::filter(final_objective_value == min(final_objective_value)) %>%
@@ -290,48 +284,6 @@ sagemaker_training_job_logs <- function(job_name) {
     dplyr::arrange(iteration)
 }
 
-# returns the s3_output_path
-#' @export
-batch_predict <- function(
-  object,
-  s3_input_path,
-  s3_output_path,
-  instance_count = 1L,
-  instance_type = "ml.c4.xlarge"
-) {
-
-  predict_estimator <- sagemaker$estimator$Estimator$attach(
-    training_job_name = object$model_name
-  )
-
-  predict_transformer <- predict_estimator$transformer(
-    instance_count = instance_count,
-    instance_type = instance_type,
-    output_path = s3_output_path,
-    assemble_with = 'Line'
-  )
-
-  predict_transformer$transform(
-    s3_input_path,
-    content_type = "text/csv",
-    split_type = "Line",
-    wait = TRUE,
-    logs = FALSE
-  )
-
-  # TODO: make s3_path generic so it knows how
-  #       to take a s3_path object and not double
-  #       transform it like "s3://s3://".
-  #       I think there are some examples in Shiny
-  #       or htmltools.
-  s3_predictions_path <- paste0(
-    predict_transformer$output_path, "/",
-    paste0(basename(s3_input_path), ".out")
-  )
-
-  s3_predictions_path
-}
-
 try_loading_endpoint <- function(object) {
   tryCatch(
     sagemaker$predictor$RealTimePredictor(endpoint = object$model_name),
@@ -377,6 +329,7 @@ sagemaker_deploy_endpoint <- function(object) {
   object
 }
 
+#' @export
 predict.sagemaker <- function(
   object,
   new_data,
@@ -417,6 +370,48 @@ predict.sagemaker <- function(
   }
 
   predictions
+}
+
+# returns the s3_output_path
+#' @export
+batch_predict <- function(
+  object,
+  s3_input_path,
+  s3_output_path,
+  instance_count = 1L,
+  instance_type = "ml.c4.xlarge"
+) {
+
+  predict_estimator <- sagemaker$estimator$Estimator$attach(
+    training_job_name = object$model_name
+  )
+
+  predict_transformer <- predict_estimator$transformer(
+    instance_count = instance_count,
+    instance_type = instance_type,
+    output_path = s3_output_path,
+    assemble_with = 'Line'
+  )
+
+  predict_transformer$transform(
+    s3_input_path,
+    content_type = "text/csv",
+    split_type = "Line",
+    wait = TRUE,
+    logs = FALSE
+  )
+
+  # TODO: make s3_path generic so it knows how
+  #       to take a s3_path object and not double
+  #       transform it like "s3://s3://".
+  #       I think there are some examples in Shiny
+  #       or htmltools.
+  s3_predictions_path <- paste0(
+    predict_transformer$output_path, "/",
+    paste0(basename(s3_input_path), ".out")
+  )
+
+  s3_predictions_path
 }
 
 # https://docs.aws.amazon.com/sagemaker/latest/dg/xgboost-tuning.html
