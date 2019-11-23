@@ -24,7 +24,6 @@ sagemaker_save_execution_role <- function(role_arn, profile_name = "sagemaker") 
   )
 }
 
-# use sagemaker.get_execution_role() if on sagemaker notebook instance
 # requires `pip install awscli`
 #' @export
 sagemaker_get_execution_role <- function(
