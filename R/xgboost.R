@@ -23,6 +23,7 @@ sagemaker_save_execution_role <- function(role_arn, profile_name = "sagemaker") 
 }
 
 # requires `pip install awscli`
+# guide: https://www.viget.com/articles/set-up-aws-cli-and-download-your-s3-files-from-the-command-line/
 #' @export
 sagemaker_get_execution_role <- function(
   var_name = "role_arn", profile_name = "sagemaker"
