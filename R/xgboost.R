@@ -102,13 +102,6 @@ sagemaker_xgb_estimator <- function(...) {
 
 # resamples resamples rsplit object, or a python dictionary with
 #           train/test keys pointing to sagemaker$s3_input paths
-
-# TODO:
-# also make it generic based on job name:
-# if job name, attach. Otherwise fit.
-# if pass "sagemaker.estimator.Estimator" class,
-# will need to build. Otherwise, if character attach
-# on jobname.
 #' @export
 sagemaker_hyperparameter_tuner <- function(
   estimator,
