@@ -378,7 +378,8 @@ batch_predict <- function(
   s3_input_path,
   s3_output_path,
   instance_count = 1L,
-  instance_type = "ml.c4.xlarge"
+  instance_type = "ml.c4.xlarge",
+  wait = TRUE
 ) {
 
   instance_count <- as.integer(instance_count)
@@ -398,7 +399,7 @@ batch_predict <- function(
     s3_input_path,
     content_type = "text/csv",
     split_type = "Line",
-    wait = TRUE,
+    wait = wait,
     logs = FALSE
   )
 
