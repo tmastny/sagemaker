@@ -328,12 +328,12 @@ sagemaker_deploy_endpoint <- function(
   object
 }
 
+# ... pass arguments to sagemaker_deploy_endpoint
 #' @export
 predict.sagemaker <- function(
   object,
   new_data,
-  instance_count = 1L,
-  instance_type = "ml.t2.medium",
+  ...,
   deploy_endpoint = FALSE,
   delete_endpoint = FALSE
 ) {
@@ -343,7 +343,7 @@ predict.sagemaker <- function(
   if (deploy_endpoint & is.null(predictor)) {
     message("Deploying Sagemaker endpoint. This will take a few minutes...")
 
-    sagemaker_deploy_endpoint(object, instance_count, instance_type)
+    sagemaker_deploy_endpoint(object, wait = TRUE, ...)
     predictor <- try_loading_endpoint(object)
   } else if (is.null(predictor)) {
     stop(
