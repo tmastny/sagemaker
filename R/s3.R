@@ -56,7 +56,6 @@ write_s3 <- function(x, s3_path, delim = ",", col_names = FALSE, ...) {
   builtin <- reticulate::import_builtins()
   s3 <- boto3$client('s3')
 
-  # https://datasciencechronicles.com.au/2017/11/12/adventures-in-python-1/
   file <- io$BytesIO(builtin$bytes(
     readr::format_delim(
       x, delim = delim, col_names = col_names, ...
