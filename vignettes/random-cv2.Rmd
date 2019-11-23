@@ -47,6 +47,71 @@ model <- sagemaker_attach_tuner("xgboost-191114-2052")
 model
 ```
 
+```{r}
+model
+```
+
+```{r}
+attached_model_test <- sagemaker_attach_tuner("xgboost-191114-2052")
+```
+
+```{r}
+attached_model_test
+```
+
+
+
+```{r}
+sagemaker_tuning_job_logs(attached_model_test) %>%
+  dplyr::glimpse()
+```
+
+```{r}
+sagemaker_tuning_job_logs("xgboost-191114-2052") %>% 
+  dplyr::glimpse()
+```
+
+```{r}
+training_logs <- sagemaker_training_job_logs(model$model_name)
+```
+```{r}
+training_logs
+```
+
+
+```{r}
+batch_predict(
+  model, 
+  s3_path(default_bucket(), "abalone-inference.csv"),
+  s3_path(default_bucket(), "abalone-transform")
+)
+```
+
+```{r}
+sagemaker_has_endpoint(model)
+```
+
+```{r}
+sagemaker::abalone %>%
+  dplyr::select(-1) %>%
+  predict(model, .) %>%
+  dplyr::glimpse()
+```
+
+```{r}
+sagemaker_delete_endpoint(model)
+```
+
+```{r}
+sagemaker::abalone %>%
+  dplyr::select(-1) %>%
+  predict(model, .) %>%
+  dplyr::glimpse()
+```
+
+```{r}
+sagemaker_has_endpoint(model)
+```
 
 ```{r}
 tuner <- sagemaker$tuner$HyperparameterTuner$attach("xgboost-191114-2052")
@@ -59,4 +124,6 @@ tuner$latest_tuning_job$job_name
 ```{r}
 tuner$estimator$hyperparam_dict$eval_metric
 ```
+
+
 
