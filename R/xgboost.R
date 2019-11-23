@@ -309,7 +309,8 @@ sagemaker_delete_endpoint <- function(object) {
 sagemaker_deploy_endpoint <- function(
   object,
   instance_count = 1L,
-  instance_type = "ml.t2.medium"
+  instance_type = "ml.t2.medium",
+  wait = TRUE
 ) {
 
   instance_count <- as.integer(instance_count)
@@ -320,7 +321,8 @@ sagemaker_deploy_endpoint <- function(
 
   predict_estimator$deploy(
     initial_instance_count = instance_count,
-    instance_type = instance_type
+    instance_type = instance_type,
+    wait = wait
   )
 
   object
