@@ -377,10 +377,6 @@ sagemaker_deploy_endpoint <- function(object) {
   object
 }
 
-# these interfaces are too different.
-# predict needs to be the same API in R
-# batch_predict has a different API that should
-# suit that function
 predict.sagemaker <- function(
   object,
   new_data,
