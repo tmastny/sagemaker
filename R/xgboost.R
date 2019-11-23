@@ -188,7 +188,6 @@ sagemaker_attach_tuner <- function(tuning_job_name) {
 
 
 # Advice: use format generic: http://adv-r.had.co.nz/S3.html
-# print.class <- function(x, ...) cat(format(x, ...), "\n".
 #' @export
 print.sagemaker <- function(x, ...) {
   cat(
