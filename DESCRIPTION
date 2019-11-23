@@ -1,14 +1,17 @@
 Package: sagemaker
-Title: What the Package Does (One Line, Title Case)
+Title: R Interface for the AWS Sagemaker API
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Timothy",
+           family = "Mastny",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: What license it uses
+           email = "tim.mastny@gmail.com")
+Description: The sagemaker R package creates an interface for AWS Sagemaker. 
+  The R pacakge simplifies the creation and analysis of machine learning models
+  build and deployed by Sagemaker.
+License: MIT + file LICENSE
+URL: https://github.com/tmastny/sagemaker
+BugReports: https://github.com/tmastny/sagemaker/issues
 Encoding: UTF-8
 LazyData: true
 Suggests: 
@@ -24,3 +27,7 @@ Imports:
     dplyr,
     janitor,
     tibble
+SystemRequirements:
+    awscli,
+    sagemaker,
+    boto3
