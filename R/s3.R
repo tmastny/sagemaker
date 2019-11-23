@@ -4,22 +4,21 @@ default_bucket <- function() {
 }
 
 #' @export
-upload_file <- function(file, bucket = default_bucket(), key) {
+upload_file <- function(file, s3_path) {
   s3 <- boto3$client('s3')
-  s3$upload_file(file, bucket, key)
+
+  s3_components <- s3_bucket_key_extract(s3_path)
+  s3$upload_file(file, s3_components$bucket, s3_components$key)
 }
 
 
 #' @export
-download_file <- function(s3_path_name, file_name) {
-  # TODO: is it possible to download to R session, without
-  #       going through a file?
-
+download_file <- function(s3_path, file) {
   system(
     paste0(
       "aws s3 cp ",
-      s3_path_name(), " ",
-      file_name
+      s3_path, " ",
+      file
     )
   )
 }
@@ -27,12 +26,13 @@ download_file <- function(s3_path_name, file_name) {
 # downloads s3 object into the R session
 # ... passes to readr::read_delim
 #' @export
-read_s3 <- function(s3_path_name, delim = ",", col_names = FALSE, ...) {
-  s3_components <- s3_bucket_key_extract(s3_path_name)
+read_s3 <- function(s3_path, delim = ",", col_names = FALSE, ...) {
+  s3_components <- s3_bucket_key_extract(s3_path)
 
   io <- reticulate::import("io")
   s3 <- boto3$client('s3')
 
+  # https://datasciencechronicles.com.au/2017/11/12/adventures-in-python-1/
   file <- io$BytesIO()
   s3$download_fileobj(s3_components$bucket, s3_components$key, file)
 
@@ -47,13 +47,35 @@ read_s3 <- function(s3_path_name, delim = ",", col_names = FALSE, ...) {
   s3_obj
 }
 
+# ... to format_csv
+#' @export
+write_s3 <- function(x, s3_path, delim = ",", col_names = FALSE, ...) {
+  s3_components <- s3_bucket_key_extract(s3_path)
+
+  io <- reticulate::import("io")
+  builtin <- reticulate::import_builtins()
+  s3 <- boto3$client('s3')
+
+  # https://datasciencechronicles.com.au/2017/11/12/adventures-in-python-1/
+  file <- io$BytesIO(builtin$bytes(
+    readr::format_delim(
+      x, delim = delim, col_names = col_names, ...
+    ),
+    "utf-8"
+  ))
+
+  s3$upload_fileobj(file, s3_components$bucket, s3_components$key)
+}
+
+
+
 
 #' @export
-s3_path <- function(...) {
+s3 <- function(...) {
   path <- file.path(..., fsep = "/") %>%
     paste0("s3://", .)
 
-  class(path) <- c("s3_path", class(path))
+  class(path) <- c("s3", class(path))
   path
 }
 

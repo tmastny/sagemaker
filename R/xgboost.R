@@ -59,7 +59,7 @@ sagemaker_estimator <- function(
   role = sagemaker_get_execution_role(),
   train_instance_count = 1L,
   train_instance_type = "ml.m4.xlarge",
-  output_path = s3_path(default_bucket(), "models/"),
+  output_path = s3(default_bucket(), "models/"),
   sagemaker_session = sagemaker$Session()
 
 ) {
@@ -403,8 +403,8 @@ batch_predict <- function(
     logs = FALSE
   )
 
-  # TODO: make s3_path generic so it knows how
-  #       to take a s3_path object and not double
+  # TODO: make s3 generic so it knows how
+  #       to take a s3 object and not double
   #       transform it like "s3://s3://".
   #       I think there are some examples in Shiny
   #       or htmltools.

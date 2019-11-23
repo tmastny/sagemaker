@@ -117,6 +117,16 @@ sagemaker_has_endpoint(model)
 read_s3(s3_path(default_bucket(), "abalone-train.csv"))
 ```
 
+```{r}
+sagemaker::abalone %>%
+  write_s3(s3(default_bucket(), "test-upload.csv"))
+```
+
+```{r}
+read_s3(s3(default_bucket(), "test-upload.csv"))
+```
+
+
 
 ```{r}
 tuner <- sagemaker$tuner$HyperparameterTuner$attach("xgboost-191114-2052")
