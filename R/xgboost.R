@@ -55,8 +55,6 @@ sagemaker_get_execution_role <- function(
   )
 }
 
-
-# is class for generics
 #' @export
 sagemaker_estimator <- function(
   container,
@@ -98,6 +96,11 @@ sagemaker_estimator <- function(
   )
 
   estimator
+}
+
+#' @export
+sagemaker_xgb_estimator <- function(...) {
+  sagemaker_estimator(sagemaker_xgb_container(), ...)
 }
 
 # resamples resamples rsplit object, or a python dictionary with
