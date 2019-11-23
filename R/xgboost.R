@@ -29,8 +29,6 @@ sagemaker_get_execution_role <- function(
   var_name = "role_arn", profile_name = "sagemaker"
 ) {
 
-  role <- NULL
-
   role <- tryCatch(
     sagemaker$get_execution_role(),
     error = function(condition) {
