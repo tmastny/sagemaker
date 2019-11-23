@@ -1,6 +1,13 @@
+# use options(sagemaker.default.bucket = "bucket_name")
+# or will default to sagemaker$Session()$default_bucket()
 #' @export
-default_bucket <- function() {
-  sagemaker$Session()$default_bucket()
+s3_bucket <- function() {
+  bucket <- getOption("sagemaker.default.bucket")
+  if (is.null(bucket)) {
+    bucket <- sagemaker$Session()$default_bucket()
+  }
+
+  bucket
 }
 
 #' @export

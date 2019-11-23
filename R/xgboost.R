@@ -57,7 +57,7 @@ sagemaker_estimator <- function(
   role = sagemaker_get_execution_role(),
   train_instance_count = 1L,
   train_instance_type = "ml.m4.xlarge",
-  output_path = s3(default_bucket(), "models/"),
+  output_path = s3(s3_bucket(), "models/"),
   sagemaker_session = sagemaker$Session()
 
 ) {
