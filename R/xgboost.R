@@ -308,7 +308,14 @@ sagemaker_delete_endpoint <- function(object) {
 }
 
 #' @export
-sagemaker_deploy_endpoint <- function(object) {
+sagemaker_deploy_endpoint <- function(
+  object,
+  instance_count = 1L,
+  instance_type = "ml.t2.medium"
+) {
+
+  instance_count <- as.integer(instance_count)
+
   predict_estimator <- sagemaker$estimator$Estimator$attach(
     training_job_name = object$model_name
   )
@@ -336,7 +343,7 @@ predict.sagemaker <- function(
   if (deploy_endpoint & is.null(predictor)) {
     message("Deploying Sagemaker endpoint. This will take a few minutes...")
 
-    sagemaker_deploy_endpoint(object)
+    sagemaker_deploy_endpoint(object, instance_count, instance_type)
     predictor <- try_loading_endpoint(object)
   } else if (is.null(predictor)) {
     stop(
@@ -373,6 +380,8 @@ batch_predict <- function(
   instance_count = 1L,
   instance_type = "ml.c4.xlarge"
 ) {
+
+  instance_count <- as.integer(instance_count)
 
   predict_estimator <- sagemaker$estimator$Estimator$attach(
     training_job_name = object$model_name
