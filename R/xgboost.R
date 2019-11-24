@@ -1,9 +1,10 @@
 #' @export
-sagemaker_xgb_container <- function(repo_version = "latest") {
+sagemaker_xgb_container <- function(repo_version = "latest", ...) {
   xgb_container <- sagemaker$amazon$amazon_estimator$get_image_uri(
     boto3$Session()$region_name,
     "xgboost",
-    repo_version = repo_version
+    repo_version = repo_version,
+    ...
   )
 }
 
@@ -58,8 +59,8 @@ sagemaker_estimator <- function(
   train_instance_count = 1L,
   train_instance_type = "ml.m4.xlarge",
   output_path = s3(s3_bucket(), "models/"),
-  sagemaker_session = sagemaker$Session()
-
+  sagemaker_session = sagemaker$Session(),
+  ...
 ) {
 
   train_instance_count <- as.integer(train_instance_count)
@@ -70,7 +71,8 @@ sagemaker_estimator <- function(
     train_instance_count = train_instance_count,
     train_instance_type = "ml.m4.xlarge",
     output_path = output_path,
-    sagemaker_session = sagemaker_session
+    sagemaker_session = sagemaker_session,
+    ...
   )
 
   # TODO: check what the default hyperparameters are and
@@ -109,7 +111,8 @@ sagemaker_hyperparameter_tuner <- function(
   strategy = "Random",
   max_jobs = 10L,
   max_parallel_jobs = 2L,
-  early_stopping_type = "Auto"
+  early_stopping_type = "Auto",
+  ...
 ) {
 
   max_jobs <- as.integer(max_jobs)
@@ -125,7 +128,8 @@ sagemaker_hyperparameter_tuner <- function(
     strategy = strategy,
     max_jobs = max_jobs,
     max_parallel_jobs = max_parallel_jobs,
-    early_stopping_type = early_stopping_type
+    early_stopping_type = early_stopping_type,
+    ...
   )
 
   # TODO: if given a rsplit object, need to upload it s3
@@ -310,7 +314,8 @@ sagemaker_deploy_endpoint <- function(
   object,
   instance_count = 1L,
   instance_type = "ml.t2.medium",
-  wait = TRUE
+  wait = TRUE,
+  ...
 ) {
 
   instance_count <- as.integer(instance_count)
@@ -322,7 +327,8 @@ sagemaker_deploy_endpoint <- function(
   predict_estimator$deploy(
     initial_instance_count = instance_count,
     instance_type = instance_type,
-    wait = wait
+    wait = wait,
+    ...
   )
 
   object
