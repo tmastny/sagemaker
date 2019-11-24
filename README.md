@@ -22,7 +22,10 @@ devtools::install_github("tmastny/sagemaker")
 
 ## Simplify
 
-With you sagemaker R package, you start here:
+[See for
+yourself](https://tmastny.github.io/sagemaker/articles/sagemaker-vs-sagemaker.html)
+how sagemaker simplifies the API. With you sagemaker R package, you
+start here:
 
 ``` r
 library(sagemaker)

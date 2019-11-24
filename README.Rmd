@@ -33,6 +33,8 @@ devtools::install_github("tmastny/sagemaker")
 
 ## Simplify
 
+[See for yourself](https://tmastny.github.io/sagemaker/articles/sagemaker-vs-sagemaker.html) 
+how sagemaker simplifies the API.
 With you sagemaker R package, you start here:
 
 ```{r eval = FALSE}
