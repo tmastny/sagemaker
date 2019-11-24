@@ -1,0 +1,232 @@
+---
+title: "Sagemaker API vs. Sagemaker R Package"
+output: rmarkdown::html_document
+vignette: >
+  %\VignetteIndexEntry{Sagemaker API vs. Sagemaker R Package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+## Introduction
+
+AWS Sagemaker is a powerful tool to efficently build and deploy
+machine learning models.
+However, I don't think the API is suitable for exploratory training
+and data analysis. 
+Too many of the minor details are left to the user. 
+My goal with this package is to create a simplified user interface,
+with sensible defaults,
+that gets you training and analyzing with Sagemaker faster than ever.
+
+## Side-by-side comparsion
+
+```{r}
+library(dplyr)
+library(stringr)
+```
+
+
+<div class="row">
+<div class="col-md-6"><h2>R sagemaker</h2>
+```{r}
+library(sagemaker)
+
+xgb <- sagemaker_xgb_estimator()
+```
+</div>
+<div class="col-md-6"><h2>AWS Sagemaker</h2>
+```{r}
+library(reticulate)
+sage <- reticulate::import("sagemaker")
+
+xgb_container <- sagemaker$amazon$amazon_estimator$get_image_uri(
+  boto3$Session()$region_name,
+  "xgboost",
+  repo_version = "latest"
+)
+
+xgb <- sagemaker$estimator$Estimator(
+  xgb_container,
+  sagemaker_get_execution_role(),
+  train_instance_count = 1L,
+  train_instance_type = "ml.m4.xlarge",
+  output_path = s3(s3_bucket(), "/models/"),
+  sagemaker_session = sagemaker$Session()
+)
+```
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-6"><h2>R sagemaker</h2>
+```{r}
+xgb$set_hyperparameters(
+  eval_metric = "rmse",
+  objective = "reg:linear",
+  eta = 0.1,
+  gamma = 0.0,
+  min_child_weight = 1,
+  num_round = 100L,
+  early_stopping_rounds = 50L
+)
+
+grid <- list(
+  max_depth = sagemaker_integer(3, 20),
+  colsample_bytree = sagemaker_continuous(0, 1),
+  subsample = sagemaker_continuous(0, 1)
+)
+
+split <- list(
+  train = s3(s3_bucket(), "abalone-train.csv"),
+  validation = s3(s3_bucket(), "abalone-test.csv")
+)
+
+tune <- sagemaker_hyperparameter_tuner(
+  xgb, split, grid, max_jobs = 1
+)
+```
+</div>
+<div class="col-md-6"><h2>AWS Sagemaker</h2>
+```{r}
+xgb$set_hyperparameters(
+  eval_metric = "rmse",
+  objective = "reg:linear",
+  eta = 0.1,
+  gamma = 0.0,
+  min_child_weight = 1,
+  num_round = 100L,
+  early_stopping_rounds = 50L
+)
+
+grid <- list(
+  max_depth = 
+    sagemaker$tuner$IntegerParameter(3L, 20L),
+  colsample_bytree = 
+    sagemaker$tuner$ContinuousParameter(0, 1),
+  subsample = 
+    sagemaker$tuner$ContinuousParameter(0, 1)
+)
+
+tune <- sagemaker$tuner$HyperparameterTuner(
+  xgb,
+  "validation:rmse",
+  objective_type = "Minimize",
+  hyperparameter_rangers,
+  strategy = "Random",
+  max_jobs = 1L,
+  max_parallel_jobs = 1L,
+  early_stopping_type = "Auto"
+)
+
+train_data <- sagemaker$s3_input(
+  s3(s3_bucket(), "/abalone-train.csv"),
+  content_type = "text/csv"
+)
+
+validation_data <- sagemaker$s3_input(
+  s3(s3_bucket(), "/abalone-test.csv"),
+  content_type = "text/csv"
+)
+
+tuning$fit(
+  reticulate::dict(
+    train = train_data,
+    validation = validation_data
+  )
+)
+```
+</div>
+</div>
+
+
+<div class="row">
+<div class="col-md-6"><h2>R sagemaker</h2>
+```{r}
+sagemaker_tuning_job_logs(tune)
+sagemaker_training_job_logs(tune$model_name)
+```
+</div>
+<div class="col-md-6"><h2>AWS Sagemaker</h2>
+```{r}
+tuning_analytics <- sagemaker$HyperparameterTuningJobAnalytics(
+  tuning$latest_tuning_job$job_name
+)
+
+tuning_stas <- tuning_analytics$dataframe()
+
+best_tuned_model <- tuning_stats %>%
+  filter(FinalObjectiveValue == min(FinalObjectiveValue)) %>%
+  pull(TrainingJobName)
+
+sagemaker$TrainingJobAnalytics(best_tuned_model)$dataframe()
+```
+</div>
+</div>
+
+
+<div class="row">
+<div class="col-md-6"><h2>R sagemaker</h2>
+```{r}
+sagemaker_deploy_endpoint(tune)
+predict(tune, sagemaker::abalone[1:100, -1])
+```
+</div>
+<div class="col-md-6"><h2>AWS Sagemaker</h2>
+```{r}
+predictor <- xgb$deploy(
+  initial_instance_count = 1L,
+  instance_type = "ml.t2.medium",
+)
+
+predictor$content_type <- "text/csv"
+predictor$serializer <- sagemaker$predictor$csv_serializer
+
+new_data <- as.matrix(sagemaker::abalone[1:100, -1])
+dimnames(new_data)[[2]] <- NULL
+
+predictions <- predictor$predict(new_data)
+
+predictions %>%
+  str_split(pattern = ",", simplify = TRUE) %>%
+  as.numeric()
+```
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-6"><h2>R sagemaker</h2>
+```{r}
+batch_predict(
+  tune, 
+  s3_input = s3(s3_bucket(), "abalone-inference.csv"),
+  s3_output = s3(s3_bucket(), "abalone_predictions")
+)
+```
+</div>
+<div class="col-md-6"><h2>AWS Sagemaker</h2>
+```{r}
+transfomer <- xgb$transformer(
+  instance_count = 1L,
+  instance_type = "ml.c4.xlarge",
+  output_path = s3(s3_bucket(), "abalone_predictions"),
+  assemble_with = 'Line'
+)
+
+xfer$transform(
+  s3(s3_bucket(), "abalone-inference.csv"),
+  content_type = "text/csv",
+  split_type = "Line",
+  wait = TRUE,
+  logs = FALSE
+)
+```
+</div>
+</div>

@@ -381,8 +381,8 @@ predict.sagemaker <- function(
 #' @export
 batch_predict <- function(
   object,
-  s3_input_path,
-  s3_output_path,
+  s3_input,
+  s3_output,
   instance_count = 1L,
   instance_type = "ml.c4.xlarge",
   wait = TRUE
@@ -402,7 +402,7 @@ batch_predict <- function(
   )
 
   predict_transformer$transform(
-    s3_input_path,
+    s3_input,
     content_type = "text/csv",
     split_type = "Line",
     wait = wait,
@@ -416,7 +416,7 @@ batch_predict <- function(
   #       or htmltools.
   s3_predictions_path <- paste0(
     predict_transformer$output_path, "/",
-    paste0(basename(s3_input_path), ".out")
+    paste0(basename(s3_input), ".out")
   )
 
   s3_predictions_path

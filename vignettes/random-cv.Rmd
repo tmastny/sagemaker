@@ -32,7 +32,7 @@ https://stackoverflow.com/a/47767351/6637133
 xgb_container <- sagemaker$amazon$amazon_estimator$get_image_uri(
   boto3$Session()$region_name,
   "xgboost",
-  repo_version = "latest" #version
+  repo_version = "latest"
 )
 ```
 
