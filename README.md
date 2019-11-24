@@ -22,17 +22,19 @@ devtools::install_github("tmastny/sagemaker")
 
 ## Simplify
 
-[See for
-yourself](https://tmastny.github.io/sagemaker/articles/sagemaker-vs-sagemaker.html)
-how sagemaker simplifies the API. With you sagemaker R package, you
-start here:
+See the Sagemaker vs. Sagemaker [side-by-side
+comparsion](https://tmastny.github.io/sagemaker/articles/sagemaker-vs-sagemaker.html)
+yourself. The R package hides the details for latter, and lets you get
+started ASAP.
+
+You can start with this:
 
 ``` r
 library(sagemaker)
 xgb <- sagemaker_xgb_estimator()
 ```
 
-instead of here:
+instead of this:
 
 ``` r
 library(reticulate)
