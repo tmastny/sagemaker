@@ -45,7 +45,7 @@ xgb <- sagemaker_xgb_estimator()
 <div class="col-md-6"><h2>AWS Sagemaker</h2>
 ```{r}
 library(reticulate)
-sage <- reticulate::import("sagemaker")
+sagemaker <- reticulate::import("sagemaker")
 
 xgb_container <- sagemaker$amazon$amazon_estimator$get_image_uri(
   boto3$Session()$region_name,

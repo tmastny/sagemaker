@@ -17,8 +17,9 @@ Sagemaker API by:
 3.  supporting `data.frame`s and
     [tibbles](https://github.com/tidyverse/tibble)
 
-Check out the [Get started](articles/sagemaker.html) guide for
-examples\!
+Check out the [Get
+started](https://tmastny.github.io/sagemaker/articles/sagemaker.html)
+guide for examples\!
 
 ## Installation
 
@@ -87,7 +88,7 @@ instead of this:
 
 ``` r
 library(reticulate)
-sage <- reticulate::import("sagemaker")
+sagemaker <- reticulate::import("sagemaker")
 boto3 <- reticulate::import("boto3")
 
 xgb_container <- sagemaker$amazon$amazon_estimator$get_image_uri(
