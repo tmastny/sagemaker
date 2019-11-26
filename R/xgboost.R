@@ -340,22 +340,11 @@ sagemaker_deploy_endpoint <- function(
 
 # ... pass arguments to sagemaker_deploy_endpoint
 #' @export
-predict.sagemaker <- function(
-  object,
-  new_data,
-  ...,
-  deploy_endpoint = FALSE,
-  delete_endpoint = FALSE
-) {
+predict.sagemaker <- function(object, new_data) {
 
   predictor <- try_loading_endpoint(object)
 
-  if (deploy_endpoint & is.null(predictor)) {
-    message("Deploying Sagemaker endpoint. This will take a few minutes...")
-
-    sagemaker_deploy_endpoint(object, wait = TRUE, ...)
-    predictor <- try_loading_endpoint(object)
-  } else if (is.null(predictor)) {
+  if (is.null(predictor)) {
     stop(
       "No existing endpoint to deploy to. ",
       "Endpoint should have the same name as the model."
