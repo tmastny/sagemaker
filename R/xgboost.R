@@ -310,7 +310,7 @@ sagemaker_delete_endpoint <- function(object) {
 
   predictor$delete_endpoint()
 
-  object
+  invisible(object)
 }
 
 #' @export
@@ -335,7 +335,7 @@ sagemaker_deploy_endpoint <- function(
     ...
   )
 
-  object
+  invisible(object)
 }
 
 # ... pass arguments to sagemaker_deploy_endpoint
