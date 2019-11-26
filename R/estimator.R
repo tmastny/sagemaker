@@ -1,6 +1,6 @@
 #' Sagemaker Container
 #'
-#' Returns the URI to the Sagemaker model container
+#' Returns the URI to the Sagemaker model container.
 #'
 #' Interface to \code{sagemaker$amazon$amazon_estimator$get_image_uri}.
 #'
@@ -22,35 +22,6 @@ sagemaker_container <- function(container_name, repo_version = "latest", ...) {
 #' @export
 sagemaker_xgb_container <- function(repo_version = "latest", ...) {
   sagemaker_container("xgboost", repo_version = repo_version, ...)
-}
-
-# requires `pip install awscli`
-# guide: https://www.viget.com/articles/set-up-aws-cli-and-download-your-s3-files-from-the-command-line/
-#' @export
-sagemaker_get_execution_role <- function(
-  var_name = "role_arn", profile_name = "sagemaker"
-) {
-
-  role <- tryCatch(
-    sagemaker$get_execution_role(),
-    error = function(condition) {
-      message(
-        "\n\nYou are not in a sagemaker hosted notebook.\n",
-        "Pulling local role in ~/.aws/config"
-      )
-
-      NULL
-    }
-  )
-
-  if (!is.null(role)) {
-    return(role)
-  }
-
-  system(
-    paste0("aws configure get ", var_name, " --profile ", profile_name),
-    intern = TRUE
-  )
 }
 
 #' @export

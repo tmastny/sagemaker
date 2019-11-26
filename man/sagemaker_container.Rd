@@ -3,7 +3,7 @@
 \name{sagemaker_container}
 \alias{sagemaker_container}
 \alias{sagemaker_xgb_container}
-\title{Sagemaker Containers}
+\title{Sagemaker Container}
 \usage{
 sagemaker_container(container_name, repo_version = "latest", ...)
 
@@ -17,7 +17,7 @@ sagemaker_xgb_container(repo_version = "latest", ...)
 \item{...}{Additional named arguments sent to the underlying API.}
 }
 \description{
-Returns the URI to the Sagemaker model container
+Returns the URI to the Sagemaker model container.
 }
 \details{
 Interface to \code{sagemaker$amazon$amazon_estimator$get_image_uri}.
