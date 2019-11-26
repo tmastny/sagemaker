@@ -338,7 +338,6 @@ sagemaker_deploy_endpoint <- function(
   invisible(object)
 }
 
-# ... pass arguments to sagemaker_deploy_endpoint
 #' @export
 predict.sagemaker <- function(object, new_data) {
 
