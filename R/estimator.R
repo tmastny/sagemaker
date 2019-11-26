@@ -1,11 +1,27 @@
+#' Sagemaker Container
+#'
+#' Returns the URI to the Sagemaker model container
+#'
+#' Interface to \code{sagemaker$amazon$amazon_estimator$get_image_uri}.
+#'
+#' @param container_name Name of the Sagemaker model container, e.g. "xgboost"
+#' @param repo_version Version of the model. Defaults to "latest".
+#' @param ... Additional named arguments sent to the underlying API.
+#'
 #' @export
-sagemaker_xgb_container <- function(repo_version = "latest", ...) {
+sagemaker_container <- function(container_name, repo_version = "latest", ...) {
   xgb_container <- sagemaker$amazon$amazon_estimator$get_image_uri(
     boto3$Session()$region_name,
-    "xgboost",
+    container_name,
     repo_version = repo_version,
     ...
   )
+}
+
+#' @rdname sagemaker_container
+#' @export
+sagemaker_xgb_container <- function(repo_version = "latest", ...) {
+  sagemaker_container("xgboost", repo_version = repo_version, ...)
 }
 
 # requires `pip install awscli`
