@@ -3,4 +3,5 @@ pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
   sagemaker-vs-sagemaker: sagemaker-vs-sagemaker.html
+  sagemaker: sagemaker.html
 

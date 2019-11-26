@@ -46,6 +46,9 @@
   </a>
 </li>
 <li>
+  <a href="articles/sagemaker.html">Get started</a>
+</li>
+<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -85,39 +88,62 @@
 <a href="#sagemaker" class="anchor"></a>sagemaker</h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
-<p>The sagemaker R package provides a simplified API to AWS Sagemaker. The goal is to provide an R interface that uses sensible defaults so you can quickly train and analyze machine learning models.</p>
+<p>The sagemaker R package provides a simplified interface to the AWS Sagemaker API by:</p>
+<ol>
+<li><p>adding sensible defaults so you can dive in quickly</p></li>
+<li><p>creating helper functions to streamline model analysis</p></li>
+<li><p>supporting <code>data.frame</code>s and <a href="https://github.com/tidyverse/tibble">tibbles</a></p></li>
+</ol>
+<p>Check out the <a href="articles/sagemaker.html">Get started</a> guide for examples!</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install sagemaker from <a href="https://github.com/">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"tmastny/sagemaker"</span>)</a></code></pre></div>
+<p>You will also need <code>boto3</code>, <code>sagemaker</code>, and <code>awscli</code> python packages. If you don’t have them, or aren’t sure, install with:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">sagemaker<span class="op">::</span><span class="kw">sagemaker_install</span>()</a></code></pre></div>
+<p>Next, you’ll need an <a href="https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/">AWS account</a>. This is a complicated process and unfortunately I don’t have a good guide to share. Please reach out if you find one and I’ll post it here!</p>
+<p>Once you have the account and user setup you’ll want to save your account access keys. <a href="https://www.viget.com/articles/set-up-aws-cli-and-download-your-s3-files-from-the-command-line/">This</a> is a good guide to follow.</p>
+<p>Lastly, you need a AWS Sagemaker Execution Role. The easiest way is to create a AWS Sagemaker Notebook Instance. Try <a href="https://sagemaker-workshop.com/introduction/notebook.html#launch-the-notebook-instance">this guide</a> to get the notebook running. Once the notebook is deployed, <em>inside the instance</em> run:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="im">from</span> sagemaker <span class="im">import</span> get_execution_role</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">role <span class="op">=</span> get_execution_role()</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="bu">print</span>(role)</a></code></pre></div>
+<p>Once you have that role, run this command locally to save it with your local AWS config:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">sagemaker<span class="op">::</span><span class="kw">sagemaker_save_execution_role</span>(</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="st">"arn:aws:iam::[account_number]:role/service-role/[SageMakerExecutionRole]"</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">)</a></code></pre></div>
 </div>
-<div id="simplify" class="section level2">
+<div id="streamlined-analysis" class="section level2">
 <h2 class="hasAnchor">
-<a href="#simplify" class="anchor"></a>Simplify</h2>
-<p>With you sagemaker R package, you start here:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(sagemaker)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">xgb &lt;-<span class="st"> </span><span class="kw">sagemaker_xgb_estimator</span>()</a></code></pre></div>
-<p>instead of here:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(reticulate)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">sage &lt;-<span class="st"> </span>reticulate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/reticulate/man/import.html">import</a></span>(<span class="st">"sagemaker"</span>)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">boto3 &lt;-<span class="st"> </span>reticulate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/reticulate/man/import.html">import</a></span>(<span class="st">"boto3"</span>)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">xgb_container &lt;-<span class="st"> </span>sagemaker<span class="op">$</span>amazon<span class="op">$</span>amazon_estimator<span class="op">$</span><span class="kw">get_image_uri</span>(</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">  boto3<span class="op">$</span><span class="kw">Session</span>()<span class="op">$</span>region_name,</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">  <span class="st">"xgboost"</span>,</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">  <span class="dt">repo_version =</span> <span class="st">"latest"</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">)</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">xgb &lt;-<span class="st"> </span>sagemaker<span class="op">$</span>estimator<span class="op">$</span><span class="kw">Estimator</span>(</a>
-<a class="sourceLine" id="cb3-12" data-line-number="12">  xgb_container,</a>
-<a class="sourceLine" id="cb3-13" data-line-number="13">  <span class="kw">sagemaker_get_execution_role</span>(),</a>
-<a class="sourceLine" id="cb3-14" data-line-number="14">  <span class="dt">train_instance_count =</span> 1L,</a>
-<a class="sourceLine" id="cb3-15" data-line-number="15">  <span class="dt">train_instance_type =</span> <span class="st">"ml.m4.xlarge"</span>,</a>
-<a class="sourceLine" id="cb3-16" data-line-number="16">  <span class="dt">output_path =</span> <span class="kw">s3</span>(<span class="kw">s3_bucket</span>(), <span class="st">"/models/"</span>),</a>
-<a class="sourceLine" id="cb3-17" data-line-number="17">  <span class="dt">sagemaker_session =</span> sagemaker<span class="op">$</span><span class="kw">Session</span>()</a>
-<a class="sourceLine" id="cb3-18" data-line-number="18">)</a></code></pre></div>
+<a href="#streamlined-analysis" class="anchor"></a>Streamlined Analysis</h2>
+<p>Compare the AWS Sagemaker API vs. to the sagemaker R package yourself with this <a href="https://tmastny.github.io/sagemaker/articles/sagemaker-vs-sagemaker.html">side-by-side comparsion</a> . The R package hides the details for latter, and lets you get started ASAP.</p>
+<p>You start with this:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(sagemaker)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">xgb &lt;-<span class="st"> </span><span class="kw">sagemaker_xgb_estimator</span>()</a></code></pre></div>
+<p>instead of this:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(reticulate)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">sage &lt;-<span class="st"> </span>reticulate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/reticulate/man/import.html">import</a></span>(<span class="st">"sagemaker"</span>)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">boto3 &lt;-<span class="st"> </span>reticulate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/reticulate/man/import.html">import</a></span>(<span class="st">"boto3"</span>)</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">xgb_container &lt;-<span class="st"> </span>sagemaker<span class="op">$</span>amazon<span class="op">$</span>amazon_estimator<span class="op">$</span><span class="kw">get_image_uri</span>(</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">  boto3<span class="op">$</span><span class="kw">Session</span>()<span class="op">$</span>region_name,</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">  <span class="st">"xgboost"</span>,</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">  <span class="dt">repo_version =</span> <span class="st">"latest"</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">)</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11">xgb &lt;-<span class="st"> </span>sagemaker<span class="op">$</span>estimator<span class="op">$</span><span class="kw">Estimator</span>(</a>
+<a class="sourceLine" id="cb6-12" data-line-number="12">  xgb_container,</a>
+<a class="sourceLine" id="cb6-13" data-line-number="13">  <span class="kw">sagemaker_get_execution_role</span>(),</a>
+<a class="sourceLine" id="cb6-14" data-line-number="14">  <span class="dt">train_instance_count =</span> 1L,</a>
+<a class="sourceLine" id="cb6-15" data-line-number="15">  <span class="dt">train_instance_type =</span> <span class="st">"ml.m4.xlarge"</span>,</a>
+<a class="sourceLine" id="cb6-16" data-line-number="16">  <span class="dt">output_path =</span> <span class="kw">s3</span>(<span class="kw">s3_bucket</span>(), <span class="st">"/models/"</span>),</a>
+<a class="sourceLine" id="cb6-17" data-line-number="17">  <span class="dt">sagemaker_session =</span> sagemaker<span class="op">$</span><span class="kw">Session</span>()</a>
+<a class="sourceLine" id="cb6-18" data-line-number="18">)</a></code></pre></div>
+</div>
+<div id="section" class="section level2">
+<h2></h2>
 </div>
 </div>
   </div>

@@ -158,6 +158,8 @@ sagemaker_attach_tuner <- function(tuning_job_name) {
     dplyr::filter(final_objective_value == min(final_objective_value)) %>%
     dplyr::pull(training_job_name)
 
+  tuner <- sagemaker$tuner$HyperparameterTuner$attach(tuning_job_name)
+
   tuning_parameter_names <- tuner$hyperparameter_ranges() %>%
     purrr::discard(purrr::is_empty) %>%
     purrr::flatten() %>%
@@ -171,8 +173,6 @@ sagemaker_attach_tuner <- function(tuning_job_name) {
   best_eval_metric <- tuner_df %>%
     dplyr::filter(training_job_name == model_name) %>%
     dplyr::pull(final_objective_value)
-
-  tuner <- sagemaker$tuner$HyperparameterTuner$attach(tuning_job_name)
 
   model_obj <- list(
     model_name = model_name,
@@ -216,10 +216,12 @@ sagemaker_tuning_job_logs <- function(sagemaker_tuner) {
   UseMethod("sagemaker_tuning_job_logs")
 }
 
+#' @export
 sagemaker_tuning_job_logs.sagemaker <- function(sagemaker_tuner) {
   sagemaker_tuning_job_logs(sagemaker_tuner$tuning_job_name)
 }
 
+#' @export
 sagemaker_tuning_job_logs.character <- function(sagemaker_tuner) {
   tuner_stats <- sagemaker$HyperparameterTuningJobAnalytics(sagemaker_tuner)
 
@@ -268,10 +270,12 @@ sagemaker_training_job_logs <- function(job_name) {
     ) %>%
     dplyr::mutate(iteration = as.numeric(iteration)) %>%
     dplyr::mutate(
-      !!metric_names[1] := stringr::str_match(logs, metric_regex[1])[, 2]
+      !!metric_names[1] := stringr::str_match(logs, metric_regex[1])[, 2] %>%
+        as.numeric()
     ) %>%
     dplyr::mutate(
-      !!metric_names[2] := stringr::str_match(logs, metric_regex[2])[, 2]
+      !!metric_names[2] := stringr::str_match(logs, metric_regex[2])[, 2] %>%
+        as.numeric()
     ) %>%
     dplyr::select(-logs) %>%
     dplyr::filter_all(dplyr::all_vars(!is.na(.))) %>%
