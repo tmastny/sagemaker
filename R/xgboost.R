@@ -8,21 +8,6 @@ sagemaker_xgb_container <- function(repo_version = "latest", ...) {
   )
 }
 
-#' @export
-sagemaker_save_execution_role <- function(role_arn, profile_name = "sagemaker") {
-  stopifnot(.Platform$OS.type == "unix")
-
-  profile_name <- "test"
-  role_arn <- "role"
-
-  system(
-    paste0(
-      "echo '\n[profile ", profile_name, "]\n",
-      "role_arn = ", role_arn, "' >> ~/.aws/config"
-    )
-  )
-}
-
 # requires `pip install awscli`
 # guide: https://www.viget.com/articles/set-up-aws-cli-and-download-your-s3-files-from-the-command-line/
 #' @export
