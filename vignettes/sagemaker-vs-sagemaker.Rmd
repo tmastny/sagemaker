@@ -119,7 +119,7 @@ tune <- sagemaker$tuner$HyperparameterTuner(
   xgb,
   "validation:rmse",
   objective_type = "Minimize",
-  hyperparameter_rangers,
+  grid,
   strategy = "Random",
   max_jobs = 1L,
   max_parallel_jobs = 1L,
@@ -220,7 +220,7 @@ transfomer <- xgb$transformer(
   assemble_with = 'Line'
 )
 
-xfer$transform(
+transfomer$transform(
   s3(s3_bucket(), "abalone-inference.csv"),
   content_type = "text/csv",
   split_type = "Line",
