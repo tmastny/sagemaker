@@ -11,24 +11,7 @@ try_loading_endpoint <- function(object) {
   )
 }
 
-#' @export
-sagemaker_has_endpoint <- function(object) {
-  predictor <- try_loading_endpoint(object)
-
-  !is.null(predictor)
-}
-
-#' @export
-sagemaker_delete_endpoint <- function(object) {
-  predictor <- sagemaker$predictor$RealTimePredictor(
-    endpoint = object$model_name
-  )
-
-  predictor$delete_endpoint()
-
-  invisible(object)
-}
-
+#' Deploy Sagemaker Endpoint
 #' @export
 sagemaker_deploy_endpoint <- function(
   object,
@@ -50,6 +33,26 @@ sagemaker_deploy_endpoint <- function(
     wait = wait,
     ...
   )
+
+  invisible(object)
+}
+
+#' @rdname sagemaker_deploy_endpoint
+#' @export
+sagemaker_has_endpoint <- function(object) {
+  predictor <- try_loading_endpoint(object)
+
+  !is.null(predictor)
+}
+
+#' @rdname sagemaker_deploy_endpoint
+#' @export
+sagemaker_delete_endpoint <- function(object) {
+  predictor <- sagemaker$predictor$RealTimePredictor(
+    endpoint = object$model_name
+  )
+
+  predictor$delete_endpoint()
 
   invisible(object)
 }
