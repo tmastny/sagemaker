@@ -1,10 +1,9 @@
 #' Installs Sagemaker Dependencies
 #'
 #' Installs the Python package dependencies boto3, sagemaker, and awscli.
+#' Interface to \code{\link[reticulate:py_install]{reticulate::py_install()}}.
 #'
-#' @param ... Additional named arguments sent to
-#' \code{\link[reticulate:py_install]{reticulate::py_install()}}.
-#'
+#' @inheritParams sagemaker_deploy_endpoint
 #' @export
 sagemaker_install <- function(...) {
   reticulate::py_install(c("boto3", "sagemaker", "awscli"), ...)
