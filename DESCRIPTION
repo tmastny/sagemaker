@@ -10,7 +10,7 @@ Description: The sagemaker R package creates an interface for AWS Sagemaker.
   The R pacakge simplifies the creation and analysis of machine learning models
   build and deployed by Sagemaker.
 License: MIT + file LICENSE
-URL: https://github.com/tmastny/sagemaker
+URL: https://tmastny.github.io/sagemaker/
 BugReports: https://github.com/tmastny/sagemaker/issues
 Encoding: UTF-8
 LazyData: true
