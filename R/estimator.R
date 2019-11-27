@@ -1,5 +1,6 @@
 #' Sagemaker Container
 #'
+#' @description
 #' Returns the URI to the Sagemaker model container.
 #'
 #' Interface to \code{sagemaker$amazon$amazon_estimator$get_image_uri}.
@@ -36,6 +37,7 @@ sagemaker_xgb_container <- function(repo_version = "latest", ...) {
 #' \href{https://aws.amazon.com/sagemaker/pricing/instance-types/}{here} for
 #' a list of options and pricing.
 #' @param output_path The S3 output path to save the model artifact.
+#' See \link{s3} to construct the S3 path.
 #' @param ... Additional named arguments sent to the underlying API.
 #'
 #' @export

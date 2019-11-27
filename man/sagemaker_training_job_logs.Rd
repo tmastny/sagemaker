@@ -7,7 +7,7 @@
 sagemaker_training_job_logs(job_name)
 }
 \arguments{
-\item{The}{training job name. Typically something like
+\item{job_name}{The training job name. Typically something like
 \code{"xgboost-191114-2052-001-7b33b7a5"}.}
 }
 \description{

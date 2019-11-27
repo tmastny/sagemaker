@@ -7,7 +7,7 @@
 sagemaker_install(...)
 }
 \arguments{
-\item{...}{Passes named arguments to
+\item{...}{Additional named arguments sent to
 \code{\link[reticulate:py_install]{reticulate::py_install()}}.}
 }
 \description{

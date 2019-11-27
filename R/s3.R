@@ -3,7 +3,7 @@
 #' Returns properly formatted S3 object path,
 #' including the \code{s3://} prefix.
 #'
-#' @param ... Characters vectors to combine into S3 path.
+#' @param ... Characters vectors to combine into an S3 path.
 #'
 #' @examples
 #' s3("my_bucket", "prefix", "object_name.csv")

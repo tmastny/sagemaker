@@ -18,7 +18,6 @@ sagemaker_xgb_container(repo_version = "latest", ...)
 }
 \description{
 Returns the URI to the Sagemaker model container.
-}
-\details{
+
 Interface to \code{sagemaker$amazon$amazon_estimator$get_image_uri}.
 }

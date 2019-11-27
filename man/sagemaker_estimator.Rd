@@ -30,7 +30,8 @@ See \link{sagemaker_container}.}
 \href{https://aws.amazon.com/sagemaker/pricing/instance-types/}{here} for
 a list of options and pricing.}
 
-\item{output_path}{The S3 output path to save the model artifact.}
+\item{output_path}{The S3 output path to save the model artifact.
+See \link{s3} to construct the S3 path.}
 
 \item{...}{Additional named arguments sent to the underlying API.}
 }

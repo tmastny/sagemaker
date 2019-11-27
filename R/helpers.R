@@ -54,7 +54,7 @@ sagemaker_tuning_job_logs.character <- function(sagemaker_tuner) {
 #' training job. Typically associated with \code{nround}s for xgboost
 #' or epochs for neural networks.
 #'
-#' @param The training job name. Typically something like
+#' @param job_name The training job name. Typically something like
 #' \code{"xgboost-191114-2052-001-7b33b7a5"}.
 #'
 #' @export

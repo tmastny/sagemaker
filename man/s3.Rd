@@ -7,7 +7,7 @@
 s3(...)
 }
 \arguments{
-\item{...}{Characters vectors to combine into S3 path.}
+\item{...}{Characters vectors to combine into an S3 path.}
 }
 \description{
 Returns properly formatted S3 object path,
