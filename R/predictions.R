@@ -110,10 +110,6 @@ predict.sagemaker <- function(object, new_data) {
     stringr::str_split(pattern = ",", simplify = TRUE) %>%
     as.numeric()
 
-  if (delete_endpoint) {
-    predictor$delete_endpoint()
-  }
-
   predictions
 }
 
