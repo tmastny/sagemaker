@@ -77,6 +77,8 @@ sagemaker_hyperparameter_tuner <- function(
   ...
 ) {
 
+  # TODO: figure out the split parameter.
+
   max_jobs <- as.integer(max_jobs)
   max_parallel_jobs <- as.integer(max_parallel_jobs)
 
