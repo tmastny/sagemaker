@@ -14,8 +14,8 @@ sagemaker_estimator(
 )
 
 sagemaker_xgb_estimator(
-  train_instance_count = 1L,
-  train_instance_type = "ml.m4.xlarge",
+  instance_count = 1L,
+  instance_type = "ml.m4.xlarge",
   s3_output = s3(s3_bucket(), "models/"),
   ...
 )

@@ -17,6 +17,8 @@ sagemaker_hyperparameter_tuner(
 \arguments{
 \item{estimator}{Sagemaker estimator from \link{sagemaker_estimator}.}
 
+\item{split}{Train/validation dataset split from \link{s3_split}.}
+
 \item{hyperparameter_ranges}{A named list of model hyperparameters
 with \link{sagemaker_ranges} for tuning.}
 

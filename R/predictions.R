@@ -152,7 +152,7 @@ batch_predict <- function(
   predict_transformer <- predict_estimator$transformer(
     instance_count = instance_count,
     instance_type = instance_type,
-    output_path = s3_output_path,
+    output_path = s3_output,
     assemble_with = 'Line'
   )
 

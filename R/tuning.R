@@ -56,6 +56,8 @@ sagemaker_categorical <- function(values) {
 #'
 #' @param estimator Sagemaker estimator from \link{sagemaker_estimator}.
 #'
+#' @param split Train/validation dataset split from \link{s3_split}.
+#'
 #' @param hyperparameter_ranges A named list of model hyperparameters
 #' with \link{sagemaker_ranges} for tuning.
 #'
@@ -76,8 +78,6 @@ sagemaker_hyperparameter_tuner <- function(
   max_parallel_jobs = 2L,
   ...
 ) {
-
-  # TODO: figure out the split parameter.
 
   max_jobs <- as.integer(max_jobs)
   max_parallel_jobs <- as.integer(max_parallel_jobs)

@@ -98,6 +98,22 @@ write_s3 <- function(x, s3_path, delim = ",", col_names = FALSE, ...) {
   s3$upload_fileobj(file, s3_components$bucket, s3_components$key)
 }
 
+#' Train/Validation Split in S3
+#'
+#' Returns the test/validation S3 object paths. The train and validation
+#' data sets should be \code{csv}s with no column names.
+#'
+#' @param s3_train,s3_validation S3 paths to the train/validation datasets.
+#' Construct with \link{s3}.
+#'
+#' @export
+s3_split <- function(s3_train, s3_validation) {
+  list(
+    train = s3_train,
+    validation = s3_validation
+  )
+}
+
 s3_bucket_key_extract <- function(x) {
   stopifnot(stringr::str_sub(x, end = 5) == "s3://")
 

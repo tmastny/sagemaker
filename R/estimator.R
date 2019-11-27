@@ -45,7 +45,7 @@ sagemaker_estimator <- function(
   ...
 ) {
 
-  train_instance_count <- as.integer(train_instance_count)
+  instance_count <- as.integer(instance_count)
 
   estimator <- sagemaker$estimator$Estimator(
     image_name = container,
@@ -82,15 +82,15 @@ sagemaker_estimator <- function(
 #' @rdname sagemaker_estimator
 #' @export
 sagemaker_xgb_estimator <- function(
-  train_instance_count = 1L,
-  train_instance_type = "ml.m4.xlarge",
+  instance_count = 1L,
+  instance_type = "ml.m4.xlarge",
   s3_output = s3(s3_bucket(), "models/"),
   ...
 ) {
   sagemaker_estimator(
     sagemaker_xgb_container(),
-    train_instance_count = train_instance_count,
-    train_instance_type = train_instance_type,
+    instance_count = instance_count,
+    instance_type = instance_type,
     output_path = s3_output,
     ...
   )

@@ -85,9 +85,9 @@ You can also set a default bucket with
 Then we'll save the paths to use in tuning:
 
 ```{r}
-split <- list(
-  train = s3(s3_bucket(), "abalone-train.csv"),
-  validation = s3(s3_bucket(), "abalone-test.csv")
+split <- s3_split(
+  s3_train = s3(s3_bucket(), "abalone-train.csv"),
+  s3_validation = s3(s3_bucket(), "abalone-test.csv")
 )
 ```
 

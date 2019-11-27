@@ -84,9 +84,9 @@ grid <- list(
   subsample = sagemaker_continuous(0, 1)
 )
 
-split <- list(
-  train = s3(s3_bucket(), "abalone-train.csv"),
-  validation = s3(s3_bucket(), "abalone-test.csv")
+split <- s3_split(
+  s3_train = s3(s3_bucket(), "abalone-train.csv"),
+  s3_validation = s3(s3_bucket(), "abalone-test.csv")
 )
 
 tune <- sagemaker_hyperparameter_tuner(
