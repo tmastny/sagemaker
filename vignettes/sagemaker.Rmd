@@ -40,7 +40,7 @@ package. We'll
 ## Dataset
 
 I'll be building a regression model on the
-built in dataset abalone dataset, 
+built-in abalone dataset, 
 taken from 
 [UCI dataset database](https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data).
 
@@ -131,7 +131,7 @@ We can get more details about the tuning jobs
 by looking at the logs:
 
 ```{r}
-logs <- sagemaker_tuning_job_logs(tune$tuning_job_name)
+logs <- sagemaker_tuning_job_logs(tune)
 logs %>%
   glimpse()
 ```
