@@ -7,7 +7,8 @@
 sagemaker_install(...)
 }
 \arguments{
-\item{...}{Passes named arguments to \code{\link[reticulate::py_install]{reticulate::py_install()}}.}
+\item{...}{Passes named arguments to
+\code{\link[reticulate:py_install]{reticulate::py_install()}}.}
 }
 \description{
 Installs the Python package dependencies boto3, sagemaker, and awscli.

@@ -1,5 +1,32 @@
-# use options(sagemaker.default.bucket = "bucket_name")
-# or will default to sagemaker$Session()$default_bucket()
+#' Creates S3 Object Paths
+#'
+#' Returns properly formatted S3 object path,
+#' including the \code{s3://} prefix.
+#'
+#' @param ... Characters vectors to combine into S3 path.
+#'
+#' @examples
+#' s3("my_bucket", "prefix", "object_name.csv")
+#' s3(s3_bucket(), "prefix1", "prefix2", "object.csv")
+#'
+#' @export
+s3 <- function(...) {
+  path <- file.path(..., fsep = "/") %>%
+    paste0("s3://", .)
+
+  class(path) <- c("s3", class(path))
+  path
+}
+
+#' Sagemaker Default S3 Bucket
+#'
+#' @description
+#' Returns the default S3 bucket associated with the Sagemaker session.
+#' Utilizes \code{sagemaker$Session()$default_bucket()}.
+#'
+#' Set \code{options(sagemaker.default.bucket = "bucket_name")} to use a
+#' different default bucket.
+#'
 #' @export
 s3_bucket <- function() {
   bucket <- getOption("sagemaker.default.bucket")
@@ -10,28 +37,24 @@ s3_bucket <- function() {
   bucket
 }
 
-#' @export
-upload_file <- function(file, s3_path) {
-  s3 <- boto3$client('s3')
-
-  s3_components <- s3_bucket_key_extract(s3_path)
-  s3$upload_file(file, s3_components$bucket, s3_components$key)
-}
-
-
-#' @export
-download_file <- function(s3_path, file) {
-  system(
-    paste0(
-      "aws s3 cp ",
-      s3_path, " ",
-      file
-    )
-  )
-}
-
-# downloads s3 object into the R session
-# ... passes to readr::read_delim
+#' Read/write \code{csv}s from S3
+#'
+#' @description
+#' Downloads an csv file from S3 and reads it into the R session as a
+#' \code{\link[tibble:tibble]{tibble::tibble()}}.
+#'
+#' Writes a \code{tibble} to a S3 object.
+#'
+#' Defaults \code{col_names} to false,
+#' because that is what Sagemaker typically expect.
+#'
+#' @param s3_path A character vector that forms an S3 path to an object.
+#' Use \link{s3} to construct the path.
+#' @param ... Additional named arguments sent to
+#' \code{\link[readr:read_delim]{readr::read_delim()}} or
+#' \code{\link[readr:format_delim]{readr::format_delim()}}
+#'
+#' @inheritParams readr::read_delim
 #' @export
 read_s3 <- function(s3_path, delim = ",", col_names = FALSE, ...) {
   s3_components <- s3_bucket_key_extract(s3_path)
@@ -54,7 +77,7 @@ read_s3 <- function(s3_path, delim = ",", col_names = FALSE, ...) {
   s3_obj
 }
 
-# ... to format_csv
+#' @rdname read_s3
 #' @export
 write_s3 <- function(x, s3_path, delim = ",", col_names = FALSE, ...) {
   s3_components <- s3_bucket_key_extract(s3_path)
@@ -71,18 +94,6 @@ write_s3 <- function(x, s3_path, delim = ",", col_names = FALSE, ...) {
   ))
 
   s3$upload_fileobj(file, s3_components$bucket, s3_components$key)
-}
-
-
-
-
-#' @export
-s3 <- function(...) {
-  path <- file.path(..., fsep = "/") %>%
-    paste0("s3://", .)
-
-  class(path) <- c("s3", class(path))
-  path
 }
 
 s3_bucket_key_extract <- function(x) {
