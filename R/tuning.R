@@ -105,7 +105,7 @@ sagemaker_hyperparameter_tuner <- function(
     validation = sagemaker$s3_input(split$validation, content_type = "text/csv")
   )
 
-  tuner$fit(split_dict)
+  tuner$fit(split_dict, logs = FALSE)
   tuner$wait()
 
   sagemaker_attach_tuner(tuner$latest_tuning_job$job_name)
