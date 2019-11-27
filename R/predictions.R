@@ -29,9 +29,7 @@ sagemaker_deploy_endpoint <- function(
 
   instance_count <- as.integer(instance_count)
 
-  predict_estimator <- sagemaker$estimator$Estimator$attach(
-    training_job_name = object$model_name
-  )
+  predict_estimator <- quietly_attach_estimator(object$model_name)
 
   predict_estimator$deploy(
     initial_instance_count = instance_count,
@@ -145,9 +143,7 @@ batch_predict <- function(
 
   instance_count <- as.integer(instance_count)
 
-  predict_estimator <- sagemaker$estimator$Estimator$attach(
-    training_job_name = object$model_name
-  )
+  predict_estimator <- quietly_attach_estimator(object$model_name)
 
   predict_transformer <- predict_estimator$transformer(
     instance_count = instance_count,
@@ -175,6 +171,16 @@ batch_predict <- function(
   )
 
   s3_predictions_path
+}
+
+quietly_attach_estimator <- function(training_job_name) {
+  reticulate::py_capture_output({
+    estimator <- sagemaker$estimator$Estimator$attach(
+      training_job_name = training_job_name
+    )
+  })
+
+  estimator
 }
 
 # https://docs.aws.amazon.com/sagemaker/latest/dg/xgboost-tuning.html
