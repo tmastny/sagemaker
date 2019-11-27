@@ -7,9 +7,9 @@
 \usage{
 sagemaker_estimator(
   container,
-  train_instance_count = 1L,
-  train_instance_type = "ml.m4.xlarge",
-  output_path = s3(s3_bucket(), "models/"),
+  instance_count = 1L,
+  instance_type = "ml.m4.xlarge",
+  s3_output_path = s3(s3_bucket(), "models/"),
   ...
 )
 
@@ -24,13 +24,13 @@ sagemaker_xgb_estimator(
 \item{container}{URI of Sagemaker model container.
 See \link{sagemaker_container}.}
 
-\item{train_instance_count}{Number of AWS EC2 instances to train on.}
+\item{instance_count}{The number of instances to run.}
 
-\item{train_instance_type}{Type of EC2 instance to train on. See
+\item{instance_type}{Type of EC2 instance to run. See
 \href{https://aws.amazon.com/sagemaker/pricing/instance-types/}{here} for
 a list of options and pricing.}
 
-\item{output_path}{The S3 output path to save the model artifact.
+\item{s3_output_path}{The S3 output path to save the model artifact.
 See \link{s3} to construct the S3 path.}
 
 \item{...}{Additional named arguments sent to the underlying API.}

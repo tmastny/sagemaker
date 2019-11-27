@@ -4,7 +4,7 @@
 \alias{sagemaker_deploy_endpoint}
 \alias{sagemaker_has_endpoint}
 \alias{sagemaker_delete_endpoint}
-\title{Deploy Sagemaker Endpoint}
+\title{Deploy Sagemaker Real-time Endpoint}
 \usage{
 sagemaker_deploy_endpoint(
   object,
@@ -18,6 +18,23 @@ sagemaker_has_endpoint(object)
 
 sagemaker_delete_endpoint(object)
 }
+\arguments{
+\item{object}{The \code{sagemaker} model object created by
+\link{sagemaker_hyperparameter_tuner} or \link{sagemaker_attach_tuner}.}
+
+\item{instance_count}{The number of instances to run.}
+
+\item{instance_type}{Type of EC2 instance to run. See
+\href{https://aws.amazon.com/sagemaker/pricing/instance-types/}{here} for
+a list of options and pricing.}
+
+\item{wait}{Boolean that indicates if function should wait to return
+until the Sagemaker process is complete.}
+
+\item{...}{Additional named arguments sent to the underlying API.}
+}
 \description{
-Deploy Sagemaker Endpoint
+Deploys a real-time Sagemaker web endpoint.
+This process takes a few minutes. Interface to
+\code{sagemaker$estimator$Estimator$deploy}
 }

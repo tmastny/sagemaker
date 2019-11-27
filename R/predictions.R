@@ -1,17 +1,23 @@
-try_loading_endpoint <- function(object) {
-  tryCatch(
-    sagemaker$predictor$RealTimePredictor(endpoint = object$model_name),
-    error = function(condition) {
-      if (!stringr::str_detect(condition$message, "Could not find endpoint")) {
-        stop(condition)
-      }
-
-      NULL
-    }
-  )
-}
-
-#' Deploy Sagemaker Endpoint
+#' Deploy Sagemaker Real-time Endpoint
+#'
+#' Deploys a real-time Sagemaker web endpoint.
+#' This process takes a few minutes. Interface to
+#' \code{sagemaker$estimator$Estimator$deploy}
+#'
+#' @param object The \code{sagemaker} model object created by
+#' \link{sagemaker_hyperparameter_tuner} or \link{sagemaker_attach_tuner}.
+#'
+#' @param instance_count The number of instances to run.
+#'
+#' @param instance_type Type of EC2 instance to run. See
+#' \href{https://aws.amazon.com/sagemaker/pricing/instance-types/}{here} for
+#' a list of options and pricing.
+#'
+#' @param wait Boolean that indicates if function should wait to return
+#' until the Sagemaker process is complete.
+#'
+#' @param ... Additional named arguments sent to the underlying API.
+#'
 #' @export
 sagemaker_deploy_endpoint <- function(
   object,
@@ -57,6 +63,29 @@ sagemaker_delete_endpoint <- function(object) {
   invisible(object)
 }
 
+try_loading_endpoint <- function(object) {
+  tryCatch(
+    sagemaker$predictor$RealTimePredictor(endpoint = object$model_name),
+    error = function(condition) {
+      if (!stringr::str_detect(condition$message, "Could not find endpoint")) {
+        stop(condition)
+      }
+
+      NULL
+    }
+  )
+}
+
+#' Make Predictions from Sagemaker Model
+#'
+#' Returns a vector of predictions from a Sagemaker real-time endpoint.
+#'
+#' @param new_data The \code{data.frame} or
+#' \code{\link[tibble:tibble]{tibble::tibble()}} to make new predictions on.
+#' Columns must be in the same order as the training data.
+#' The outcome column must be excluded.
+#'
+#' @inheritParams sagemaker_deploy_endpoint
 #' @export
 predict.sagemaker <- function(object, new_data) {
 
@@ -88,7 +117,26 @@ predict.sagemaker <- function(object, new_data) {
   predictions
 }
 
-# returns the s3_output_path
+#' Batch Predictions from Sagemaker Model
+#'
+#' Runs a batch of predictions on Sagemaker model.
+#' The input is a csv file on S3, and predictions are saved
+#' as a csv on S3.
+#'
+#' @param s3_input The S3 path to the input object.
+#' The object must be a \code{csv}, with no column names.
+#' The \code{csv} must not contain the outcome column.
+#' Use \link{s3} to construct the path.
+#'
+#' @param s3_output The S3 prefix for the output object or objects.
+#'
+#'
+#' @return S3 output path.
+#'
+#' The format is
+#' \code{s3://[s3_output]/[s3_input_object_name].out}
+#'
+#' @inheritParams sagemaker_deploy_endpoint
 #' @export
 batch_predict <- function(
   object,
