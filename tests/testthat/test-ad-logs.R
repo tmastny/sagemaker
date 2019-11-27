@@ -19,5 +19,5 @@ test_that("training logs return", {
   expect_equal(ncol(training_logs), 3)
   expect_true(any(stringr::str_detect(names(training_logs), "train")))
   expect_true(any(stringr::str_detect(names(training_logs), "validation")))
-  expect_true(nrow(training_logs > 0))
+  expect_true(nrow(training_logs) > 0)
 })
