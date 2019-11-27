@@ -24,24 +24,26 @@ print.sagemaker <- function(x, ...) {
 #' The result is a data frame has one row per model, along with the trained
 #' validation metric.
 #'
-#' @param sagemaker_tuner This is either the \code{sagemaker} object
-#' returned from \link{sagemaker_hyperparameter_tuner} or
-#' \link{sagemaker_attach_tuner} or the name of the tuning job,
-#' typically something like \code{"xgboost-191114-2052"}.
+#' @param x Either \code{sagemaker} object or tuning job name.
 #'
 #' @export
-sagemaker_tuning_job_logs <- function(sagemaker_tuner) {
+sagemaker_tuning_job_logs <- function(x) {
   UseMethod("sagemaker_tuning_job_logs")
 }
 
+#' @rdname sagemaker_tuning_job_logs
+#' @inheritParams sagemaker_deploy_endpoint
 #' @export
-sagemaker_tuning_job_logs.sagemaker <- function(sagemaker_tuner) {
-  sagemaker_tuning_job_logs(sagemaker_tuner$tuning_job_name)
+sagemaker_tuning_job_logs.sagemaker <- function(object) {
+  sagemaker_tuning_job_logs(object$tuning_job_name)
 }
 
+#' @rdname sagemaker_tuning_job_logs
+#' @param tuning_job_name Name of the tuning job, typically something
+#' like \code{"xgboost-191114-2052"}.
 #' @export
-sagemaker_tuning_job_logs.character <- function(sagemaker_tuner) {
-  tuner_stats <- sagemaker$HyperparameterTuningJobAnalytics(sagemaker_tuner)
+sagemaker_tuning_job_logs.character <- function(tuning_job_name) {
+  tuner_stats <- sagemaker$HyperparameterTuningJobAnalytics(tuning_job_name)
 
   tuner_stats$dataframe() %>%
     janitor::clean_names() %>%

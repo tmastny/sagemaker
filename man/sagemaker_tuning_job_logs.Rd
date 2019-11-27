@@ -2,15 +2,24 @@
 % Please edit documentation in R/helpers.R
 \name{sagemaker_tuning_job_logs}
 \alias{sagemaker_tuning_job_logs}
+\alias{sagemaker_tuning_job_logs.sagemaker}
+\alias{sagemaker_tuning_job_logs.character}
 \title{Sagemaker Tuning Job Logs}
 \usage{
-sagemaker_tuning_job_logs(sagemaker_tuner)
+sagemaker_tuning_job_logs(x)
+
+\method{sagemaker_tuning_job_logs}{sagemaker}(object)
+
+\method{sagemaker_tuning_job_logs}{character}(tuning_job_name)
 }
 \arguments{
-\item{sagemaker_tuner}{This is either the \code{sagemaker} object
-returned from \link{sagemaker_hyperparameter_tuner} or
-\link{sagemaker_attach_tuner} or the name of the tuning job,
-typically something like \code{"xgboost-191114-2052"}.}
+\item{x}{Either \code{sagemaker} object or tuning job name.}
+
+\item{object}{The \code{sagemaker} model object created by
+\link{sagemaker_hyperparameter_tuner} or \link{sagemaker_attach_tuner}.}
+
+\item{tuning_job_name}{Name of the tuning job, typically something
+like \code{"xgboost-191114-2052"}.}
 }
 \description{
 Returns parameter and validation results from the tuning job.
