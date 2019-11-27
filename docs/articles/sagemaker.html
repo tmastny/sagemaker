@@ -101,7 +101,7 @@
 <div id="tuning" class="section level1">
 <h1 class="hasAnchor">
 <a href="#tuning" class="anchor"></a>Tuning</h1>
-<p>The new tuning interface is similar to the <a href="https://github.com/topepo/caret">caret</a> package. We’ll</p>
+<p>The tuning interface is similar to the <a href="https://github.com/topepo/caret">caret</a> package. We’ll</p>
 <ol style="list-style-type: decimal">
 <li><p>choose a model</p></li>
 <li><p>define a hyperparameter grid</p></li>
@@ -110,7 +110,7 @@
 <div id="dataset" class="section level2">
 <h2 class="hasAnchor">
 <a href="#dataset" class="anchor"></a>Dataset</h2>
-<p>I’ll be building a regression model on the built in dataset abalone dataset, taken from <a href="https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data">UCI dataset database</a>.</p>
+<p>I’ll be building a regression model on the built-in abalone dataset, taken from <a href="https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data">UCI dataset database</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(sagemaker)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rsample)</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Loading required package: tidyr</span></a>
@@ -151,9 +151,9 @@
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="../reference/read_s3.html">write_s3</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/rsample/man/as.data.frame.rsplit.html">assessment</a></span>(abalone_split), <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-test.csv"</span>))</a></code></pre></div>
 <p>You can also set a default bucket with <code><a href="https://rdrr.io/r/base/options.html">options(sagemaker.default.bucket = "bucket_name")</a></code> for <code><a href="../reference/s3_bucket.html">sagemaker::s3_bucket</a></code>.</p>
 <p>Then we’ll save the paths to use in tuning:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">split &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="dt">train =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-train.csv"</span>),</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="dt">validation =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-test.csv"</span>)</a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">split &lt;-<span class="st"> </span><span class="kw"><a href="../reference/s3_split.html">s3_split</a></span>(</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="dt">s3_train =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-train.csv"</span>),</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="dt">s3_validation =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-test.csv"</span>)</a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">)</a></code></pre></div>
 </div>
 <div id="hyperparameters" class="section level2">
@@ -190,7 +190,7 @@
 <h2 class="hasAnchor">
 <a href="#tuning-1" class="anchor"></a>Tuning</h2>
 <p>We can get more details about the tuning jobs by looking at the logs:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">logs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sagemaker_tuning_job_logs.html">sagemaker_tuning_job_logs</a></span>(tune<span class="op">$</span>tuning_job_name)</a>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">logs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sagemaker_tuning_job_logs.html">sagemaker_tuning_job_logs</a></span>(tune)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">logs <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>()</a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; Observations: 10</span></a>
@@ -208,9 +208,9 @@
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">logs <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(final_objective_value, colsample_bytree<span class="op">:</span>subsample) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span>(colsample_bytree<span class="op">:</span>subsample) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/ggplot.html">ggplot</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/aes.html">aes</a></span>(value, final_objective_value)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/geom_point.html">geom_point</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span>name, <span class="dt">scales =</span> <span class="st">"free_x"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(value, final_objective_value)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span>name, <span class="dt">scales =</span> <span class="st">"free_x"</span>)</a></code></pre></div>
 <p><img src="sagemaker_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 </div>
 <div id="training-1" class="section level2">
@@ -236,8 +236,8 @@
 <a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt; # … with 88 more rows</span></a></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">job_logs <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span>(<span class="st">`</span><span class="dt">train:rmse</span><span class="st">`</span><span class="op">:</span><span class="st">`</span><span class="dt">validation:rmse</span><span class="st">`</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/ggplot.html">ggplot</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/aes.html">aes</a></span>(iteration, value, <span class="dt">color =</span> name)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/geom_path.html">geom_line</a></span>()</a></code></pre></div>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(iteration, value, <span class="dt">color =</span> name)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>()</a></code></pre></div>
 <p><img src="sagemaker_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
 </div>
 </div>

@@ -155,9 +155,9 @@ R sagemaker
 <a class="sourceLine" id="cb4-14" data-line-number="14">  <span class="dt">subsample =</span> <span class="kw"><a href="../reference/sagemaker_ranges.html">sagemaker_continuous</a></span>(<span class="dv">0</span>, <span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb4-15" data-line-number="15">)</a>
 <a class="sourceLine" id="cb4-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17">split &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
-<a class="sourceLine" id="cb4-18" data-line-number="18">  <span class="dt">train =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-train.csv"</span>),</a>
-<a class="sourceLine" id="cb4-19" data-line-number="19">  <span class="dt">validation =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-test.csv"</span>)</a>
+<a class="sourceLine" id="cb4-17" data-line-number="17">split &lt;-<span class="st"> </span><span class="kw"><a href="../reference/s3_split.html">s3_split</a></span>(</a>
+<a class="sourceLine" id="cb4-18" data-line-number="18">  <span class="dt">s3_train =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-train.csv"</span>),</a>
+<a class="sourceLine" id="cb4-19" data-line-number="19">  <span class="dt">s3_validation =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-test.csv"</span>)</a>
 <a class="sourceLine" id="cb4-20" data-line-number="20">)</a>
 <a class="sourceLine" id="cb4-21" data-line-number="21"></a>
 <a class="sourceLine" id="cb4-22" data-line-number="22">tune &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sagemaker_hyperparameter_tuner.html">sagemaker_hyperparameter_tuner</a></span>(</a>

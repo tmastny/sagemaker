@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Start a Sagemaker Hyperparamter Tuning Job — sagemaker_hyperparameter_tuner • sagemaker</title>
+<title>Train/Validation Split in S3 — s3_split • sagemaker</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,9 @@
 
 
 
-<meta property="og:title" content="Start a Sagemaker Hyperparamter Tuning Job — sagemaker_hyperparameter_tuner" />
-<meta property="og:description" content="Interface to sagemaker$tuner$HyperparameterTuner." />
+<meta property="og:title" content="Train/Validation Split in S3 — s3_split" />
+<meta property="og:description" content="Returns the test/validation S3 object paths. The train and validation
+data sets should be csvs with no column names." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -120,56 +121,25 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Start a Sagemaker Hyperparamter Tuning Job</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tmastny/sagemaker/blob/master/R/tuning.R'><code>R/tuning.R</code></a></small>
-    <div class="hidden name"><code>sagemaker_hyperparameter_tuner.Rd</code></div>
+    <h1>Train/Validation Split in S3</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tmastny/sagemaker/blob/master/R/s3.R'><code>R/s3.R</code></a></small>
+    <div class="hidden name"><code>s3_split.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Interface to <code>sagemaker$tuner$HyperparameterTuner</code>.</p>
+    <p>Returns the test/validation S3 object paths. The train and validation
+data sets should be <code>csv</code>s with no column names.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sagemaker_hyperparameter_tuner</span>(
-  <span class='no'>estimator</span>,
-  <span class='no'>split</span>,
-  <span class='no'>hyperparameter_ranges</span>,
-  <span class='kw'>strategy</span> <span class='kw'>=</span> <span class='st'>"Random"</span>,
-  <span class='kw'>max_jobs</span> <span class='kw'>=</span> <span class='fl'>10L</span>,
-  <span class='kw'>max_parallel_jobs</span> <span class='kw'>=</span> <span class='fl'>2L</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>s3_split</span>(<span class='no'>s3_train</span>, <span class='no'>s3_validation</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>estimator</th>
-      <td><p>Sagemaker estimator from <a href='sagemaker_estimator.html'>sagemaker_estimator</a>.</p></td>
-    </tr>
-    <tr>
-      <th>split</th>
-      <td><p>Train/validation dataset split from <a href='s3_split.html'>s3_split</a>.</p></td>
-    </tr>
-    <tr>
-      <th>hyperparameter_ranges</th>
-      <td><p>A named list of model hyperparameters
-with <a href='sagemaker_ranges.html'>sagemaker_ranges</a> for tuning.</p></td>
-    </tr>
-    <tr>
-      <th>strategy</th>
-      <td><p>Tuning strategy: <code>"Random"</code> or <code>"Bayesian"</code>.</p></td>
-    </tr>
-    <tr>
-      <th>max_jobs</th>
-      <td><p>Number of unique models to train during tuning.</p></td>
-    </tr>
-    <tr>
-      <th>max_parallel_jobs</th>
-      <td><p>Number of models to train simultaneously.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Additional named arguments sent to the underlying API.</p></td>
+      <th>s3_train, s3_validation</th>
+      <td><p>S3 paths to the train/validation datasets.
+Construct with <a href='s3.html'>s3</a>.</p></td>
     </tr>
     </table>
 
