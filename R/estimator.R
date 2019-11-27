@@ -32,7 +32,7 @@ sagemaker_xgb_container <- function(repo_version = "latest", ...) {
 #' @param container URI of Sagemaker model container.
 #' See \link{sagemaker_container}.
 #'
-#' @param s3_output_path The S3 output path to save the model artifact.
+#' @param s3_output The S3 output path to save the model artifact.
 #' See \link{s3} to construct the S3 path.
 #'
 #' @inheritParams sagemaker_deploy_endpoint
@@ -41,7 +41,7 @@ sagemaker_estimator <- function(
   container,
   instance_count = 1L,
   instance_type = "ml.m4.xlarge",
-  s3_output_path = s3(s3_bucket(), "models/"),
+  s3_output = s3(s3_bucket(), "models/"),
   ...
 ) {
 
@@ -52,7 +52,7 @@ sagemaker_estimator <- function(
     role = sagemaker_get_execution_role(),
     train_instance_count = instance_count,
     train_instance_type = instance_type,
-    output_path = s3_output_path,
+    output_path = s3_output,
     ...
   )
 
@@ -84,14 +84,14 @@ sagemaker_estimator <- function(
 sagemaker_xgb_estimator <- function(
   train_instance_count = 1L,
   train_instance_type = "ml.m4.xlarge",
-  output_path = s3(s3_bucket(), "models/"),
+  s3_output = s3(s3_bucket(), "models/"),
   ...
 ) {
   sagemaker_estimator(
     sagemaker_xgb_container(),
     train_instance_count = train_instance_count,
     train_instance_type = train_instance_type,
-    output_path = output_path,
+    output_path = s3_output,
     ...
   )
 }

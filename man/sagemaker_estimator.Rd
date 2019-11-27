@@ -9,14 +9,14 @@ sagemaker_estimator(
   container,
   instance_count = 1L,
   instance_type = "ml.m4.xlarge",
-  s3_output_path = s3(s3_bucket(), "models/"),
+  s3_output = s3(s3_bucket(), "models/"),
   ...
 )
 
 sagemaker_xgb_estimator(
   train_instance_count = 1L,
   train_instance_type = "ml.m4.xlarge",
-  output_path = s3(s3_bucket(), "models/"),
+  s3_output = s3(s3_bucket(), "models/"),
   ...
 )
 }
@@ -30,7 +30,7 @@ See \link{sagemaker_container}.}
 \href{https://aws.amazon.com/sagemaker/pricing/instance-types/}{here} for
 a list of options and pricing.}
 
-\item{s3_output_path}{The S3 output path to save the model artifact.
+\item{s3_output}{The S3 output path to save the model artifact.
 See \link{s3} to construct the S3 path.}
 
 \item{...}{Additional named arguments sent to the underlying API.}
