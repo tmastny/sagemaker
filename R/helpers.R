@@ -18,6 +18,17 @@ print.sagemaker <- function(x, ...) {
   invisible(x)
 }
 
+#' Sagemaker Tuning Job Logs
+#'
+#' Returns parameter and validation results from the tuning job.
+#' The result is a data frame has one row per model, along with the trained
+#' validation metric.
+#'
+#' @param sagemaker_tuner This is either the \code{sagemaker} object
+#' returned from \link{sagemaker_hyperparameter_tuner} or
+#' \link{sagemaker_attach_tuner} or the name of the tuning job,
+#' typically something like \code{"xgboost-191114-2052"}.
+#'
 #' @export
 sagemaker_tuning_job_logs <- function(sagemaker_tuner) {
   UseMethod("sagemaker_tuning_job_logs")
@@ -37,6 +48,15 @@ sagemaker_tuning_job_logs.character <- function(sagemaker_tuner) {
     tibble::as_tibble()
 }
 
+#' Sagemaker Training Job Logs
+#'
+#' Returns the train/evaluation metrics per round of training for a
+#' training job. Typically associated with \code{nround}s for xgboost
+#' or epochs for neural networks.
+#'
+#' @param The training job name. Typically something like
+#' \code{"xgboost-191114-2052-001-7b33b7a5"}.
+#'
 #' @export
 sagemaker_training_job_logs <- function(job_name) {
 
