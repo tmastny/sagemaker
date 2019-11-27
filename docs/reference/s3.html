@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • sagemaker</title>
+<title>Creates S3 Object Paths — s3 • sagemaker</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,10 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Creates S3 Object Paths — s3" />
+<meta property="og:description" content="Returns properly formatted S3 object path,
+including the s3:// prefix." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -54,7 +57,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -116,114 +119,45 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Creates S3 Object Paths</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tmastny/sagemaker/blob/master/R/s3.R'><code>R/s3.R</code></a></small>
+    <div class="hidden name"><code>s3.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Returns properly formatted S3 object path,
+including the <code>s3://</code> prefix.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>s3</span>(<span class='no'>...</span>)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="abalone.html">abalone</a></code> </p>
-        </td>
-        <td><p>Abalone Dataset</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="abalone_pred.html">abalone_pred</a></code> </p>
-        </td>
-        <td><p>Abalone Predictions</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="read_s3.html">read_s3()</a></code> <code><a href="read_s3.html">write_s3()</a></code> </p>
-        </td>
-        <td><p>Read/write <code>csv</code>s from S3</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="s3.html">s3()</a></code> </p>
-        </td>
-        <td><p>Creates S3 Object Paths</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="s3_bucket.html">s3_bucket()</a></code> </p>
-        </td>
-        <td><p>Sagemaker Default S3 Bucket</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sagemaker_container.html">sagemaker_container()</a></code> <code><a href="sagemaker_container.html">sagemaker_xgb_container()</a></code> </p>
-        </td>
-        <td><p>Sagemaker Container</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sagemaker_deploy_endpoint.html">sagemaker_deploy_endpoint()</a></code> <code><a href="sagemaker_deploy_endpoint.html">sagemaker_has_endpoint()</a></code> <code><a href="sagemaker_deploy_endpoint.html">sagemaker_delete_endpoint()</a></code> </p>
-        </td>
-        <td><p>Deploy Sagemaker Endpoint</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sagemaker_estimator.html">sagemaker_estimator()</a></code> <code><a href="sagemaker_estimator.html">sagemaker_xgb_estimator()</a></code> </p>
-        </td>
-        <td><p>Sagemaker Estimator</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sagemaker_install.html">sagemaker_install()</a></code> </p>
-        </td>
-        <td><p>Installs Sagemaker Dependencies</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sagemaker_integer.html">sagemaker_integer()</a></code> <code><a href="sagemaker_integer.html">sagemaker_continuous()</a></code> <code><a href="sagemaker_integer.html">sagemaker_categorical()</a></code> </p>
-        </td>
-        <td><p>Sagemaker Parameter Ranges</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sagemaker_save_execution_role.html">sagemaker_save_execution_role()</a></code> <code><a href="sagemaker_save_execution_role.html">sagemaker_get_execution_role()</a></code> </p>
-        </td>
-        <td><p>Sagemake Execution Role</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sagemaker_training_job_logs.html">sagemaker_training_job_logs()</a></code> </p>
-        </td>
-        <td><p>Sagemaker Training Job Logs</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sagemaker_tuning_job_logs.html">sagemaker_tuning_job_logs()</a></code> </p>
-        </td>
-        <td><p>Sagemaker Tuning Job Logs</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>...</th>
+      <td><p>Characters vectors to combine into S3 path.</p></td>
+    </tr>
     </table>
-  </div>
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>s3</span>(<span class='st'>"my_bucket"</span>, <span class='st'>"prefix"</span>, <span class='st'>"object_name.csv"</span>)</div><div class='output co'>#&gt; [1] "s3://my_bucket/prefix/object_name.csv"
+#&gt; attr(,"class")
+#&gt; [1] "s3"        "character"</div><div class='input'><span class='fu'>s3</span>(<span class='fu'><a href='s3_bucket.html'>s3_bucket</a></span>(), <span class='st'>"prefix1"</span>, <span class='st'>"prefix2"</span>, <span class='st'>"object.csv"</span>)</div><div class='output co'>#&gt; [1] "s3://sagemaker-us-east-2-495577990003/prefix1/prefix2/object.csv"
+#&gt; attr(,"class")
+#&gt; [1] "s3"        "character"</div><div class='input'>
+</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
+
   </div>
 </div>
 

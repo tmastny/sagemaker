@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • sagemaker</title>
+<title>Read/write <code>csv</code>s from S3 — read_s3 • sagemaker</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,13 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Read/write <code>csv</code>s from S3 — read_s3" />
+<meta property="og:description" content="Downloads an csv file from S3 and reads it into the R session as a
+tibble::tibble().
+Writes a tibble to a S3 object.
+Defaults col_names to false,
+because that is what Sagemaker typically expect." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -54,7 +60,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -116,114 +122,67 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Read/write <code>csv</code>s from S3</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tmastny/sagemaker/blob/master/R/s3.R'><code>R/s3.R</code></a></small>
+    <div class="hidden name"><code>read_s3.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Downloads an csv file from S3 and reads it into the R session as a
+<code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code>.</p>
+<p>Writes a <code>tibble</code> to a S3 object.</p>
+<p>Defaults <code>col_names</code> to false,
+because that is what Sagemaker typically expect.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>read_s3</span>(<span class='no'>s3_path</span>, <span class='kw'>delim</span> <span class='kw'>=</span> <span class='st'>","</span>, <span class='kw'>col_names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="abalone.html">abalone</a></code> </p>
-        </td>
-        <td><p>Abalone Dataset</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="abalone_pred.html">abalone_pred</a></code> </p>
-        </td>
-        <td><p>Abalone Predictions</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="read_s3.html">read_s3()</a></code> <code><a href="read_s3.html">write_s3()</a></code> </p>
-        </td>
-        <td><p>Read/write <code>csv</code>s from S3</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="s3.html">s3()</a></code> </p>
-        </td>
-        <td><p>Creates S3 Object Paths</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="s3_bucket.html">s3_bucket()</a></code> </p>
-        </td>
-        <td><p>Sagemaker Default S3 Bucket</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sagemaker_container.html">sagemaker_container()</a></code> <code><a href="sagemaker_container.html">sagemaker_xgb_container()</a></code> </p>
-        </td>
-        <td><p>Sagemaker Container</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sagemaker_deploy_endpoint.html">sagemaker_deploy_endpoint()</a></code> <code><a href="sagemaker_deploy_endpoint.html">sagemaker_has_endpoint()</a></code> <code><a href="sagemaker_deploy_endpoint.html">sagemaker_delete_endpoint()</a></code> </p>
-        </td>
-        <td><p>Deploy Sagemaker Endpoint</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sagemaker_estimator.html">sagemaker_estimator()</a></code> <code><a href="sagemaker_estimator.html">sagemaker_xgb_estimator()</a></code> </p>
-        </td>
-        <td><p>Sagemaker Estimator</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sagemaker_install.html">sagemaker_install()</a></code> </p>
-        </td>
-        <td><p>Installs Sagemaker Dependencies</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sagemaker_integer.html">sagemaker_integer()</a></code> <code><a href="sagemaker_integer.html">sagemaker_continuous()</a></code> <code><a href="sagemaker_integer.html">sagemaker_categorical()</a></code> </p>
-        </td>
-        <td><p>Sagemaker Parameter Ranges</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sagemaker_save_execution_role.html">sagemaker_save_execution_role()</a></code> <code><a href="sagemaker_save_execution_role.html">sagemaker_get_execution_role()</a></code> </p>
-        </td>
-        <td><p>Sagemake Execution Role</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sagemaker_training_job_logs.html">sagemaker_training_job_logs()</a></code> </p>
-        </td>
-        <td><p>Sagemaker Training Job Logs</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sagemaker_tuning_job_logs.html">sagemaker_tuning_job_logs()</a></code> </p>
-        </td>
-        <td><p>Sagemaker Tuning Job Logs</p></td>
-      </tr>
-    </tbody>
+<span class='fu'>write_s3</span>(<span class='no'>x</span>, <span class='no'>s3_path</span>, <span class='kw'>delim</span> <span class='kw'>=</span> <span class='st'>","</span>, <span class='kw'>col_names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>s3_path</th>
+      <td><p>A character vector that forms an S3 path to an object.
+Use <a href='s3.html'>s3</a> to construct the path.</p></td>
+    </tr>
+    <tr>
+      <th>delim</th>
+      <td><p>Single character used to separate fields within a record.</p></td>
+    </tr>
+    <tr>
+      <th>col_names</th>
+      <td><p>Either <code>TRUE</code>, <code>FALSE</code> or a character vector
+of column names.</p>
+<p>If <code>TRUE</code>, the first row of the input will be used as the column
+names, and will not be included in the data frame. If <code>FALSE</code>, column
+names will be generated automatically: X1, X2, X3 etc.</p>
+<p>If <code>col_names</code> is a character vector, the values will be used as the
+names of the columns, and the first row of the input will be read into
+the first row of the output data frame.</p>
+<p>Missing (<code>NA</code>) column names will generate a warning, and be filled
+in with dummy names <code>X1</code>, <code>X2</code> etc. Duplicate column names
+will generate a warning and be made unique with a numeric prefix.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional named arguments sent to
+<code><a href='https://readr.tidyverse.org/reference/read_delim.html'>readr::read_delim()</a></code> or
+<code><a href='https://readr.tidyverse.org/reference/format_delim.html'>readr::format_delim()</a></code></p></td>
+    </tr>
     </table>
-  </div>
 
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#arguments">Arguments</a></li>
     </ul>
+
   </div>
 </div>
 

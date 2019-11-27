@@ -96,7 +96,7 @@
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
 <p>In this introduction, we’ll provide a step-by-step guide to training models with AWS Sagemaker using the sagemaker R package.</p>
-<p>We are going to train and tune an xgboost regression model on the <code>sagemaker::abalone</code> dataset, analyze the hyperparameters, and make new predictions.</p>
+<p>We are going to train and tune an xgboost regression model on the <code><a href="../reference/abalone.html">sagemaker::abalone</a></code> dataset, analyze the hyperparameters, and make new predictions.</p>
 </div>
 <div id="tuning" class="section level1">
 <h1 class="hasAnchor">
@@ -146,14 +146,14 @@
 <p>We can quickly split the data with <a href="https://github.com/tidymodels/rsample">rsample</a>:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">abalone_split &lt;-<span class="st"> </span>rsample<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rsample/man/initial_split.html">initial_split</a></span>(sagemaker<span class="op">::</span>abalone)</a></code></pre></div>
 <p>The training data needs to be uploaded to an S3 bucket that AWS Sagemaker has read/write permission to. For the typical AWS Sagemaker role, this could be any bucket with <code>sagemaker</code> included in the name.</p>
-<p>We’ll use the <code>sagemaker::write_s3</code> helper to upload tibbles or <code>data.frame</code>s to S3 as a csv.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">write_s3</span>(<span class="kw"><a href="https://rdrr.io/pkg/rsample/man/as.data.frame.rsplit.html">analysis</a></span>(abalone_split), <span class="kw">s3</span>(<span class="kw">s3_bucket</span>(), <span class="st">"abalone-train.csv"</span>))</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">write_s3</span>(<span class="kw"><a href="https://rdrr.io/pkg/rsample/man/as.data.frame.rsplit.html">assessment</a></span>(abalone_split), <span class="kw">s3</span>(<span class="kw">s3_bucket</span>(), <span class="st">"abalone-test.csv"</span>))</a></code></pre></div>
-<p>You can also set a default bucket with <code><a href="https://rdrr.io/r/base/options.html">options(sagemaker.default.bucket = "bucket_name")</a></code> for <code>sagemaker::s3_bucket</code>.</p>
+<p>We’ll use the <code><a href="../reference/read_s3.html">sagemaker::write_s3</a></code> helper to upload tibbles or <code>data.frame</code>s to S3 as a csv.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/read_s3.html">write_s3</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/rsample/man/as.data.frame.rsplit.html">analysis</a></span>(abalone_split), <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-train.csv"</span>))</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="../reference/read_s3.html">write_s3</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/rsample/man/as.data.frame.rsplit.html">assessment</a></span>(abalone_split), <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-test.csv"</span>))</a></code></pre></div>
+<p>You can also set a default bucket with <code><a href="https://rdrr.io/r/base/options.html">options(sagemaker.default.bucket = "bucket_name")</a></code> for <code><a href="../reference/s3_bucket.html">sagemaker::s3_bucket</a></code>.</p>
 <p>Then we’ll save the paths to use in tuning:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">split &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="dt">train =</span> <span class="kw">s3</span>(<span class="kw">s3_bucket</span>(), <span class="st">"abalone-train.csv"</span>),</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="dt">validation =</span> <span class="kw">s3</span>(<span class="kw">s3_bucket</span>(), <span class="st">"abalone-test.csv"</span>)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="dt">train =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-train.csv"</span>),</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="dt">validation =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-test.csv"</span>)</a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">)</a></code></pre></div>
 </div>
 <div id="hyperparameters" class="section level2">
@@ -161,9 +161,9 @@
 <a href="#hyperparameters" class="anchor"></a>Hyperparameters</h2>
 <p>Now we’ll define ranges to tune over:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">ranges &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">  <span class="dt">max_depth =</span> <span class="kw">sagemaker_integer</span>(<span class="dv">3</span>, <span class="dv">20</span>),</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="dt">colsample_bytree =</span> <span class="kw">sagemaker_continuous</span>(<span class="dv">0</span>, <span class="dv">1</span>),</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">  <span class="dt">subsample =</span> <span class="kw">sagemaker_continuous</span>(<span class="dv">0</span>, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">  <span class="dt">max_depth =</span> <span class="kw"><a href="../reference/sagemaker_integer.html">sagemaker_integer</a></span>(<span class="dv">3</span>, <span class="dv">20</span>),</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="dt">colsample_bytree =</span> <span class="kw"><a href="../reference/sagemaker_integer.html">sagemaker_continuous</a></span>(<span class="dv">0</span>, <span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">  <span class="dt">subsample =</span> <span class="kw"><a href="../reference/sagemaker_integer.html">sagemaker_continuous</a></span>(<span class="dv">0</span>, <span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5">)</a></code></pre></div>
 </div>
 <div id="training" class="section level2">
@@ -171,7 +171,7 @@
 <a href="#training" class="anchor"></a>Training</h2>
 <p>Then we kick off the training jobs.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">tune &lt;-<span class="st"> </span><span class="kw">sagemaker_hyperparameter_tuner</span>(</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">  <span class="kw">sagemaker_xgb_estimator</span>(), split, ranges, <span class="dt">max_jobs =</span> <span class="dv">10</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">  <span class="kw"><a href="../reference/sagemaker_estimator.html">sagemaker_xgb_estimator</a></span>(), split, ranges, <span class="dt">max_jobs =</span> <span class="dv">10</span></a>
 <a class="sourceLine" id="cb6-3" data-line-number="3">)</a></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">tune</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; Name: xgboost-191114-1954-002-e66e00d3 </span></a>
@@ -190,7 +190,7 @@
 <h2 class="hasAnchor">
 <a href="#tuning-1" class="anchor"></a>Tuning</h2>
 <p>We can get more details about the tuning jobs by looking at the logs:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">logs &lt;-<span class="st"> </span><span class="kw">sagemaker_tuning_job_logs</span>(tune<span class="op">$</span>tuning_job_name)</a>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">logs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sagemaker_tuning_job_logs.html">sagemaker_tuning_job_logs</a></span>(tune<span class="op">$</span>tuning_job_name)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">logs <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>()</a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; Observations: 10</span></a>
@@ -218,7 +218,7 @@
 <a href="#training-1" class="anchor"></a>Training</h2>
 <p>We can also see the individual jobs logs, to track the difference between the train/validation set. This might be <a href="https://medium.com/data-design/xgboost-hi-im-gamma-what-can-i-do-for-you-and-the-tuning-of-regularization-a42ea17e6ab6">useful</a> for advanced model tuning.</p>
 <p>Note that <code>tune$model_name</code> is the name of the best model found during training.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">job_logs &lt;-<span class="st"> </span><span class="kw">sagemaker_training_job_logs</span>(tune<span class="op">$</span>model_name)</a>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">job_logs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sagemaker_training_job_logs.html">sagemaker_training_job_logs</a></span>(tune<span class="op">$</span>model_name)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">job_logs</a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; # A tibble: 98 x 3</span></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt;    iteration `train:rmse` `validation:rmse`</span></a>
@@ -249,14 +249,14 @@
 <h2 class="hasAnchor">
 <a href="#real-time" class="anchor"></a>Real-time</h2>
 <p>Real-time opens a persistent web-endpoint for predictions. Deploying takes a few minutes.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">sagemaker_deploy_endpoint</span>(tune)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="../reference/sagemaker_deploy_endpoint.html">sagemaker_deploy_endpoint</a></span>(tune)</a></code></pre></div>
 <p>Then make new predictions on tibbles or <code>data.frame</code>s, using the standard <code>predict</code> generic.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">pred &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(tune, sagemaker<span class="op">::</span>abalone[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dv">-1</span>])</a></code></pre></div>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(pred)</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt;  num [1:100] 10.26 8.1 10.03 9.21 6.19 ...</span></a></code></pre></div>
 <p>Once deployed, the endpoint has a subsecond latency.</p>
 <p>Make sure to delete the endpoint when you are done to avoid charges.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">sagemaker_delete_endpoint</span>(tune)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="../reference/sagemaker_deploy_endpoint.html">sagemaker_delete_endpoint</a></span>(tune)</a></code></pre></div>
 </div>
 <div id="batch" class="section level2">
 <h2 class="hasAnchor">
@@ -264,11 +264,11 @@
 <p>You can also make batch predictions from data saved in S3. The batch method will write the predictions as a csv in an S3 folder.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">s3_output_path &lt;-<span class="st"> </span><span class="kw">batch_predict</span>(</a>
 <a class="sourceLine" id="cb16-2" data-line-number="2">  tune, </a>
-<a class="sourceLine" id="cb16-3" data-line-number="3">  <span class="dt">s3_input =</span> <span class="kw">s3</span>(<span class="kw">s3_bucket</span>(), <span class="st">"abalone-inference.csv"</span>),</a>
-<a class="sourceLine" id="cb16-4" data-line-number="4">  <span class="dt">s3_output =</span> <span class="kw">s3</span>(<span class="kw">s3_bucket</span>(), <span class="st">"abalone_predictions"</span>)</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">  <span class="dt">s3_input =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-inference.csv"</span>),</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">  <span class="dt">s3_output =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone_predictions"</span>)</a>
 <a class="sourceLine" id="cb16-5" data-line-number="5">)</a></code></pre></div>
-<p>We can use the <code>sagemaker::read_s3</code> method to easily read csv data from S3.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">read_s3</span>(s3_output_path) <span class="op">%&gt;%</span></a>
+<p>We can use the <code><a href="../reference/read_s3.html">sagemaker::read_s3</a></code> method to easily read csv data from S3.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="../reference/read_s3.html">read_s3</a></span>(s3_output_path) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb17-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>()</a>
 <a class="sourceLine" id="cb17-3" data-line-number="3"><span class="co">#&gt; Observations: 100</span></a>
 <a class="sourceLine" id="cb17-4" data-line-number="4"><span class="co">#&gt; Variables: 1</span></a>

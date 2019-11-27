@@ -45,8 +45,8 @@ s3_bucket <- function() {
 #'
 #' Writes a \code{tibble} to a S3 object.
 #'
-#' Defaults \code{col_names} to false,
-#' because that is what Sagemaker typically expect.
+#' Defaults \code{col_names} to \code{FALSE},
+#' because that is what Sagemaker typically expects.
 #'
 #' @param s3_path A character vector that forms an S3 path to an object.
 #' Use \link{s3} to construct the path.

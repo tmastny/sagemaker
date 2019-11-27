@@ -40,6 +40,6 @@ Downloads an csv file from S3 and reads it into the R session as a
 
 Writes a \code{tibble} to a S3 object.
 
-Defaults \code{col_names} to false,
-because that is what Sagemaker typically expect.
+Defaults \code{col_names} to \code{FALSE},
+because that is what Sagemaker typically expects.
 }
