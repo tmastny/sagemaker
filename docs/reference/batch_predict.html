@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Creates S3 Object Paths — s3 • sagemaker</title>
+<title>Batch Predictions from Sagemaker Model — batch_predict • sagemaker</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,10 @@
 
 
 
-<meta property="og:title" content="Creates S3 Object Paths — s3" />
-<meta property="og:description" content="Returns properly formatted S3 object path,
-including the s3:// prefix." />
+<meta property="og:title" content="Batch Predictions from Sagemaker Model — batch_predict" />
+<meta property="og:description" content="Runs a batch of predictions on Sagemaker model.
+The input is a csv file on S3, and predictions are saved
+as a csv on S3." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,41 +122,74 @@ including the s3:// prefix." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Creates S3 Object Paths</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tmastny/sagemaker/blob/master/R/s3.R'><code>R/s3.R</code></a></small>
-    <div class="hidden name"><code>s3.Rd</code></div>
+    <h1>Batch Predictions from Sagemaker Model</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tmastny/sagemaker/blob/master/R/predictions.R'><code>R/predictions.R</code></a></small>
+    <div class="hidden name"><code>batch_predict.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Returns properly formatted S3 object path,
-including the <code>s3://</code> prefix.</p>
+    <p>Runs a batch of predictions on Sagemaker model.
+The input is a csv file on S3, and predictions are saved
+as a csv on S3.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>s3</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>batch_predict</span>(
+  <span class='no'>object</span>,
+  <span class='no'>s3_input</span>,
+  <span class='no'>s3_output</span>,
+  <span class='kw'>instance_count</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
+  <span class='kw'>instance_type</span> <span class='kw'>=</span> <span class='st'>"ml.c4.xlarge"</span>,
+  <span class='kw'>wait</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>Characters vectors to combine into an S3 path.</p></td>
+      <th>object</th>
+      <td><p>The <code>sagemaker</code> model object created by
+<a href='sagemaker_hyperparameter_tuner.html'>sagemaker_hyperparameter_tuner</a> or <a href='sagemaker_attach_tuner.html'>sagemaker_attach_tuner</a>.</p></td>
+    </tr>
+    <tr>
+      <th>s3_input</th>
+      <td><p>The S3 path to the input object.
+The object must be a <code>csv</code>, with no column names.
+The <code>csv</code> must not contain the outcome column.
+Use <a href='s3.html'>s3</a> to construct the path.</p></td>
+    </tr>
+    <tr>
+      <th>s3_output</th>
+      <td><p>The S3 prefix for the output object or objects.</p></td>
+    </tr>
+    <tr>
+      <th>instance_count</th>
+      <td><p>The number of instances to run.</p></td>
+    </tr>
+    <tr>
+      <th>instance_type</th>
+      <td><p>Type of EC2 instance to run. See
+<a href='https://aws.amazon.com/sagemaker/pricing/instance-types/'>here</a> for
+a list of options and pricing.</p></td>
+    </tr>
+    <tr>
+      <th>wait</th>
+      <td><p>Boolean that indicates if function should wait to return
+until the Sagemaker process is complete.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>s3</span>(<span class='st'>"my_bucket"</span>, <span class='st'>"prefix"</span>, <span class='st'>"object_name.csv"</span>)</div><div class='output co'>#&gt; [1] "s3://my_bucket/prefix/object_name.csv"
-#&gt; attr(,"class")
-#&gt; [1] "s3"        "character"</div><div class='input'><span class='fu'>s3</span>(<span class='fu'><a href='s3_bucket.html'>s3_bucket</a></span>(), <span class='st'>"prefix1"</span>, <span class='st'>"prefix2"</span>, <span class='st'>"object.csv"</span>)</div><div class='output co'>#&gt; [1] "s3://sagemaker-us-east-2-495577990003/prefix1/prefix2/object.csv"
-#&gt; attr(,"class")
-#&gt; [1] "s3"        "character"</div><div class='input'>
-</div></pre>
+    <p>S3 output path.</p>
+<p>The format is
+<code>s3://[s3_output]/[s3_input_object_name].out</code></p>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#examples">Examples</a></li>
+      <li><a href="#value">Value</a></li>
     </ul>
 
   </div>

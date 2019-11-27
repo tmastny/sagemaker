@@ -30,9 +30,7 @@ Missing (\code{NA}) column names will generate a warning, and be filled
 in with dummy names \code{X1}, \code{X2} etc. Duplicate column names
 will generate a warning and be made unique with a numeric prefix.}
 
-\item{...}{Additional named arguments sent to
-\code{\link[readr:read_delim]{readr::read_delim()}} or
-\code{\link[readr:format_delim]{readr::format_delim()}}}
+\item{...}{Additional named arguments sent to the underlying API.}
 }
 \description{
 Downloads an csv file from S3 and reads it into the R session as a
@@ -41,5 +39,9 @@ Downloads an csv file from S3 and reads it into the R session as a
 Writes a \code{tibble} to a S3 object.
 
 Defaults \code{col_names} to \code{FALSE},
-because that is what Sagemaker typically expects.
+because that is \link{batch_predict} and
+\link{sagemaker_hyperparameter_tuner} expect.
+
+Interface to \code{\link[readr:read_delim]{readr::read_delim()}}
+and \code{\link[readr:format_delim]{readr::format_delim()}}
 }

@@ -131,16 +131,16 @@
 
     <pre class="usage"><span class='fu'>sagemaker_estimator</span>(
   <span class='no'>container</span>,
-  <span class='kw'>train_instance_count</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
-  <span class='kw'>train_instance_type</span> <span class='kw'>=</span> <span class='st'>"ml.m4.xlarge"</span>,
-  <span class='kw'>output_path</span> <span class='kw'>=</span> <span class='fu'><a href='s3.html'>s3</a></span>(<span class='fu'><a href='s3_bucket.html'>s3_bucket</a></span>(), <span class='st'>"models/"</span>),
+  <span class='kw'>instance_count</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
+  <span class='kw'>instance_type</span> <span class='kw'>=</span> <span class='st'>"ml.m4.xlarge"</span>,
+  <span class='kw'>s3_output</span> <span class='kw'>=</span> <span class='fu'><a href='s3.html'>s3</a></span>(<span class='fu'><a href='s3_bucket.html'>s3_bucket</a></span>(), <span class='st'>"models/"</span>),
   <span class='no'>...</span>
 )
 
 <span class='fu'>sagemaker_xgb_estimator</span>(
   <span class='kw'>train_instance_count</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
   <span class='kw'>train_instance_type</span> <span class='kw'>=</span> <span class='st'>"ml.m4.xlarge"</span>,
-  <span class='kw'>output_path</span> <span class='kw'>=</span> <span class='fu'><a href='s3.html'>s3</a></span>(<span class='fu'><a href='s3_bucket.html'>s3_bucket</a></span>(), <span class='st'>"models/"</span>),
+  <span class='kw'>s3_output</span> <span class='kw'>=</span> <span class='fu'><a href='s3.html'>s3</a></span>(<span class='fu'><a href='s3_bucket.html'>s3_bucket</a></span>(), <span class='st'>"models/"</span>),
   <span class='no'>...</span>
 )</pre>
 
@@ -153,18 +153,19 @@
 See <a href='sagemaker_container.html'>sagemaker_container</a>.</p></td>
     </tr>
     <tr>
-      <th>train_instance_count</th>
-      <td><p>Number of AWS EC2 instances to train on.</p></td>
+      <th>instance_count</th>
+      <td><p>The number of instances to run.</p></td>
     </tr>
     <tr>
-      <th>train_instance_type</th>
-      <td><p>Type of EC2 instance to train on. See
+      <th>instance_type</th>
+      <td><p>Type of EC2 instance to run. See
 <a href='https://aws.amazon.com/sagemaker/pricing/instance-types/'>here</a> for
 a list of options and pricing.</p></td>
     </tr>
     <tr>
-      <th>output_path</th>
-      <td><p>The S3 output path to save the model artifact.</p></td>
+      <th>s3_output</th>
+      <td><p>The S3 output path to save the model artifact.
+See <a href='s3.html'>s3</a> to construct the S3 path.</p></td>
     </tr>
     <tr>
       <th>...</th>

@@ -36,7 +36,8 @@
 
 
 <meta property="og:title" content="Installs Sagemaker Dependencies — sagemaker_install" />
-<meta property="og:description" content="Installs the Python package dependencies boto3, sagemaker, and awscli." />
+<meta property="og:description" content="Installs the Python package dependencies boto3, sagemaker, and awscli.
+Interface to reticulate::py_install()." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -126,7 +127,8 @@
     </div>
 
     <div class="ref-description">
-    <p>Installs the Python package dependencies boto3, sagemaker, and awscli.</p>
+    <p>Installs the Python package dependencies boto3, sagemaker, and awscli.
+Interface to <code><a href='https://rdrr.io/pkg/reticulate/man/py_install.html'>reticulate::py_install()</a></code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>sagemaker_install</span>(<span class='no'>...</span>)</pre>
@@ -136,8 +138,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p>Passes named arguments to
-<code><a href='https://rdrr.io/pkg/reticulate/man/py_install.html'>reticulate::py_install()</a></code>.</p></td>
+      <td><p>Additional named arguments sent to the underlying API.</p></td>
     </tr>
     </table>
 

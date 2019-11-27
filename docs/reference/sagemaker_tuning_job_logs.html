@@ -133,17 +133,30 @@ The result is a data frame has one row per model, along with the trained
 validation metric.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sagemaker_tuning_job_logs</span>(<span class='no'>sagemaker_tuner</span>)</pre>
+    <pre class="usage"><span class='fu'>sagemaker_tuning_job_logs</span>(<span class='no'>x</span>)
+
+<span class='co'># S3 method for sagemaker</span>
+<span class='fu'>sagemaker_tuning_job_logs</span>(<span class='no'>object</span>)
+
+<span class='co'># S3 method for character</span>
+<span class='fu'>sagemaker_tuning_job_logs</span>(<span class='no'>tuning_job_name</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>sagemaker_tuner</th>
-      <td><p>This is either the <code>sagemaker</code> object
-returned from sagemaker_hyperparameter_tuner or
-sagemaker_attach_tuner or the name of the tuning job,
-typically something like <code>"xgboost-191114-2052"</code>.</p></td>
+      <th>x</th>
+      <td><p>Either <code>sagemaker</code> object or tuning job name.</p></td>
+    </tr>
+    <tr>
+      <th>object</th>
+      <td><p>The <code>sagemaker</code> model object created by
+<a href='sagemaker_hyperparameter_tuner.html'>sagemaker_hyperparameter_tuner</a> or <a href='sagemaker_attach_tuner.html'>sagemaker_attach_tuner</a>.</p></td>
+    </tr>
+    <tr>
+      <th>tuning_job_name</th>
+      <td><p>Name of the tuning job, typically something
+like <code>"xgboost-191114-2052"</code>.</p></td>
     </tr>
     </table>
 

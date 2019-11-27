@@ -1,14 +1,28 @@
 #' Sagemaker Parameter Ranges
 #'
-#' Parameter Ranges for Sagemaker hyperparameter tuning.
+#' Parameter ranges for Sagemaker hyperparameter tuning.
 #'
 #' @param min Minimum value of range.
 #' @param max Maximum value of range.
 #' @param scaling \code{"Auto"}, \code{"Linear"}, \code{"Logarithmic"}, or
 #' \code{"ReverseLogarithmic"}.
 #' @param values List of strings that match categorical parameters
-#' for the Sagemaker estimator.
+#' for the \link{sagemaker_estimator}.
 #'
+#' @export
+sagemaker_ranges <- function(
+  type = c("integer", "continuous", "categorical"),
+  min, max, scaling = "Auto", values = NULL
+) {
+ switch(
+   type,
+   integer = sagemaker_integer(min, max, scaling),
+   continuous = sagemaker_continuous(min, max, scaling),
+   categorical = sagemaker_categorical(values)
+ )
+}
+
+#' @rdname sagemaker_ranges
 #' @export
 sagemaker_integer <- function(min, max, scaling = "Auto") {
   min <- as.integer(min)
@@ -20,7 +34,7 @@ sagemaker_integer <- function(min, max, scaling = "Auto") {
   sagemaker$tuner$IntegerParameter(min, max, scaling)
 }
 
-#' @rdname sagemaker_integer
+#' @rdname sagemaker_ranges
 #' @export
 sagemaker_continuous <- function(min, max, scaling = "Auto") {
 
@@ -30,15 +44,28 @@ sagemaker_continuous <- function(min, max, scaling = "Auto") {
   sagemaker$tuner$ContinuousParameter(min, max, scaling)
 }
 
-#' @rdname sagemaker_integer
+#' @rdname sagemaker_ranges
 #' @export
 sagemaker_categorical <- function(values) {
   sagemaker$tuner$CategoricalParameter(values)
 }
 
-
-# resamples resamples rsplit object, or a python dictionary with
-#           train/test keys pointing to sagemaker$s3_input paths
+#' Start a Sagemaker Hyperparamter Tuning Job
+#'
+#' Interface to \code{sagemaker$tuner$HyperparameterTuner}.
+#'
+#' @param estimator Sagemaker estimator from \link{sagemaker_estimator}.
+#'
+#' @param hyperparameter_ranges A named list of model hyperparameters
+#' with \link{sagemaker_ranges} for tuning.
+#'
+#' @param strategy Tuning strategy: \code{"Random"} or \code{"Bayesian"}.
+#'
+#' @param max_jobs Number of unique models to train during tuning.
+#'
+#' @param max_parallel_jobs Number of models to train simultaneously.
+#'
+#' @inheritParams sagemaker_deploy_endpoint
 #' @export
 sagemaker_hyperparameter_tuner <- function(
   estimator,
@@ -47,7 +74,6 @@ sagemaker_hyperparameter_tuner <- function(
   strategy = "Random",
   max_jobs = 10L,
   max_parallel_jobs = 2L,
-  early_stopping_type = "Auto",
   ...
 ) {
 
@@ -64,7 +90,6 @@ sagemaker_hyperparameter_tuner <- function(
     strategy = strategy,
     max_jobs = max_jobs,
     max_parallel_jobs = max_parallel_jobs,
-    early_stopping_type = early_stopping_type,
     ...
   )
 
@@ -84,7 +109,17 @@ sagemaker_hyperparameter_tuner <- function(
   sagemaker_attach_tuner(tuner$latest_tuning_job$job_name)
 }
 
-
+#' Attach an Existing Sagemaker Tuning Job
+#'
+#' @description
+#' Attaches and loads an existing Sagemaker Tuning Job.
+#' This is useful to analyze a tuning job that was completed in a previous
+#' session.
+#'
+#' Returns the same object as \link{sagemaker_hyperparameter_tuner}.
+#'
+#' @param tuning_job_name Name of the tuning job, typically something
+#' like \code{"xgboost-191114-2052"}.
 #' @export
 sagemaker_attach_tuner <- function(tuning_job_name) {
 

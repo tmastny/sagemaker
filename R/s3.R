@@ -46,15 +46,17 @@ s3_bucket <- function() {
 #' Writes a \code{tibble} to a S3 object.
 #'
 #' Defaults \code{col_names} to \code{FALSE},
-#' because that is what Sagemaker typically expects.
+#' because that is \link{batch_predict} and
+#' \link{sagemaker_hyperparameter_tuner} expect.
+#'
+#' Interface to \code{\link[readr:read_delim]{readr::read_delim()}}
+#' and \code{\link[readr:format_delim]{readr::format_delim()}}
 #'
 #' @param s3_path A character vector that forms an S3 path to an object.
 #' Use \link{s3} to construct the path.
-#' @param ... Additional named arguments sent to
-#' \code{\link[readr:read_delim]{readr::read_delim()}} or
-#' \code{\link[readr:format_delim]{readr::format_delim()}}
 #'
 #' @inheritParams readr::read_delim
+#' @inheritParams sagemaker_deploy_endpoint
 #' @export
 read_s3 <- function(s3_path, delim = ",", col_names = FALSE, ...) {
   s3_components <- s3_bucket_key_extract(s3_path)

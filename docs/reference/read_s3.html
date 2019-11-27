@@ -39,8 +39,11 @@
 <meta property="og:description" content="Downloads an csv file from S3 and reads it into the R session as a
 tibble::tibble().
 Writes a tibble to a S3 object.
-Defaults col_names to false,
-because that is what Sagemaker typically expect." />
+Defaults col_names to FALSE,
+because that is batch_predict and
+sagemaker_hyperparameter_tuner expect.
+Interface to readr::read_delim()
+and readr::format_delim()" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -133,8 +136,11 @@ because that is what Sagemaker typically expect." />
     <p>Downloads an csv file from S3 and reads it into the R session as a
 <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code>.</p>
 <p>Writes a <code>tibble</code> to a S3 object.</p>
-<p>Defaults <code>col_names</code> to false,
-because that is what Sagemaker typically expect.</p>
+<p>Defaults <code>col_names</code> to <code>FALSE</code>,
+because that is <a href='batch_predict.html'>batch_predict</a> and
+<a href='sagemaker_hyperparameter_tuner.html'>sagemaker_hyperparameter_tuner</a> expect.</p>
+<p>Interface to <code><a href='https://readr.tidyverse.org/reference/read_delim.html'>readr::read_delim()</a></code>
+and <code><a href='https://readr.tidyverse.org/reference/format_delim.html'>readr::format_delim()</a></code></p>
     </div>
 
     <pre class="usage"><span class='fu'>read_s3</span>(<span class='no'>s3_path</span>, <span class='kw'>delim</span> <span class='kw'>=</span> <span class='st'>","</span>, <span class='kw'>col_names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
@@ -169,9 +175,7 @@ will generate a warning and be made unique with a numeric prefix.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional named arguments sent to
-<code><a href='https://readr.tidyverse.org/reference/read_delim.html'>readr::read_delim()</a></code> or
-<code><a href='https://readr.tidyverse.org/reference/format_delim.html'>readr::format_delim()</a></code></p></td>
+      <td><p>Additional named arguments sent to the underlying API.</p></td>
     </tr>
     </table>
 

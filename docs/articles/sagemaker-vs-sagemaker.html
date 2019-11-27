@@ -150,9 +150,9 @@ R sagemaker
 <a class="sourceLine" id="cb4-9" data-line-number="9">)</a>
 <a class="sourceLine" id="cb4-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb4-11" data-line-number="11">grid &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
-<a class="sourceLine" id="cb4-12" data-line-number="12">  <span class="dt">max_depth =</span> <span class="kw"><a href="../reference/sagemaker_integer.html">sagemaker_integer</a></span>(<span class="dv">3</span>, <span class="dv">20</span>),</a>
-<a class="sourceLine" id="cb4-13" data-line-number="13">  <span class="dt">colsample_bytree =</span> <span class="kw"><a href="../reference/sagemaker_integer.html">sagemaker_continuous</a></span>(<span class="dv">0</span>, <span class="dv">1</span>),</a>
-<a class="sourceLine" id="cb4-14" data-line-number="14">  <span class="dt">subsample =</span> <span class="kw"><a href="../reference/sagemaker_integer.html">sagemaker_continuous</a></span>(<span class="dv">0</span>, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb4-12" data-line-number="12">  <span class="dt">max_depth =</span> <span class="kw"><a href="../reference/sagemaker_ranges.html">sagemaker_integer</a></span>(<span class="dv">3</span>, <span class="dv">20</span>),</a>
+<a class="sourceLine" id="cb4-13" data-line-number="13">  <span class="dt">colsample_bytree =</span> <span class="kw"><a href="../reference/sagemaker_ranges.html">sagemaker_continuous</a></span>(<span class="dv">0</span>, <span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb4-14" data-line-number="14">  <span class="dt">subsample =</span> <span class="kw"><a href="../reference/sagemaker_ranges.html">sagemaker_continuous</a></span>(<span class="dv">0</span>, <span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb4-15" data-line-number="15">)</a>
 <a class="sourceLine" id="cb4-16" data-line-number="16"></a>
 <a class="sourceLine" id="cb4-17" data-line-number="17">split &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
@@ -160,7 +160,7 @@ R sagemaker
 <a class="sourceLine" id="cb4-19" data-line-number="19">  <span class="dt">validation =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-test.csv"</span>)</a>
 <a class="sourceLine" id="cb4-20" data-line-number="20">)</a>
 <a class="sourceLine" id="cb4-21" data-line-number="21"></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22">tune &lt;-<span class="st"> </span><span class="kw">sagemaker_hyperparameter_tuner</span>(</a>
+<a class="sourceLine" id="cb4-22" data-line-number="22">tune &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sagemaker_hyperparameter_tuner.html">sagemaker_hyperparameter_tuner</a></span>(</a>
 <a class="sourceLine" id="cb4-23" data-line-number="23">  xgb, split, grid, <span class="dt">max_jobs =</span> <span class="dv">1</span></a>
 <a class="sourceLine" id="cb4-24" data-line-number="24">)</a></code></pre></div>
 </div>
@@ -276,7 +276,7 @@ AWS Sagemaker
 <h2>
 R sagemaker
 </h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">batch_predict</span>(</a>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="../reference/batch_predict.html">batch_predict</a></span>(</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">  tune, </a>
 <a class="sourceLine" id="cb10-3" data-line-number="3">  <span class="dt">s3_input =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-inference.csv"</span>),</a>
 <a class="sourceLine" id="cb10-4" data-line-number="4">  <span class="dt">s3_output =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone_predictions"</span>)</a>

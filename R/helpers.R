@@ -39,8 +39,7 @@ sagemaker_tuning_job_logs.sagemaker <- function(object) {
 }
 
 #' @rdname sagemaker_tuning_job_logs
-#' @param tuning_job_name Name of the tuning job, typically something
-#' like \code{"xgboost-191114-2052"}.
+#' @inheritParams sagemaker_attach_tuner
 #' @export
 sagemaker_tuning_job_logs.character <- function(tuning_job_name) {
   tuner_stats <- sagemaker$HyperparameterTuningJobAnalytics(tuning_job_name)

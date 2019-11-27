@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Creates S3 Object Paths — s3 • sagemaker</title>
+<title>Start a Sagemaker Hyperparamter Tuning Job — sagemaker_hyperparameter_tuner • sagemaker</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,8 @@
 
 
 
-<meta property="og:title" content="Creates S3 Object Paths — s3" />
-<meta property="og:description" content="Returns properly formatted S3 object path,
-including the s3:// prefix." />
+<meta property="og:title" content="Start a Sagemaker Hyperparamter Tuning Job — sagemaker_hyperparameter_tuner" />
+<meta property="og:description" content="Interface to sagemaker$tuner$HyperparameterTuner." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,41 +120,61 @@ including the s3:// prefix." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Creates S3 Object Paths</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tmastny/sagemaker/blob/master/R/s3.R'><code>R/s3.R</code></a></small>
-    <div class="hidden name"><code>s3.Rd</code></div>
+    <h1>Start a Sagemaker Hyperparamter Tuning Job</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tmastny/sagemaker/blob/master/R/tuning.R'><code>R/tuning.R</code></a></small>
+    <div class="hidden name"><code>sagemaker_hyperparameter_tuner.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Returns properly formatted S3 object path,
-including the <code>s3://</code> prefix.</p>
+    <p>Interface to <code>sagemaker$tuner$HyperparameterTuner</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>s3</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>sagemaker_hyperparameter_tuner</span>(
+  <span class='no'>estimator</span>,
+  <span class='no'>split</span>,
+  <span class='no'>hyperparameter_ranges</span>,
+  <span class='kw'>strategy</span> <span class='kw'>=</span> <span class='st'>"Random"</span>,
+  <span class='kw'>max_jobs</span> <span class='kw'>=</span> <span class='fl'>10L</span>,
+  <span class='kw'>max_parallel_jobs</span> <span class='kw'>=</span> <span class='fl'>2L</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>estimator</th>
+      <td><p>Sagemaker estimator from <a href='sagemaker_estimator.html'>sagemaker_estimator</a>.</p></td>
+    </tr>
+    <tr>
+      <th>hyperparameter_ranges</th>
+      <td><p>A named list of model hyperparameters
+with <a href='sagemaker_ranges.html'>sagemaker_ranges</a> for tuning.</p></td>
+    </tr>
+    <tr>
+      <th>strategy</th>
+      <td><p>Tuning strategy: <code>"Random"</code> or <code>"Bayesian"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>max_jobs</th>
+      <td><p>Number of unique models to train during tuning.</p></td>
+    </tr>
+    <tr>
+      <th>max_parallel_jobs</th>
+      <td><p>Number of models to train simultaneously.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
-      <td><p>Characters vectors to combine into an S3 path.</p></td>
+      <td><p>Additional named arguments sent to the underlying API.</p></td>
     </tr>
     </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>s3</span>(<span class='st'>"my_bucket"</span>, <span class='st'>"prefix"</span>, <span class='st'>"object_name.csv"</span>)</div><div class='output co'>#&gt; [1] "s3://my_bucket/prefix/object_name.csv"
-#&gt; attr(,"class")
-#&gt; [1] "s3"        "character"</div><div class='input'><span class='fu'>s3</span>(<span class='fu'><a href='s3_bucket.html'>s3_bucket</a></span>(), <span class='st'>"prefix1"</span>, <span class='st'>"prefix2"</span>, <span class='st'>"object.csv"</span>)</div><div class='output co'>#&gt; [1] "s3://sagemaker-us-east-2-495577990003/prefix1/prefix2/object.csv"
-#&gt; attr(,"class")
-#&gt; [1] "s3"        "character"</div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

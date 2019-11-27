@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Deploy Sagemaker Endpoint — sagemaker_deploy_endpoint • sagemaker</title>
+<title>Deploy Sagemaker Real-time Endpoint — sagemaker_deploy_endpoint • sagemaker</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,10 @@
 
 
 
-<meta property="og:title" content="Deploy Sagemaker Endpoint — sagemaker_deploy_endpoint" />
-<meta property="og:description" content="Deploy Sagemaker Endpoint" />
+<meta property="og:title" content="Deploy Sagemaker Real-time Endpoint — sagemaker_deploy_endpoint" />
+<meta property="og:description" content="Deploys a real-time Sagemaker web endpoint.
+This process takes a few minutes. Interface to
+sagemaker$estimator$Estimator$deploy" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -120,13 +122,15 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Deploy Sagemaker Endpoint</h1>
+    <h1>Deploy Sagemaker Real-time Endpoint</h1>
     <small class="dont-index">Source: <a href='https://github.com/tmastny/sagemaker/blob/master/R/predictions.R'><code>R/predictions.R</code></a></small>
     <div class="hidden name"><code>sagemaker_deploy_endpoint.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Deploy Sagemaker Endpoint</p>
+    <p>Deploys a real-time Sagemaker web endpoint.
+This process takes a few minutes. Interface to
+<code>sagemaker$estimator$Estimator$deploy</code></p>
     </div>
 
     <pre class="usage"><span class='fu'>sagemaker_deploy_endpoint</span>(
@@ -141,12 +145,41 @@
 
 <span class='fu'>sagemaker_delete_endpoint</span>(<span class='no'>object</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>The <code>sagemaker</code> model object created by
+<a href='sagemaker_hyperparameter_tuner.html'>sagemaker_hyperparameter_tuner</a> or <a href='sagemaker_attach_tuner.html'>sagemaker_attach_tuner</a>.</p></td>
+    </tr>
+    <tr>
+      <th>instance_count</th>
+      <td><p>The number of instances to run.</p></td>
+    </tr>
+    <tr>
+      <th>instance_type</th>
+      <td><p>Type of EC2 instance to run. See
+<a href='https://aws.amazon.com/sagemaker/pricing/instance-types/'>here</a> for
+a list of options and pricing.</p></td>
+    </tr>
+    <tr>
+      <th>wait</th>
+      <td><p>Boolean that indicates if function should wait to return
+until the Sagemaker process is complete.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional named arguments sent to the underlying API.</p></td>
+    </tr>
+    </table>
 
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
     </ul>
 
   </div>
