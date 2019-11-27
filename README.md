@@ -106,5 +106,3 @@ xgb <- sagemaker$estimator$Estimator(
   sagemaker_session = sagemaker$Session()
 )
 ```
-
-##
