@@ -27,7 +27,7 @@ and make new predictions.
 
 # Tuning
 
-The new tuning interface is similar to the 
+The tuning interface is similar to the 
 [caret](https://github.com/topepo/caret)
 package. We'll
 
