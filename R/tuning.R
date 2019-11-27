@@ -1,3 +1,14 @@
+#' Sagemaker Parameter Ranges
+#'
+#' Parameter Ranges for Sagemaker hyperparameter tuning.
+#'
+#' @param min Minimum value of range.
+#' @param max Maximum value of range.
+#' @param scaling \code{"Auto"}, \code{"Linear"}, \code{"Logarithmic"}, or
+#' \code{"ReverseLogarithmic"}.
+#' @param values List of strings that match categorical parameters
+#' for the Sagemaker estimator.
+#'
 #' @export
 sagemaker_integer <- function(min, max, scaling = "Auto") {
   min <- as.integer(min)
@@ -9,6 +20,7 @@ sagemaker_integer <- function(min, max, scaling = "Auto") {
   sagemaker$tuner$IntegerParameter(min, max, scaling)
 }
 
+#' @rdname sagemaker_integer
 #' @export
 sagemaker_continuous <- function(min, max, scaling = "Auto") {
 
@@ -18,6 +30,7 @@ sagemaker_continuous <- function(min, max, scaling = "Auto") {
   sagemaker$tuner$ContinuousParameter(min, max, scaling)
 }
 
+#' @rdname sagemaker_integer
 #' @export
 sagemaker_categorical <- function(values) {
   sagemaker$tuner$CategoricalParameter(values)
