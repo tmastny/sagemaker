@@ -1,0 +1,64 @@
+---
+title: "multi-class"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{multi-class}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+```
+
+Here's the docs on xgboost hyperparameters:
+https://xgboost.readthedocs.io/en/latest/parameter.html
+
+You'll need to set the following:
+
+```r
+xgb$set_hyperparameters(
+  eval_metric = "mlogloss",
+  objective = "multi:softmax",
+  num_class = 3L
+)
+```
+
+Or `objective = "multi:softprob"`
+
+Can also use `eval_metric = "merror"`.
+
+
+```{r}
+library(sagemaker)
+model <- sagemaker_attach_tuner("xgboost-191114-2052")
+```
+
+```{r}
+model$model_name
+```
+
+```{r}
+job <- quietly_attach_estimator(model$model_name)
+```
+
+```{r}
+model_artifcat_path <- job$model_data
+model_artifcat_path
+```
+
+```{r}
+library(reticulate)
+xgb <- reticulate::import("xgboost")
+```
+
+```{r}
+xgb$`__version__`
+```
+
