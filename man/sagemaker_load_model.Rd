@@ -2,13 +2,24 @@
 % Please edit documentation in R/helpers.R
 \name{sagemaker_load_model}
 \alias{sagemaker_load_model}
+\alias{sagemaker_load_model.sagemaker}
+\alias{sagemaker_load_model.character}
 \title{Loads Model Artifact}
 \usage{
-sagemaker_load_model(object)
+sagemaker_load_model(x)
+
+\method{sagemaker_load_model}{sagemaker}(object)
+
+\method{sagemaker_load_model}{character}(training_job_name)
 }
 \arguments{
+\item{x}{Either \code{sagemaker} object or training job name.}
+
 \item{object}{The \code{sagemaker} model object created by
 \link{sagemaker_hyperparameter_tuner} or \link{sagemaker_attach_tuner}.}
+
+\item{training_job_name}{The training job name. Typically something like
+\code{"xgboost-191114-2052-001-7b33b7a5"}.}
 }
 \description{
 Loads the model artifact in the current R session.

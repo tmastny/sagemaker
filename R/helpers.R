@@ -55,18 +55,18 @@ sagemaker_tuning_job_logs.character <- function(tuning_job_name) {
 #' training job. Typically associated with \code{nround}s for xgboost
 #' or epochs for neural networks.
 #'
-#' @param job_name The training job name. Typically something like
+#' @param training_job_name The training job name. Typically something like
 #' \code{"xgboost-191114-2052-001-7b33b7a5"}.
 #'
 #' @export
-sagemaker_training_job_logs <- function(job_name) {
+sagemaker_training_job_logs <- function(training_job_name) {
 
   # have to lookup based on job name prefix,
   # no way to get log stream name with sagemaker api
   cloudwatch <- boto3$client('logs')
   log_stream_info <- cloudwatch$describe_log_streams(
     logGroupName = "/aws/sagemaker/TrainingJobs",
-    logStreamNamePrefix = job_name
+    logStreamNamePrefix = training_job_name
   )
   log_stream_name <- log_stream_info$logStreams[[1]]$logStreamName
 
@@ -82,7 +82,7 @@ sagemaker_training_job_logs <- function(job_name) {
   )
 
   sage <- boto3$client('sagemaker')
-  job_description <- sage$describe_training_job(TrainingJobName = job_name)
+  job_description <- sage$describe_training_job(TrainingJobName = training_job_name)
 
   metric_names <- job_description$FinalMetricDataList %>%
     purrr::map_chr(purrr::pluck, "MetricName")
@@ -123,19 +123,29 @@ sagemaker_training_job_logs <- function(job_name) {
 #' from the xgboost Python package. See
 #' \code{\link{predict.xgboost.core.Booster}}.
 #'
-#' @inheritParams sagemaker_deploy_endpoint
+#' @param x Either \code{sagemaker} object or training job name.
+#'
 #' @export
 sagemaker_load_model <- function(x) {
   UseMethod("sagemaker_load_model")
 }
 
 #' @rdname sagemaker_load_model
+#' @inheritParams sagemaker_deploy_endpoint
+#' @export
 sagemaker_load_model.sagemaker <- function(object) {
+  sagemaker_load_model(object$model_name)
+}
+
+#' @inheritParams sagemaker_training_job_logs
+#' @rdname sagemaker_load_model
+#' @export
+sagemaker_load_model.character <- function(training_job_name) {
   # TODO: long-term, I think this might need to be a
   #       generic based on the type of estimator
   #       (e.g. linear, xgboost, etc.)
 
-  model_path <- model_artifact_s3_path(object)
+  model_path <- model_artifact_s3_path(training_job_name)
   model_s3_components <- s3_bucket_key_extract(model_path)
 
   io      <- reticulate::import("io")
@@ -168,7 +178,7 @@ sagemaker_load_model.sagemaker <- function(object) {
 #' @inheritParams sagemaker_deploy_endpoint
 #' @export
 sagemaker_download_model <- function(object, path) {
-  model_path <- model_artifact_s3_path(object)
+  model_path <- model_artifact_s3_path(object$model_name)
   system(
     paste0(
       "aws s3 cp ",
@@ -178,7 +188,7 @@ sagemaker_download_model <- function(object, path) {
   )
 }
 
-model_artifact_s3_path <- function(object) {
-  job <- quietly_attach_estimator(object$model_name)
+model_artifact_s3_path <- function(job_name) {
+  job <- quietly_attach_estimator(job_name)
   job$model_data
 }
