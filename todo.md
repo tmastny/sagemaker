@@ -1,5 +1,5 @@
 
-Download model artifact and use it locally.
+~Download model artifact and use it locally.~
 
 Class and probability predictions.
 

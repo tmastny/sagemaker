@@ -1,0 +1,175 @@
+---
+title: "multi-class"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{multi-class}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+Sagemaker is great for training, 
+but sometimes you don't want the overhead (cost and time) of 
+`predict.sagemaker` or `batch_predict`.
+
+Luckily, AWS Sagemaker saves every model in S3, 
+and you can download as use it locally with the right configuration.
+
+I've built out `sagemaker_load_model`, with loads the Sagemaker trained model
+into your current R session. Right now, it only works for xgboost models.
+
+## Data
+
+Let's use the `sagemaker::abalone` dataset once again, 
+but this time let's try classification instead of regression.
+
+First we'll identify the classes with the highest frequency, 
+so we can eliminate the low-variance ones.
+
+```{r}
+library(sagemaker)
+library(dplyr)
+library(rsample)
+library(recipes)
+
+top_rings <- sagemaker::abalone %>%
+  group_by(rings) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n)) %>%
+  top_n(10)
+
+top_rings
+```
+
+We'll use `recipes` to select this classes,
+and format the outcome column for xgboost so that
+
+1. outcomes are integers
+2. classes are labeled 0 to number of classes - 1.
+
+```{r}
+rec <- recipe(rings ~ ., data = sagemaker::abalone) %>%
+  step_filter(rings %in% top_rings$rings) %>%
+  step_integer(all_outcomes(), zero_based = TRUE) %>%
+  prep(training = sagemaker::abalone, retain = TRUE)
+
+abalone_class <- juice(rec) %>%
+  select(rings, everything())
+
+abalone_class %>%
+  group_by(rings) %>%
+  summarise(n = n()) %>%
+  arrange(n)
+```
+
+```{r}
+split <- initial_split(abalone_class)
+
+train_path <- s3(s3_bucket(), "abalone-class-train.csv")
+validation_path <- s3(s3_bucket(), "abalone-class-test.csv")
+
+write_s3(analysis(split), train_path)
+write_s3(assessment(split), validation_path)
+```
+
+## Training
+
+Frist, we need to set the xgboost hyperparameters for multiclassification.
+See [here](https://xgboost.readthedocs.io/en/latest/parameter.html#learning-task-parameters)
+for the official list.
+
+```{r}
+xgb_estimator <- sagemaker_xgb_estimator()
+
+xgb_estimator$set_hyperparameters(
+  eval_metric = "mlogloss",
+  objective = "multi:softmax",
+  num_class = 10L
+)
+```
+
+`objective = "multi:softmax"` will return the predicted class,
+and the probability of the prediction. 
+Alternatively, `objective = "multi:softprob"` returns a matrix 
+with probabilities associated for each class^[
+You can also use `eval_metric = "merror"`, 
+although `"mlogloss"` is usually better in practice.].
+
+```{r}
+ranges <- list(
+  max_depth = sagemaker_integer(3, 20),
+  colsample_bytree = sagemaker_continuous(0, 1),
+  subsample = sagemaker_continuous(0, 1)
+)
+```
+
+```{r eval = FALSE}
+tune <- sagemaker_hyperparameter_tuner(
+  xgb_estimator, s3_split(train_path, validation_path), ranges, max_jobs = 5
+)
+```
+
+```{r}
+tune
+```
+
+## Loading the model
+
+```{r include = FALSE}
+tune <- sagemaker_attach_tuner("sagemaker-xgboost-191201-1312")
+```
+
+We can easily download the Sagemaker model artifact from S3
+and load it into the R session.
+
+```{r}
+xgb <- sagemaker_load_model(tune)
+```
+
+For xgboost (the only model currently supported), 
+the object is 
+
+```{r}
+class(xgb)
+```
+
+from the xgboost Python package. 
+This means you have full access to all its attribute:
+
+```{r}
+reticulate::py_list_attributes(xgb) %>%
+  purrr::discard(~stringr::str_detect(., "__"))
+```
+
+The sagemaker R package also includes `predict.xgboost.core.Booster`
+to help you easily make predictions on this object:
+
+```{r}
+pred <- predict(xgb, abalone_class[, -1])
+```
+
+```{r}
+table(pred, abalone_class$rings)
+```
+
+```{r}
+job_logs <- sagemaker_training_job_logs(tune$model_name)
+```
+
+```{r}
+library(ggplot2)
+
+job_logs %>%
+  pivot_longer(`train:mlogloss`:`validation:mlogloss`) %>%
+  ggplot(aes(iteration, value, color = name)) +
+  geom_line()
+```
+
