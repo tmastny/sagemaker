@@ -121,6 +121,7 @@ predict.sagemaker <- function(object, new_data) {
 predict.xgboost.core.Booster <- function(object, new_data) {
   xgb <- reticulate::import("xgboost")
   blt <- reticulate::import_builtins()
+
   new_data <- xgb$DMatrix(new_data)
 
   # parameters from Sagemaker xgboost container for consistency:
