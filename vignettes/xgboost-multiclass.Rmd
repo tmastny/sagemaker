@@ -62,3 +62,59 @@ xgb <- reticulate::import("xgboost")
 xgb$`__version__`
 ```
 
+```{r}
+system(
+  paste0(
+    "aws s3 cp ",
+    "s3://sagemaker-us-east-2-495577990003/models/xgboost-191114-2052-001-7b33b7a5/output/model.tar.gz ",
+    "model.tar.gz"
+  )
+)
+```
+
+```{r}
+io <- reticulate::import("io")
+boto3 <- reticulate::import("boto3")
+s3 <- boto3$client('s3')
+tarfile <- reticulate::import("tarfile")
+pkl <- reticulate::import("pickle")
+xgb <- reticulate::import("xgboost")
+
+# https://datasciencechronicles.com.au/2017/11/12/adventures-in-python-1/
+file <- io$BytesIO()
+s3$download_fileobj(
+  "sagemaker-us-east-2-495577990003",
+  "models/xgboost-191114-2052-001-7b33b7a5/output/model.tar.gz", 
+  file
+)
+
+file_bytes <- file$getvalue()
+
+tar <- tarfile$open(fileobj = io$BytesIO(file_bytes), mode='r:gz')
+
+xgb_pickle <- tar$extractfile("xgboost-model")
+
+boost <- pkl$load(xgb_pickle)
+
+class(boost)
+```
+
+
+```{r}
+library(dplyr)
+test_pred_data <- sagemaker::abalone %>%
+  select(-1) %>%
+  as.matrix()
+
+dimnames(test_pred_data)[[2]] <- NULL
+
+xgb_data <- xgb$DMatrix(test_pred_data)
+```
+
+```{r}
+boost$set_param("nthread", 1L)
+
+pred <- boost$predict(xgb_data, ntree_limit = 0L, validate_features = FALSE) %>%
+  as.numeric()
+glimpse(pred)
+```
