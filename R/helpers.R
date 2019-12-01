@@ -173,12 +173,22 @@ sagemaker_load_model.character <- function(training_job_name) {
 #'
 #' Downloads model artifact from S3.
 #'
-#' @param path File path to write to.
-#'
-#' @inheritParams sagemaker_deploy_endpoint
+#' @inheritParams sagemaker_load_model
 #' @export
-sagemaker_download_model <- function(object, path) {
-  model_path <- model_artifact_s3_path(object$model_name)
+sagemaker_download_model <- function(x, path) {
+  UseMethod("sagemaker_download_model")
+}
+
+#' @rdname sagemaker_download_model
+#' @export
+sagemaker_download_model.sagemaker <- function(object, path) {
+  sagemaker_download_model(object$model_name)
+}
+
+#' @rdname sagemaker_download_model
+#' @export
+sagemaker_download_model.character <- function(training_job_name, path) {
+  model_path <- model_artifact_s3_path(training_job_name)
   system(
     paste0(
       "aws s3 cp ",

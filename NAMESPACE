@@ -3,6 +3,8 @@
 S3method(predict,sagemaker)
 S3method(predict,xgboost.core.Booster)
 S3method(print,sagemaker)
+S3method(sagemaker_download_model,character)
+S3method(sagemaker_download_model,sagemaker)
 S3method(sagemaker_load_model,character)
 S3method(sagemaker_load_model,sagemaker)
 S3method(sagemaker_tuning_job_logs,character)

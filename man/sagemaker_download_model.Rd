@@ -2,15 +2,24 @@
 % Please edit documentation in R/helpers.R
 \name{sagemaker_download_model}
 \alias{sagemaker_download_model}
+\alias{sagemaker_download_model.sagemaker}
+\alias{sagemaker_download_model.character}
 \title{Downloads Model Artifact}
 \usage{
-sagemaker_download_model(object, path)
+sagemaker_download_model(x, path)
+
+\method{sagemaker_download_model}{sagemaker}(object, path)
+
+\method{sagemaker_download_model}{character}(training_job_name, path)
 }
 \arguments{
+\item{x}{Either \code{sagemaker} object or training job name.}
+
 \item{object}{The \code{sagemaker} model object created by
 \link{sagemaker_hyperparameter_tuner} or \link{sagemaker_attach_tuner}.}
 
-\item{path}{File path to write to.}
+\item{training_job_name}{The training job name. Typically something like
+\code{"xgboost-191114-2052-001-7b33b7a5"}.}
 }
 \description{
 Downloads model artifact from S3.
