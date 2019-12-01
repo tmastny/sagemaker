@@ -162,7 +162,7 @@ sagemaker_load_model.character <- function(training_job_name) {
   )
 
   raw_bytes <- bytes_container$getvalue()
-  model_tar <- tarfile$open(fileobj = io$BytesIO(raw_bytes), mode='r:gz')
+  model_tar <- tarfile$open(fileobj = io$BytesIO(raw_bytes), mode = 'r:gz')
 
   model_pickle <- model_tar$extractfile("xgboost-model")
 
