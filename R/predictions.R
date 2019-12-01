@@ -128,7 +128,7 @@ predict.xgboost.core.Booster <- function(object, new_data) {
   # parameters from Sagemaker xgboost container for consistency:
   # https://github.com/aws/sagemaker-xgboost-container/blob/fc364c7c844859de1852acd526111ee22ac8e393/src/sagemaker_xgboost_container/algorithm_mode/serve.py#L119-L121
   object$predict(
-    xgb_data,
+    new_data,
     ntree_limit = blt$getattr(object, "best_ntree_limit", 0L),
     validate_features = FALSE
   ) %>%
