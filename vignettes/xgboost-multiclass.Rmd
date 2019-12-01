@@ -41,6 +41,18 @@ model <- sagemaker_attach_tuner("xgboost-191114-2052")
 ```
 
 ```{r}
+xgb <- sagemaker_load_model(model)
+
+class(xgb)
+
+pred <- predict(xgb, sagemaker::abalone)
+pred %>% glimpse()
+```
+
+
+
+
+```{r}
 model$model_name
 ```
 

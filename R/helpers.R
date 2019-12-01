@@ -109,3 +109,71 @@ sagemaker_training_job_logs <- function(job_name) {
     dplyr::filter_all(dplyr::all_vars(!is.na(.))) %>%
     dplyr::arrange(iteration)
 }
+
+#' Loads Model Artifact
+#'
+#' Loads the model artifact in the current R session.
+#' Currently only supports xgboost models.
+#'
+#' @details
+#' xgboost models require the xgboost Python package.
+#' See \link{sagemaker_install_xgboost} to download.
+#'
+#' xgboost models return a \code{xgboost.core.Booster}
+#' from the xgboost Python package. See
+#' \link{\code{predict.xgboost.core.Booster}}.
+#'
+#' @inheritParams sagemaker_deploy_endpoint
+#' @export
+sagemaker_load_model <- function(object) {
+  # TODO: long-term, I think this might need to be a
+  #       generic based on the type of estimator
+  #       (e.g. linear, xgboost, etc.)
+
+  model_path <- model_artifact_s3_path(object)
+  model_s3_components <- s3_bucket_key_extract(model_path)
+
+  io      <- reticulate::import("io")
+  boto3   <- reticulate::import("boto3")
+  tarfile <- reticulate::import("tarfile")
+  pkl     <- reticulate::import("pickle")
+  xgb     <- reticulate::import("xgboost")
+
+  bytes_container <- io$BytesIO()
+
+  s3 <- boto3$client('s3')
+  s3$download_fileobj(
+    model_s3_components$bucket, model_s3_components$key, bytes_container
+  )
+
+  raw_bytes <- bytes_container$getvalue()
+  model_tar <- tarfile$open(fileobj = io$BytesIO(raw_bytes), mode='r:gz')
+
+  model_pickle <- model_tar$extractfile("xgboost-model")
+
+  pkl$load(model_pickle)
+}
+
+#' Downloads Model Artifact
+#'
+#' Downloads model artifact from S3.
+#'
+#' @param path File path to write to.
+#'
+#' @inheritParams sagemaker_deploy_endpoint
+#' @export
+sagemaker_download_model <- function(object, path) {
+  model_path <- model_artifact_s3_path(object)
+  system(
+    paste0(
+      "aws s3 cp ",
+      model_path, " ",
+      path
+    )
+  )
+}
+
+model_artifact_s3_path <- function(object) {
+  job <- quietly_attach_estimator(object$model_name)
+  job$model_data
+}
