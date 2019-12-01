@@ -113,8 +113,9 @@ predict.sagemaker <- function(object, new_data) {
 
 #' Make Predictions Locally
 #'
-#' This function generics predictions from
-#' \code{xgboost.core.Booster} from \code{\link{sagemaker_load_model}}.
+#' This function generics predictions from the
+#' \code{xgboost.core.Booster} object returned
+#' from \code{\link{sagemaker_load_model}}.
 #'
 #' @inheritParams predict.sagemaker
 #' @export

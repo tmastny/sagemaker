@@ -121,11 +121,16 @@ sagemaker_training_job_logs <- function(job_name) {
 #'
 #' xgboost models return a \code{xgboost.core.Booster}
 #' from the xgboost Python package. See
-#' \link{\code{predict.xgboost.core.Booster}}.
+#' \code{\link{predict.xgboost.core.Booster}}.
 #'
 #' @inheritParams sagemaker_deploy_endpoint
 #' @export
-sagemaker_load_model <- function(object) {
+sagemaker_load_model <- function(x) {
+  UseMethod("sagemaker_load_model")
+}
+
+#' @rdname sagemaker_load_model
+sagemaker_load_model.sagemaker <- function(object) {
   # TODO: long-term, I think this might need to be a
   #       generic based on the type of estimator
   #       (e.g. linear, xgboost, etc.)

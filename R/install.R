@@ -1,9 +1,12 @@
 #' Installs Sagemaker Dependencies
 #'
+#' @description
 #' Installs the Python package dependencies boto3, sagemaker, and awscli.
-#' Installs the Python xgboost package,
-#' for using downloaded model artifacts.
-#' TODO: link to sagemaker_download_artifact
+#' These Python packages are required.
+#'
+#' Optionally, installs the Python xgboost package.
+#' This is only necessary if using \code{\link{sagemaker_load_model}}
+#' on an xgboost model.
 #'
 #' Interface to \code{\link[reticulate:py_install]{reticulate::py_install()}}.
 #'
