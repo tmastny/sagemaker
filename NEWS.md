@@ -1,5 +1,11 @@
 # sagemaker 0.0.1
 
+* Introducing `sagemaker_load_model` to download and load
+  xgboost models to your R session. 
+  This requires the Python xgboost package, 
+  which you can install with `sagemaker_install_xgboost`
+  (the xgboost R package is not sufficient, 
+  because Sagemaker pickles the model object).
 * Documentation on xgboost multi-class classification.
 
 # sagemaker 0.0.0.9000
