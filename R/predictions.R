@@ -117,20 +117,36 @@ predict.sagemaker <- function(object, new_data) {
 #' \code{xgboost.core.Booster} object returned
 #' from \code{\link{sagemaker_load_model}}.
 #'
+#' @inheritParams sagemaker_container
 #' @inheritParams predict.sagemaker
 #' @export
-predict.xgboost.core.Booster <- function(object, new_data) {
+predict.xgboost.core.Booster <- function(object, new_data, type = NULL, ...) {
   xgb <- reticulate::import("xgboost")
   blt <- reticulate::import_builtins()
 
   new_data <- xgb$DMatrix(new_data)
 
+  # TODO: type is a little complicated, because
+  #       some objective metrics only support class.
+  #       For example, softmax only outputs class, while
+  #       softprob outputs probability.
+  #
+  #       To do this right, I would need to force
+  #       the user to select the probability outputs,
+  #       and convert them on the backend...
+
+  predict_fn <- "predict"
+  if (length(type) > 0 && type == "prob") {
+    predict_fn <- "predict_proba"
+  }
+
   # parameters from Sagemaker xgboost container for consistency:
   # https://github.com/aws/sagemaker-xgboost-container/blob/fc364c7c844859de1852acd526111ee22ac8e393/src/sagemaker_xgboost_container/algorithm_mode/serve.py#L119-L121
-  object$predict(
+  object[[predict_fn]](
     new_data,
     ntree_limit = blt$getattr(object, "best_ntree_limit", 0L),
-    validate_features = FALSE
+    validate_features = FALSE,
+    ...
   ) %>%
     as.numeric()
 }

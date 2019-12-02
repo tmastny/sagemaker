@@ -149,12 +149,21 @@ reticulate::py_list_attributes(xgb) %>%
   purrr::discard(~stringr::str_detect(., "__"))
 ```
 
+## Predictions
+
 The sagemaker R package also includes `predict.xgboost.core.Booster`
 to help you easily make predictions on this object:
 
 ```{r}
 pred <- predict(xgb, abalone_class[, -1])
+glimpse(pred)
 ```
+
+softmax is class, softprob is probability.
+https://github.com/dmlc/xgboost/issues/4010#issuecomment-455430332
+
+
+## Analysis
 
 Then we can map the data and predictions back to the true values:
 
@@ -178,16 +187,32 @@ And calculate the confusion matrix:
 table(pred = rings_pred$rings_actual, actual = rings_actual$rings_actual)
 ```
 
+# softprob
+
+To compare the output, let's train softprob:
+
 ```{r}
-job_logs <- sagemaker_training_job_logs(tune$model_name)
+xgb_estimator2 <- sagemaker_xgb_estimator()
+
+xgb_estimator2$set_hyperparameters(
+  eval_metric = "mlogloss",
+  objective = "multi:softprob",
+  num_class = 10L
+)
+```
+
+```{r eval = FALSE}
+tune2 <- sagemaker_hyperparameter_tuner(
+  xgb_estimator2, s3_split(train_path, validation_path), ranges, max_jobs = 5
+)
 ```
 
 ```{r}
-library(ggplot2)
+xgb2 <- sagemaker_load_model(tune2)
+```
 
-job_logs %>%
-  pivot_longer(`train:mlogloss`:`validation:mlogloss`) %>%
-  ggplot(aes(iteration, value, color = name)) +
-  geom_line()
+```{r}
+pred2 <- predict(xgb2, abalone_class[, -1])
+glimpse(pred2)
 ```
 
