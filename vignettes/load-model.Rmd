@@ -156,8 +156,26 @@ to help you easily make predictions on this object:
 pred <- predict(xgb, abalone_class[, -1])
 ```
 
+Then we can map the data and predictions back to the true values:
+
 ```{r}
-table(pred, abalone_class$rings)
+ring_map <- tidy(rec, 2) %>%
+  unnest(value) %>%
+  select(rings_integer = integer, rings_actual = value)
+
+rings_actual <- abalone_class %>%
+  left_join(ring_map, by = c("rings" = "rings_integer")) 
+```
+
+```{r}
+rings_pred <- tibble::enframe(pred, NULL, "rings") %>%
+  left_join(ring_map, by = c("rings" = "rings_integer"))
+```
+
+And calculate the confusion matrix:
+
+```{r}
+table(pred = rings_pred$rings_actual, actual = rings_actual$rings_actual)
 ```
 
 ```{r}
