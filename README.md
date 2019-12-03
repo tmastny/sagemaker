@@ -23,10 +23,10 @@ guide for examples\!
 
 ## Less boilerplate
 
-Compare the AWS Sagemaker API vs. to the sagemaker R package yourself
-with this [side-by-side
-comparsion](https://tmastny.github.io/sagemaker/articles/sagemaker-vs-sagemaker.html)
-. The R package hides the details for later, and lets you get started
+Compare [the AWS Sagemaker API vs. the sagemaker R
+package](https://tmastny.github.io/sagemaker/articles/sagemaker-vs-sagemaker.html).
+
+The R package hides the details for later, and lets you get started
 ASAP.
 
 [![](man/figures/side-by-side.png)](https://tmastny.github.io/sagemaker/articles/sagemaker-vs-sagemaker.html)
