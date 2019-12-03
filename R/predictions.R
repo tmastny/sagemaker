@@ -104,11 +104,42 @@ predict.sagemaker <- function(object, new_data) {
 
   predictions <- predictor$predict(new_data)
 
-  predictions <- predictions %>%
-    stringr::str_split(pattern = ",", simplify = TRUE) %>%
-    as.numeric()
+  format_endpoint_predictions(predictions)
+}
 
-  predictions
+format_endpoint_predictions <- function(pred) {
+
+  # This formats two common types of endpoint return values.
+  #
+  #  1-dimensional string returns
+  #  (xgboost objective functions that return a class, probability, or numeric):
+  #    "1,2,3,4,6,0.324"
+  #
+  #  n-dimensional string returns
+  #  (xgboost `objective = "multi:softprob"` returns a num_class * input_rows matrix):
+  #
+  #     For three classes and two rows:
+  #        "[0.2, 0.7, 0.1],[0.9, 0.06, 0.4]"
+  #
+  # The function makes them valid json arrays and converts them to a data frame.
+
+  json_pred <- pred %>%
+    as.character() %>%
+    stringr::str_c("[", ., "]") %>%
+    jsonlite::parse_json()
+
+  width <- length(json_pred[[1]]) - 1
+
+  name <- ".pred"
+  if (width > 0) {
+    name <- paste0(".pred_", 0:width)
+  }
+
+  json_pred %>%
+    purrr::map(purrr::set_names, nm = name) %>%
+    tibble(.pred = .) %>%
+    tidyr::unnest_wider(.pred, names_repair = "minimal") %>%
+    dplyr::mutate_all(as.numeric)
 }
 
 #' Make Predictions Locally
@@ -150,12 +181,14 @@ predict.xgboost.core.Booster <- function(object, new_data, ...) {
     ...
   )
 
-  format_predictions(pred)
+  format_local_predictions(pred)
 }
 
-format_predictions <- function(pred) {
+format_local_predictions <- function(pred) {
   if (length(dim(pred)) > 1) {
-    pred_df <- tibble::as_tibble(pred)
+    pred_df <- tibble::as_tibble(pred) %>%
+      dplyr::mutate_all(as.numeric)
+
     names(pred_df) <- paste0(".pred_", 0:(dim(pred)[2] - 1))
 
     return(pred_df)
