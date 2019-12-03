@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Installs Sagemaker Dependencies — sagemaker_install • sagemaker</title>
+<title>Make Predictions Locally — predict.xgboost.core.Booster • sagemaker</title>
 
 
 <!-- jquery -->
@@ -35,13 +35,10 @@
 
 
 
-<meta property="og:title" content="Installs Sagemaker Dependencies — sagemaker_install" />
-<meta property="og:description" content="Installs the Python package dependencies boto3, sagemaker, and awscli.
-These Python packages are required.
-Optionally, installs the Python xgboost package.
-This is only necessary if using sagemaker_load_model
-on an xgboost model.
-Interface to reticulate::py_install()." />
+<meta property="og:title" content="Make Predictions Locally — predict.xgboost.core.Booster" />
+<meta property="og:description" content="This function generics predictions from the
+xgboost.core.Booster object returned
+from sagemaker_load_model." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -126,27 +123,35 @@ Interface to reticulate::py_install()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Installs Sagemaker Dependencies</h1>
+    <h1>Make Predictions Locally</h1>
     
-    <div class="hidden name"><code>sagemaker_install.Rd</code></div>
+    <div class="hidden name"><code>predict.xgboost.core.Booster.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Installs the Python package dependencies boto3, sagemaker, and awscli.
-These Python packages are required.</p>
-<p>Optionally, installs the Python xgboost package.
-This is only necessary if using <code><a href='sagemaker_load_model.html'>sagemaker_load_model</a></code>
-on an xgboost model.</p>
-<p>Interface to <code><a href='https://rdrr.io/pkg/reticulate/man/py_install.html'>reticulate::py_install()</a></code>.</p>
+    <p>This function generics predictions from the
+<code>xgboost.core.Booster</code> object returned
+from <code><a href='sagemaker_load_model.html'>sagemaker_load_model</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sagemaker_install</span>(<span class='no'>...</span>)
-
-<span class='fu'>sagemaker_install_xgboost</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='co'># S3 method for xgboost.core.Booster</span>
+<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>The <code>sagemaker</code> model object created by
+<a href='sagemaker_hyperparameter_tuner.html'>sagemaker_hyperparameter_tuner</a> or <a href='sagemaker_attach_tuner.html'>sagemaker_attach_tuner</a>.</p></td>
+    </tr>
+    <tr>
+      <th>new_data</th>
+      <td><p>The <code>data.frame</code> or
+<code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code> to make new predictions on.
+Columns must be in the same order as the training data.
+The outcome column must be excluded.</p></td>
+    </tr>
     <tr>
       <th>...</th>
       <td><p>Additional named arguments sent to the underlying API.</p></td>

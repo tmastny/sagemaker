@@ -4,7 +4,7 @@
 \alias{predict.xgboost.core.Booster}
 \title{Make Predictions Locally}
 \usage{
-\method{predict}{xgboost.core.Booster}(object, new_data)
+\method{predict}{xgboost.core.Booster}(object, new_data, ...)
 }
 \arguments{
 \item{object}{The \code{sagemaker} model object created by
@@ -14,6 +14,8 @@
 \code{\link[tibble:tibble]{tibble::tibble()}} to make new predictions on.
 Columns must be in the same order as the training data.
 The outcome column must be excluded.}
+
+\item{...}{Additional named arguments sent to the underlying API.}
 }
 \description{
 This function generics predictions from the

@@ -14,6 +14,9 @@ knitr::opts_chunk$set(
 )
 ```
 
+TODO: add a title
+TODO: link to homepage
+
 # Introduction
 
 Sagemaker is great for training, 
@@ -183,8 +186,8 @@ rings_actual <- abalone_class %>%
 ```
 
 ```{r}
-rings_pred <- tibble::enframe(pred, NULL, "rings") %>%
-  left_join(ring_map, by = c("rings" = "rings_integer"))
+rings_pred <- pred %>%
+  left_join(ring_map, by = c(".pred" = "rings_integer"))
 ```
 
 And calculate the confusion matrix:

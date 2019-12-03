@@ -70,7 +70,7 @@ Interface to sagemaker$amazon$amazon_estimator$get_image_uri." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sagemaker</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -95,6 +95,9 @@ Interface to sagemaker$amazon$amazon_estimator$get_image_uri." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/load-model.html">multi-class</a>
+    </li>
     <li>
       <a href="../articles/sagemaker-vs-sagemaker.html">Sagemaker API vs. Sagemaker R Package</a>
     </li>
@@ -131,7 +134,7 @@ Interface to sagemaker$amazon$amazon_estimator$get_image_uri." />
 
     <pre class="usage"><span class='fu'>sagemaker_container</span>(<span class='no'>container_name</span>, <span class='kw'>repo_version</span> <span class='kw'>=</span> <span class='st'>"latest"</span>, <span class='no'>...</span>)
 
-<span class='fu'>sagemaker_xgb_container</span>(<span class='kw'>repo_version</span> <span class='kw'>=</span> <span class='st'>"latest"</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>sagemaker_xgb_container</span>(<span class='kw'>repo_version</span> <span class='kw'>=</span> <span class='st'>"0.90-1"</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,7 +145,8 @@ Interface to sagemaker$amazon$amazon_estimator$get_image_uri." />
     </tr>
     <tr>
       <th>repo_version</th>
-      <td><p>Version of the model. Defaults to "latest".</p></td>
+      <td><p>Version of the model. Caution: "latest" does not
+necessarily pull latest version.</p></td>
     </tr>
     <tr>
       <th>...</th>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Installs Sagemaker Dependencies — sagemaker_install • sagemaker</title>
+<title>Loads Model Artifact — sagemaker_load_model • sagemaker</title>
 
 
 <!-- jquery -->
@@ -35,13 +35,9 @@
 
 
 
-<meta property="og:title" content="Installs Sagemaker Dependencies — sagemaker_install" />
-<meta property="og:description" content="Installs the Python package dependencies boto3, sagemaker, and awscli.
-These Python packages are required.
-Optionally, installs the Python xgboost package.
-This is only necessary if using sagemaker_load_model
-on an xgboost model.
-Interface to reticulate::py_install()." />
+<meta property="og:title" content="Loads Model Artifact — sagemaker_load_model" />
+<meta property="og:description" content="Loads the model artifact in the current R session.
+Currently only supports xgboost models." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -126,39 +122,57 @@ Interface to reticulate::py_install()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Installs Sagemaker Dependencies</h1>
+    <h1>Loads Model Artifact</h1>
     
-    <div class="hidden name"><code>sagemaker_install.Rd</code></div>
+    <div class="hidden name"><code>sagemaker_load_model.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Installs the Python package dependencies boto3, sagemaker, and awscli.
-These Python packages are required.</p>
-<p>Optionally, installs the Python xgboost package.
-This is only necessary if using <code><a href='sagemaker_load_model.html'>sagemaker_load_model</a></code>
-on an xgboost model.</p>
-<p>Interface to <code><a href='https://rdrr.io/pkg/reticulate/man/py_install.html'>reticulate::py_install()</a></code>.</p>
+    <p>Loads the model artifact in the current R session.
+Currently only supports xgboost models.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sagemaker_install</span>(<span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>sagemaker_load_model</span>(<span class='no'>x</span>)
 
-<span class='fu'>sagemaker_install_xgboost</span>(<span class='no'>...</span>)</pre>
+<span class='co'># S3 method for sagemaker</span>
+<span class='fu'>sagemaker_load_model</span>(<span class='no'>object</span>)
+
+<span class='co'># S3 method for character</span>
+<span class='fu'>sagemaker_load_model</span>(<span class='no'>training_job_name</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>Additional named arguments sent to the underlying API.</p></td>
+      <th>x</th>
+      <td><p>Either <code>sagemaker</code> object or training job name.</p></td>
+    </tr>
+    <tr>
+      <th>object</th>
+      <td><p>The <code>sagemaker</code> model object created by
+<a href='sagemaker_hyperparameter_tuner.html'>sagemaker_hyperparameter_tuner</a> or <a href='sagemaker_attach_tuner.html'>sagemaker_attach_tuner</a>.</p></td>
+    </tr>
+    <tr>
+      <th>training_job_name</th>
+      <td><p>The training job name. Typically something like
+<code>"xgboost-191114-2052-001-7b33b7a5"</code>.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>xgboost models require the xgboost Python package.
+See <a href='sagemaker_install.html'>sagemaker_install_xgboost</a> to download.</p>
+<p>xgboost models return a <code>xgboost.core.Booster</code>
+from the xgboost Python package. See
+<code><a href='predict.xgboost.core.Booster.html'>predict.xgboost.core.Booster</a></code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#details">Details</a></li>
     </ul>
 
   </div>

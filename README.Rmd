@@ -72,9 +72,6 @@ and `sagemaker_tuning_job_logs`.
 knitr::include_graphics("man/figures/eval.png")
 ```
 
-
-
-
 ## Installation
 
 You can install sagemaker from [GitHub](https://github.com/) with:
