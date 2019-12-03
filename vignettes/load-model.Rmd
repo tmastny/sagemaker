@@ -145,7 +145,7 @@ class(xgb)
 from the xgboost Python package. 
 This means you have full access to all its attribute:
 
-```{r}
+```{r echo = FALSE}
 reticulate::py_list_attributes(xgb) %>%
   purrr::discard(~stringr::str_detect(., "__"))
 ```
@@ -170,7 +170,7 @@ after the predictions are returned.
 
 ## Analysis
 
-Then we can map the data and predictions back to the true values:
+Next, we can map the data and predictions back to the true values:
 
 ```{r}
 ring_map <- tidy(rec, 2) %>%
@@ -192,7 +192,7 @@ And calculate the confusion matrix:
 table(pred = rings_pred$rings_actual, actual = rings_actual$rings_actual)
 ```
 
-# softprob
+# Multiclass probability
 
 Let's also see how `objective = "multi:softprob"` works.
 
@@ -224,6 +224,9 @@ tune2
 ```{r}
 xgb2 <- sagemaker_load_model(tune2)
 ```
+
+The outcome is a tibble, with probability that the observation matches
+the class.
 
 ```{r}
 pred2 <- predict(xgb2, abalone_class[, -1])

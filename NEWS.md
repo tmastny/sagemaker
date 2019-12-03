@@ -6,6 +6,7 @@
   which you can install with `sagemaker_install_xgboost`
   (the xgboost R package is not sufficient, 
   because Sagemaker pickles the model object).
+* Support for multiclass probability parsing on the Sagemaker endpoint.
 * Documentation on xgboost multi-class classification.
 
 # sagemaker 0.0.0.9000
