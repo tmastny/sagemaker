@@ -39,6 +39,7 @@ library(sagemaker)
 library(dplyr)
 library(rsample)
 library(recipes)
+library(ggplot2)
 
 top_rings <- sagemaker::abalone %>%
   group_by(rings) %>%
@@ -191,6 +192,17 @@ And calculate the confusion matrix:
 ```{r}
 table(pred = rings_pred$rings_actual, actual = rings_actual$rings_actual)
 ```
+
+And see how the model fit is:
+
+```{r}
+logs <- sagemaker_training_job_logs(tune$model_name)
+logs %>%
+  pivot_longer(`train:mlogloss`:`validation:mlogloss`) %>%
+  ggplot(aes(iteration, value, color = name)) +
+  geom_line()
+```
+
 
 # Multiclass probability
 
