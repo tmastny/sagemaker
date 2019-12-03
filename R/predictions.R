@@ -172,7 +172,7 @@ predict.xgboost.core.Booster <- function(object, new_data, ...) {
   # parameters from Sagemaker xgboost container for consistency:
   # https://github.com/aws/sagemaker-xgboost-container/blob/fc364c7c844859de1852acd526111ee22ac8e393/src/sagemaker_xgboost_container/algorithm_mode/serve.py#L119-L121
   #
-  #`best_ntree_limit` ensures predicts are done with early stopping:
+  # `best_ntree_limit` ensures predictions are done with early stopping:
   # https://stackoverflow.com/a/51985193/6637133
   pred <- object$predict(
     new_data,
