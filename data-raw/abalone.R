@@ -3,7 +3,7 @@ library(dplyr)
 library(recipes)
 
 data_file <- 'https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data'
-abalone <- read_csv(file = data_file, col_names = FALSE)
+abalone <- readr::read_csv(file = data_file, col_names = FALSE)
 
 names(abalone) <- c(
   'sex', 'length', 'diameter', 'height', 'whole_weight',

@@ -4,7 +4,7 @@
 \alias{predict.sagemaker}
 \title{Make Predictions from Sagemaker Model}
 \usage{
-\method{predict}{sagemaker}(object, new_data)
+\method{predict}{sagemaker}(object, new_data, ...)
 }
 \arguments{
 \item{object}{The \code{sagemaker} model object created by
@@ -14,6 +14,8 @@
 \code{\link[tibble:tibble]{tibble::tibble()}} to make new predictions on.
 Columns must be in the same order as the training data.
 The outcome column must be excluded.}
+
+\item{...}{Additional named arguments sent to the underlying API.}
 }
 \description{
 Returns a vector of predictions from a Sagemaker real-time endpoint.

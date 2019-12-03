@@ -8,18 +8,14 @@
 \usage{
 sagemaker_download_model(x, path)
 
-\method{sagemaker_download_model}{sagemaker}(object, path)
+\method{sagemaker_download_model}{sagemaker}(x, path)
 
-\method{sagemaker_download_model}{character}(training_job_name, path)
+\method{sagemaker_download_model}{character}(x, path)
 }
 \arguments{
-\item{x}{Either \code{sagemaker} object or training job name.}
-
-\item{object}{The \code{sagemaker} model object created by
-\link{sagemaker_hyperparameter_tuner} or \link{sagemaker_attach_tuner}.}
-
-\item{training_job_name}{The training job name. Typically something like
-\code{"xgboost-191114-2052-001-7b33b7a5"}.}
+\item{x}{Either the \code{sagemaker} model object created by
+\link{sagemaker_hyperparameter_tuner} or \link{sagemaker_attach_tuner}
+or the training job name.}
 }
 \description{
 Downloads model artifact from S3.

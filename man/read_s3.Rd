@@ -31,6 +31,8 @@ in with dummy names \code{X1}, \code{X2} etc. Duplicate column names
 will generate a warning and be made unique with a numeric prefix.}
 
 \item{...}{Additional named arguments sent to the underlying API.}
+
+\item{x}{A data frame to write to disk}
 }
 \description{
 Downloads an csv file from S3 and reads it into the R session as a

@@ -85,7 +85,7 @@ try_loading_endpoint <- function(object) {
 #'
 #' @inheritParams sagemaker_deploy_endpoint
 #' @export
-predict.sagemaker <- function(object, new_data) {
+predict.sagemaker <- function(object, new_data, ...) {
 
   predictor <- try_loading_endpoint(object)
 
@@ -102,7 +102,7 @@ predict.sagemaker <- function(object, new_data) {
   new_data <- as.matrix(new_data)
   dimnames(new_data)[[2]] <- NULL
 
-  predictions <- predictor$predict(new_data)
+  predictions <- predictor$predict(new_data, ...)
 
   format_endpoint_predictions(predictions)
 }
@@ -125,7 +125,7 @@ format_endpoint_predictions <- function(pred) {
 
   json_pred <- pred %>%
     as.character() %>%
-    stringr::str_c("[", ., "]") %>%
+    stringr::str_c("[", .data, "]") %>%
     jsonlite::parse_json()
 
   width <- length(json_pred[[1]]) - 1
@@ -137,8 +137,8 @@ format_endpoint_predictions <- function(pred) {
 
   json_pred %>%
     purrr::map(purrr::set_names, nm = name) %>%
-    tibble(.pred = .) %>%
-    tidyr::unnest_wider(.pred, names_repair = "minimal") %>%
+    tibble::tibble(.pred = .) %>%
+    tidyr::unnest_wider(.data$.pred, names_repair = "minimal") %>%
     dplyr::mutate_all(as.numeric)
 }
 

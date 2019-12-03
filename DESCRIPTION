@@ -14,11 +14,14 @@ URL: https://tmastny.github.io/sagemaker/
 BugReports: https://github.com/tmastny/sagemaker/issues
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 2.10)
 Suggests: 
     knitr,
     rmarkdown,
     testthat (>= 2.1.0),
-    recipes
+    recipes,
+    rsample,
+    ggplot2
 VignetteBuilder: knitr
 RoxygenNote: 7.0.1.9000
 Imports: 
@@ -30,7 +33,9 @@ Imports:
     janitor,
     tibble,
     jsonlite,
-    tidyr
+    tidyr,
+    readr,
+    utils
 SystemRequirements:
     awscli,
     sagemaker,

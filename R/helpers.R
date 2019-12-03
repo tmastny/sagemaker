@@ -10,7 +10,7 @@ print.sagemaker <- function(x, ...) {
 
   cat(
     paste(
-      capture.output(print(x$best_tune))[c(-1, -3)],
+      utils::capture.output(print(x$best_tune))[c(-1, -3)],
       collapse = "\n"
     )
   )
@@ -24,7 +24,9 @@ print.sagemaker <- function(x, ...) {
 #' The result is a data frame has one row per model, along with the trained
 #' validation metric.
 #'
-#' @param x Either \code{sagemaker} object or tuning job name.
+#' @param x Either the \code{sagemaker} model object created by
+#' \link{sagemaker_hyperparameter_tuner} or \link{sagemaker_attach_tuner}
+#' or the tuning job name.
 #'
 #' @export
 sagemaker_tuning_job_logs <- function(x) {
@@ -32,14 +34,12 @@ sagemaker_tuning_job_logs <- function(x) {
 }
 
 #' @rdname sagemaker_tuning_job_logs
-#' @inheritParams sagemaker_deploy_endpoint
 #' @export
-sagemaker_tuning_job_logs.sagemaker <- function(object) {
+sagemaker_tuning_job_logs.sagemaker <- function(x) {
   sagemaker_tuning_job_logs(object$tuning_job_name)
 }
 
 #' @rdname sagemaker_tuning_job_logs
-#' @inheritParams sagemaker_attach_tuner
 #' @export
 sagemaker_tuning_job_logs.character <- function(tuning_job_name) {
   tuner_stats <- sagemaker$HyperparameterTuningJobAnalytics(tuning_job_name)
@@ -94,20 +94,20 @@ sagemaker_training_job_logs <- function(training_job_name) {
   job_logs %>%
     tibble::enframe(NULL, "logs") %>%
     dplyr::mutate(
-      iteration = stringr::str_match(logs, ".*\\[([0-9]+)\\].*")[, 2]
+      iteration = stringr::str_match(.data$logs, ".*\\[([0-9]+)\\].*")[, 2]
     ) %>%
-    dplyr::mutate(iteration = as.numeric(iteration)) %>%
+    dplyr::mutate(iteration = as.numeric(.data$iteration)) %>%
     dplyr::mutate(
-      !!metric_names[1] := stringr::str_match(logs, metric_regex[1])[, 2] %>%
+      !!metric_names[1] := stringr::str_match(.data$logs, metric_regex[1])[, 2] %>%
         as.numeric()
     ) %>%
     dplyr::mutate(
-      !!metric_names[2] := stringr::str_match(logs, metric_regex[2])[, 2] %>%
+      !!metric_names[2] := stringr::str_match(.data$logs, metric_regex[2])[, 2] %>%
         as.numeric()
     ) %>%
-    dplyr::select(-logs) %>%
+    dplyr::select(-.data$logs) %>%
     dplyr::filter_all(dplyr::all_vars(!is.na(.))) %>%
-    dplyr::arrange(iteration)
+    dplyr::arrange(.data$iteration)
 }
 
 #' Loads Model Artifact
@@ -123,7 +123,9 @@ sagemaker_training_job_logs <- function(training_job_name) {
 #' from the xgboost Python package. See
 #' \code{\link{predict.xgboost.core.Booster}}.
 #'
-#' @param x Either \code{sagemaker} object or training job name.
+#' @param x Either the \code{sagemaker} model object created by
+#' \link{sagemaker_hyperparameter_tuner} or \link{sagemaker_attach_tuner}
+#' or the training job name.
 #'
 #' @export
 sagemaker_load_model <- function(x) {
@@ -131,21 +133,19 @@ sagemaker_load_model <- function(x) {
 }
 
 #' @rdname sagemaker_load_model
-#' @inheritParams sagemaker_deploy_endpoint
 #' @export
-sagemaker_load_model.sagemaker <- function(object) {
-  sagemaker_load_model(object$model_name)
+sagemaker_load_model.sagemaker <- function(x) {
+  sagemaker_load_model(x$model_name)
 }
 
-#' @inheritParams sagemaker_training_job_logs
 #' @rdname sagemaker_load_model
 #' @export
-sagemaker_load_model.character <- function(training_job_name) {
+sagemaker_load_model.character <- function(x) {
   # TODO: long-term, I think this might need to be a
   #       generic based on the type of estimator
   #       (e.g. linear, xgboost, etc.)
 
-  model_path <- model_artifact_s3_path(training_job_name)
+  model_path <- model_artifact_s3_path(x)
   model_s3_components <- s3_bucket_key_extract(model_path)
 
   io      <- reticulate::import("io")
@@ -173,6 +173,8 @@ sagemaker_load_model.character <- function(training_job_name) {
 #'
 #' Downloads model artifact from S3.
 #'
+#' @param path A file path.
+#'
 #' @inheritParams sagemaker_load_model
 #' @export
 sagemaker_download_model <- function(x, path) {
@@ -181,14 +183,14 @@ sagemaker_download_model <- function(x, path) {
 
 #' @rdname sagemaker_download_model
 #' @export
-sagemaker_download_model.sagemaker <- function(object, path) {
-  sagemaker_download_model(object$model_name)
+sagemaker_download_model.sagemaker <- function(x, path) {
+  sagemaker_download_model(x$model_name)
 }
 
 #' @rdname sagemaker_download_model
 #' @export
-sagemaker_download_model.character <- function(training_job_name, path) {
-  model_path <- model_artifact_s3_path(training_job_name)
+sagemaker_download_model.character <- function(x, path) {
+  model_path <- model_artifact_s3_path(x)
   system(
     paste0(
       "aws s3 cp ",
