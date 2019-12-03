@@ -158,7 +158,7 @@ predict.xgboost.core.Booster <- function(object, new_data, ...) {
   new_data <- xgb$DMatrix(new_data)
 
   # TODO: I thought type would be as simple as
-  #       object$predict_prob, it's not available:
+  #       object$predict_proba, it's not available:
   #       https://github.com/awslabs/amazon-sagemaker-examples/issues/479
   #
   #       So some objective metrics only support class or probability.
