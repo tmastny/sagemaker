@@ -29,7 +29,7 @@ comparsion](https://tmastny.github.io/sagemaker/articles/sagemaker-vs-sagemaker.
 . The R package hides the details for later, and lets you get started
 ASAP.
 
-![](man/figures/side-by-side.png)
+[![](man/figures/side-by-side.png)](https://tmastny.github.io/sagemaker/articles/sagemaker-vs-sagemaker.html)
 
 ## Easier predictions
 
