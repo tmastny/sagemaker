@@ -120,14 +120,17 @@ predict.sagemaker <- function(object, new_data) {
 #' @inheritParams sagemaker_container
 #' @inheritParams predict.sagemaker
 #' @export
-predict.xgboost.core.Booster <- function(object, new_data, type = NULL, ...) {
+predict.xgboost.core.Booster <- function(object, new_data, ...) {
   xgb <- reticulate::import("xgboost")
   blt <- reticulate::import_builtins()
 
   new_data <- xgb$DMatrix(new_data)
 
-  # TODO: type is a little complicated, because
-  #       some objective metrics only support class.
+  # TODO: I thought type would be as simple as
+  #       object$predict_prob, it's not available:
+  #       https://github.com/awslabs/amazon-sagemaker-examples/issues/479
+  #
+  #       So some objective metrics only support class or probability.
   #       For example, softmax only outputs class, while
   #       softprob outputs probability.
   #
@@ -135,22 +138,31 @@ predict.xgboost.core.Booster <- function(object, new_data, type = NULL, ...) {
   #       the user to select the probability outputs,
   #       and convert them on the backend...
 
-  predict_fn <- "predict"
-  if (length(type) > 0 && type == "prob") {
-    predict_fn <- "predict_proba"
-  }
-
   # parameters from Sagemaker xgboost container for consistency:
   # https://github.com/aws/sagemaker-xgboost-container/blob/fc364c7c844859de1852acd526111ee22ac8e393/src/sagemaker_xgboost_container/algorithm_mode/serve.py#L119-L121
-  object[[predict_fn]](
+  #
+  #`best_ntree_limit` ensures predicts are done with early stopping:
+  # https://stackoverflow.com/a/51985193/6637133
+  pred <- object$predict(
     new_data,
     ntree_limit = blt$getattr(object, "best_ntree_limit", 0L),
     validate_features = FALSE,
     ...
-  ) %>%
-    as.numeric()
+  )
+
+  format_predictions(pred)
 }
 
+format_predictions <- function(pred) {
+  if (length(dim(pred)) > 1) {
+    pred_df <- tibble::as_tibble(pred)
+    names(pred_df) <- paste0(".pred_", 0:(dim(pred)[2] - 1))
+
+    return(pred_df)
+  }
+
+  tibble::enframe(as.numeric(pred), NULL, ".pred")
+}
 
 #' Batch Predictions from Sagemaker Model
 #'

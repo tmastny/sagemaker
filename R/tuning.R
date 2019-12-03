@@ -79,6 +79,15 @@ sagemaker_hyperparameter_tuner <- function(
   ...
 ) {
 
+  if (estimator$hyphyperparameters()$objective == "multi:softprob") {
+    warning(
+      "`objective = 'multi:softprob' is not supported by AWS Sagemaker. ",
+      "Predictions from a deployed endpoint will not work. ",
+      "Models can still be downloaded and used locally.",
+      "\nSee: https://github.com/aws/sagemaker-spark/issues/47"
+    )
+  }
+
   max_jobs <- as.integer(max_jobs)
   max_parallel_jobs <- as.integer(max_parallel_jobs)
 

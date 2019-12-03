@@ -75,7 +75,9 @@ split <- initial_split(abalone_class)
 
 train_path <- s3(s3_bucket(), "abalone-class-train.csv")
 validation_path <- s3(s3_bucket(), "abalone-class-test.csv")
+```
 
+```{r eval = FALSE}
 write_s3(analysis(split), train_path)
 write_s3(assessment(split), validation_path)
 ```
@@ -97,9 +99,8 @@ xgb_estimator$set_hyperparameters(
 ```
 
 `objective = "multi:softmax"` will return the predicted class,
-and the probability of the prediction. 
-Alternatively, `objective = "multi:softprob"` returns a matrix 
-with probabilities associated for each class^[
+while `objective = "multi:softprob"` returns a tibble 
+with probabilities for each class^[
 You can also use `eval_metric = "merror"`, 
 although `"mlogloss"` is usually better in practice.].
 
@@ -117,15 +118,15 @@ tune <- sagemaker_hyperparameter_tuner(
 )
 ```
 
+```{r include = FALSE}
+tune <- sagemaker_attach_tuner("sagemaker-xgboost-191201-1356")
+```
+
 ```{r}
 tune
 ```
 
 ## Loading the model
-
-```{r include = FALSE}
-tune <- sagemaker_attach_tuner("sagemaker-xgboost-191201-1312")
-```
 
 We can easily download the Sagemaker model artifact from S3
 and load it into the R session.
@@ -159,9 +160,13 @@ pred <- predict(xgb, abalone_class[, -1])
 glimpse(pred)
 ```
 
-softmax is class, softprob is probability.
-https://github.com/dmlc/xgboost/issues/4010#issuecomment-455430332
+Unfortunately, 
+[at the moment](https://github.com/awslabs/amazon-sagemaker-examples/issues/479) 
+type (`"class"` or `"prob"`) cannot be supported.
 
+If you want both, I recommend you default to `objective = "multi:softprob"`
+or `objective = "binary:logistic"` for probabilities and convert to outcomes
+after the predictions are returned. 
 
 ## Analysis
 
@@ -189,7 +194,7 @@ table(pred = rings_pred$rings_actual, actual = rings_actual$rings_actual)
 
 # softprob
 
-To compare the output, let's train softprob:
+Let's also see how `objective = "multi:softprob"` works.
 
 ```{r}
 xgb_estimator2 <- sagemaker_xgb_estimator()
@@ -207,6 +212,15 @@ tune2 <- sagemaker_hyperparameter_tuner(
 )
 ```
 
+```{r include = FALSE}
+tune2 <- sagemaker_attach_tuner("sagemaker-xgboost-191201-2049")
+```
+
+```{r}
+tune2
+```
+
+
 ```{r}
 xgb2 <- sagemaker_load_model(tune2)
 ```
@@ -215,4 +229,64 @@ xgb2 <- sagemaker_load_model(tune2)
 pred2 <- predict(xgb2, abalone_class[, -1])
 glimpse(pred2)
 ```
+
+Then if we wanted return to predicted classes, 
+we need to find the maximum predicted class for each row (variable)
+of the tibble.
+
+```{r}
+pred2_class <- pred2 %>%
+  mutate(variable = row_number()) %>%
+  pivot_longer(
+    .pred_0:.pred_9, names_to = c("name", ".pred"), 
+    names_sep = "_", names_ptypes = list(name = character(), .pred = integer())
+  ) %>%
+  group_by(variable) %>%
+  filter(value == max(value)) %>%
+  ungroup() %>%
+  select(.pred)
+
+glimpse(pred2_class)
+```
+
+```{r}
+table(prob = pred2_class[[1]], class = pred[[1]])
+```
+
+Results aren't identical because we used differently tuning parameters.
+
+```{r}
+bind_rows(
+  mutate(tune$best_tune, type = "class"),
+  mutate(tune2$best_tune, type = "prob")
+)
+```
+
+What does it look like through an endpoint?
+
+```{r}
+sagemaker_deploy_endpoint(tune2)
+
+sagemaker_has_endpoint(tune2)
+```
+
+```{r}
+xgb <- sagemaker_load_model(tune2)
+```
+
+```{r}
+predict(xgb, abalone_class[, -1])
+```
+
+
+
+```{r}
+endpoint_pred <- predict(tune2,  abalone_class[, -1])
+```
+
+```{r}
+readr::read_csv(endpoint_pred)
+```
+
+
 
