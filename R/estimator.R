@@ -6,7 +6,8 @@
 #' Interface to \code{sagemaker$amazon$amazon_estimator$get_image_uri}.
 #'
 #' @param container_name Name of the Sagemaker model container, e.g. "xgboost"
-#' @param repo_version Version of the model. Defaults to "latest".
+#' @param repo_version Version of the model. Caution: "latest" does not
+#' necessarily pull latest version.
 #' @param ... Additional named arguments sent to the underlying API.
 #'
 #' @export
@@ -21,7 +22,7 @@ sagemaker_container <- function(container_name, repo_version = "latest", ...) {
 
 #' @rdname sagemaker_container
 #' @export
-sagemaker_xgb_container <- function(repo_version = "latest", ...) {
+sagemaker_xgb_container <- function(repo_version = "0.90-1", ...) {
   sagemaker_container("xgboost", repo_version = repo_version, ...)
 }
 

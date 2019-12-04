@@ -9,5 +9,5 @@ test_that("batch predictions work", {
     s3(s3_bucket(), "tests", "batch-pred-test-output")
   )
 
-  expect_equal(read_s3(output_path), sagemaker::abalone_pred)
+  expect_equal(read_s3(output_path)[[1]], sagemaker::abalone_pred[[1]])
 })

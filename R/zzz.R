@@ -8,3 +8,6 @@ sagemaker <- NULL
   boto3 <<- reticulate::import("boto3", delay_load = TRUE)
   sagemaker <<- reticulate::import("sagemaker", delay_load = TRUE)
 }
+
+utils::globalVariables(".")
+utils::globalVariables(":=")

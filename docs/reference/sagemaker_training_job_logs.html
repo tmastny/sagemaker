@@ -71,7 +71,7 @@ or epochs for neural networks." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sagemaker</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -96,6 +96,9 @@ or epochs for neural networks." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/load-model.html">multi-class</a>
+    </li>
     <li>
       <a href="../articles/sagemaker-vs-sagemaker.html">Sagemaker API vs. Sagemaker R Package</a>
     </li>
@@ -131,13 +134,13 @@ training job. Typically associated with <code>nround</code>s for xgboost
 or epochs for neural networks.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sagemaker_training_job_logs</span>(<span class='no'>job_name</span>)</pre>
+    <pre class="usage"><span class='fu'>sagemaker_training_job_logs</span>(<span class='no'>training_job_name</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>job_name</th>
+      <th>training_job_name</th>
       <td><p>The training job name. Typically something like
 <code>"xgboost-191114-2052-001-7b33b7a5"</code>.</p></td>
     </tr>

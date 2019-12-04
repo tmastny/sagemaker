@@ -1,0 +1,291 @@
+---
+title: "Downloading Trained Sagemaker Models"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{multi-class}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+Sagemaker is great for training, 
+but sometimes you don't want the overhead (cost and time) of 
+`predict.sagemaker` or `batch_predict`.
+
+Luckily, AWS Sagemaker saves every model in S3, 
+and you can download and use it locally with the right configuration.
+
+For xgboost models (more to come in the future), 
+I've written `sagemaker_load_model`, which loads the trained Sagemaker model
+into your current R session.
+
+## Data
+
+Let's use the `sagemaker::abalone` dataset once again, 
+but this time let's try classification instead of regression.
+
+First we'll identify the classes with the highest frequency, 
+so we can eliminate the low-variance ones.
+
+```{r}
+library(sagemaker)
+library(dplyr)
+library(rsample)
+library(recipes)
+library(ggplot2)
+
+top_rings <- sagemaker::abalone %>%
+  group_by(rings) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n)) %>%
+  top_n(10)
+
+top_rings
+```
+
+We'll use `recipes` to transform the dataset into the proper format
+for xgboost. We must ensure that:
+
+1. classes are integers
+2. classes are labeled 0 to number of classes - 1.
+3. outcome is the first column
+
+```{r}
+rec <- recipe(rings ~ ., data = sagemaker::abalone) %>%
+  step_filter(rings %in% top_rings$rings) %>%
+  step_integer(all_outcomes(), zero_based = TRUE) %>%
+  prep(training = sagemaker::abalone, retain = TRUE)
+
+abalone_class <- juice(rec) %>%
+  select(rings, everything())
+
+abalone_class %>%
+  group_by(rings) %>%
+  summarise(n = n()) %>%
+  arrange(n)
+```
+
+Then we'll split into test/validation and upload to S3 for training.
+
+```{r}
+split <- initial_split(abalone_class)
+
+train_path <- s3(s3_bucket(), "abalone-class-train.csv")
+validation_path <- s3(s3_bucket(), "abalone-class-test.csv")
+```
+
+```{r eval = FALSE}
+write_s3(analysis(split), train_path)
+write_s3(assessment(split), validation_path)
+```
+
+## Training
+
+Frist, we need to set the xgboost hyperparameters for multiclassification.
+See [here](https://xgboost.readthedocs.io/en/latest/parameter.html#learning-task-parameters)
+for the official list of xgboost parameters.
+
+```{r}
+xgb_estimator <- sagemaker_xgb_estimator()
+
+xgb_estimator$set_hyperparameters(
+  eval_metric = "mlogloss",
+  objective = "multi:softmax",
+  num_class = 10L
+)
+```
+
+`objective = "multi:softmax"` will return the predicted class,
+while `objective = "multi:softprob"` returns a tibble 
+with probabilities for each class^[
+You can also use `eval_metric = "merror"`, 
+although `"mlogloss"` is usually better in practice.].
+
+Next, we'll set some ranges to tune over and start training.
+
+```{r}
+ranges <- list(
+  max_depth = sagemaker_integer(3, 20),
+  colsample_bytree = sagemaker_continuous(0, 1),
+  subsample = sagemaker_continuous(0, 1)
+)
+```
+
+```{r eval = FALSE}
+tune <- sagemaker_hyperparameter_tuner(
+  xgb_estimator, s3_split(train_path, validation_path), ranges, max_jobs = 5
+)
+```
+
+```{r include = FALSE}
+tune <- sagemaker_attach_tuner("sagemaker-xgboost-191201-1356")
+```
+
+```{r}
+tune
+```
+
+## Loading the model
+
+Now we can download the Sagemaker model artifact from S3
+and load it into the R session.
+
+```{r}
+xgb <- sagemaker_load_model(tune)
+```
+
+For xgboost Sagemaker models, 
+`sagemaker_load_model` loads a 
+[Booster](https://xgboost.readthedocs.io/en/latest/python/python_api.html#xgboost.Booster) 
+object from the xgboost Python package:
+
+```{r}
+class(xgb)
+```
+
+To use this feature, you must have the xgboost Python package installed. 
+You can download and install it with 
+
+```{r eval = FALSE}
+# not run
+sagemaker::sagemaker_install_xgboost()
+```
+
+The Sagemaker R package loads the Booster object into the R session with 
+[reticulate](https://rstudio.github.io/reticulate/). 
+Therefore, all methods and attributes are available in R.
+
+```{r echo = FALSE}
+reticulate::py_list_attributes(xgb) %>%
+  purrr::discard(~stringr::str_detect(., "__"))
+```
+
+## Predictions
+
+However, you need to know the xgboost Python package 
+to work with the local model.
+
+The sagemaker R package also includes `predict.xgboost.core.Booster`
+to help you easily make predictions on this object:
+
+```{r}
+pred <- predict(xgb, abalone_class[, -1])
+glimpse(pred)
+```
+
+This method returns predictions in tibbles, 
+and it attempts to conform to the 
+[tidymodel](https://tidymodels.github.io/parsnip/reference/predict.model_fit.html)
+standard.
+
+Unfortunately, 
+[at the moment](https://github.com/awslabs/amazon-sagemaker-examples/issues/479) 
+type (`"class"` or `"prob"`) cannot be supported.
+
+If you want both probability and class predictions, 
+I recommend you default to `objective = "multi:softprob"`
+or `objective = "binary:logistic"` for probabilities and convert to outcomes
+after the predictions are returned. 
+
+## Analysis
+
+Next, we can map the data and predictions back to the true values:
+
+```{r}
+ring_map <- tidy(rec, 2) %>%
+  unnest(value) %>%
+  select(rings_integer = integer, rings_actual = value)
+
+rings_actual <- abalone_class %>%
+  left_join(ring_map, by = c("rings" = "rings_integer")) 
+```
+
+```{r}
+rings_pred <- pred %>%
+  left_join(ring_map, by = c(".pred" = "rings_integer"))
+```
+
+And calculate the confusion matrix:
+
+```{r}
+table(pred = rings_pred$rings_actual, actual = rings_actual$rings_actual)
+```
+
+We can also see the model fit:
+
+```{r}
+logs <- sagemaker_training_job_logs(tune$model_name)
+logs %>%
+  pivot_longer(`train:mlogloss`:`validation:mlogloss`) %>%
+  ggplot(aes(iteration, value, color = name)) +
+  geom_line()
+```
+
+
+# Multiclass probability
+
+For fun, let's also see train a model using `objective = "multi:softprob"`
+for comparsion.
+
+```{r}
+xgb_estimator2 <- sagemaker_xgb_estimator()
+
+xgb_estimator2$set_hyperparameters(
+  eval_metric = "mlogloss",
+  objective = "multi:softprob",
+  num_class = 10L
+)
+```
+
+```{r eval = FALSE}
+tune2 <- sagemaker_hyperparameter_tuner(
+  xgb_estimator2, s3_split(train_path, validation_path), ranges, max_jobs = 5
+)
+```
+
+```{r include = FALSE}
+tune2 <- sagemaker_attach_tuner("sagemaker-xgboost-191201-2049")
+```
+
+```{r}
+tune2
+```
+
+
+```{r}
+xgb2 <- sagemaker_load_model(tune2)
+```
+
+```{r}
+pred2 <- predict(xgb2, abalone_class[, -1])
+glimpse(pred2)
+```
+
+In this case, the outcome is a tibble with an associated probability 
+for each class.
+
+Then we can derive the predicted class by finding the class with the
+highest probability for each row (variable) of the tibble.
+
+```{r}
+pred2_class <- pred2 %>%
+  mutate(variable = row_number()) %>%
+  pivot_longer(
+    .pred_0:.pred_9, names_to = c("name", ".pred"), 
+    names_sep = "_", names_ptypes = list(name = character(), .pred = numeric())
+  ) %>%
+  group_by(variable) %>%
+  filter(value == max(value)) %>%
+  ungroup() %>%
+  select(.pred)
+
+glimpse(pred2_class)
+```

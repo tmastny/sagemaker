@@ -21,6 +21,44 @@ Check out the [Get
 started](https://tmastny.github.io/sagemaker/articles/sagemaker.html)
 guide for examples\!
 
+## Less boilerplate
+
+Compare [the AWS Sagemaker API vs. the sagemaker R
+package](https://tmastny.github.io/sagemaker/articles/sagemaker-vs-sagemaker.html).
+
+The R package hides the details for later, and lets you get started
+ASAP.
+
+[![](man/figures/side-by-side.png)](https://tmastny.github.io/sagemaker/articles/sagemaker-vs-sagemaker.html)
+
+## Easier predictions
+
+Get Sagemaker endpoint predictions with no string parsing or REST API
+management. Directly use `predict` on the Sagemaker model to get
+predictions that conform to the
+[tidymodel](https://tidymodels.github.io/parsnip/reference/predict.model_fit.html)
+standard.
+
+``` r
+model <- sagemaker_hyperparameter_tuner(xgb, s3_split(train, validation))
+pred <- predict(model, new_data)
+```
+
+Even download and load Sagemaker trained models into your R session:
+TODO: link to local models
+
+``` r
+local_model <- sagemaker_load_model(model)
+local_pred <- predict(local_model, new_data)
+```
+
+## Analyze tuning and fit
+
+Easily get tuning and training stats with `sagemaker_training_job_logs`
+and `sagemaker_tuning_job_logs`.
+
+<img src="man/figures/eval.png" width="100%" />
+
 ## Installation
 
 You can install sagemaker from [GitHub](https://github.com/) with:
@@ -66,43 +104,5 @@ local AWS config:
 ``` r
 sagemaker::sagemaker_save_execution_role(
   "arn:aws:iam::[account_number]:role/service-role/[SageMakerExecutionRole]"
-)
-```
-
-## Streamlined Analysis
-
-Compare the AWS Sagemaker API vs. to the sagemaker R package yourself
-with this [side-by-side
-comparsion](https://tmastny.github.io/sagemaker/articles/sagemaker-vs-sagemaker.html)
-. The R package hides the details for latter, and lets you get started
-ASAP.
-
-You start with this:
-
-``` r
-library(sagemaker)
-xgb <- sagemaker_xgb_estimator()
-```
-
-instead of this:
-
-``` r
-library(reticulate)
-sagemaker <- reticulate::import("sagemaker")
-boto3 <- reticulate::import("boto3")
-
-xgb_container <- sagemaker$amazon$amazon_estimator$get_image_uri(
-  boto3$Session()$region_name,
-  "xgboost",
-  repo_version = "latest"
-)
-
-xgb <- sagemaker$estimator$Estimator(
-  xgb_container,
-  sagemaker_get_execution_role(),
-  train_instance_count = 1L,
-  train_instance_type = "ml.m4.xlarge",
-  output_path = s3(s3_bucket(), "/models/"),
-  sagemaker_session = sagemaker$Session()
 )
 ```

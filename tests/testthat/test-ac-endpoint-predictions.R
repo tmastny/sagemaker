@@ -17,7 +17,5 @@ test_that("endpoint predictions work", {
   model <- sagemaker_attach_tuner("xgboost-191114-2052")
   predictions <- predict(model, sagemaker::abalone[1:100, -1])
 
-  df_pred <- tibble::enframe(predictions, NULL, "X1")
-
-  expect_equal(df_pred, sagemaker::abalone_pred)
+  expect_equal(predictions[[1]], sagemaker::abalone_pred[[1]])
 })

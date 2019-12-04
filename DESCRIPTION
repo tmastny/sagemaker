@@ -1,6 +1,6 @@
 Package: sagemaker
 Title: R Interface for the AWS Sagemaker API
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: 
     person(given = "Timothy",
            family = "Mastny",
@@ -14,11 +14,14 @@ URL: https://tmastny.github.io/sagemaker/
 BugReports: https://github.com/tmastny/sagemaker/issues
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 2.10)
 Suggests: 
     knitr,
     rmarkdown,
     testthat (>= 2.1.0),
-    tidyr
+    recipes,
+    rsample,
+    ggplot2
 VignetteBuilder: knitr
 RoxygenNote: 7.0.1.9000
 Imports: 
@@ -28,7 +31,12 @@ Imports:
     purrr,
     dplyr,
     janitor,
-    tibble
+    tibble,
+    jsonlite,
+    tidyr,
+    readr,
+    utils,
+    rlang
 SystemRequirements:
     awscli,
     sagemaker,

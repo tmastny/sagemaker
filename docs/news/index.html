@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sagemaker</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -92,6 +92,9 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/load-model.html">multi-class</a>
+    </li>
     <li>
       <a href="../articles/sagemaker-vs-sagemaker.html">Sagemaker API vs. Sagemaker R Package</a>
     </li>
@@ -120,6 +123,15 @@
       
     </div>
 
+    <div id="sagemaker-0-0-1" class="section level1">
+<h1 class="page-header">
+<a href="#sagemaker-0-0-1" class="anchor"></a>sagemaker 0.0.1</h1>
+<ul>
+<li>Introducing <code>sagemaker_load_model</code> to download and load xgboost models to your R session. This requires the Python xgboost package, which you can install with <code>sagemaker_install_xgboost</code> (the xgboost R package is not sufficient, because Sagemaker pickles the model object).</li>
+<li>Support for multiclass probability parsing on the Sagemaker endpoint.</li>
+<li>Documentation on xgboost multi-class classification.</li>
+</ul>
+</div>
     <div id="sagemaker-0-0-0-9000" class="section level1">
 <h1 class="page-header">
 <a href="#sagemaker-0-0-0-9000" class="anchor"></a>sagemaker 0.0.0.9000</h1>
@@ -136,6 +148,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#sagemaker-0-0-1">0.0.1</a></li>
         <li><a href="#sagemaker-0-0-0-9000">0.0.0.9000</a></li>
       </ul>
     </div>

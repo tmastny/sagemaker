@@ -7,12 +7,13 @@
 \usage{
 sagemaker_container(container_name, repo_version = "latest", ...)
 
-sagemaker_xgb_container(repo_version = "latest", ...)
+sagemaker_xgb_container(repo_version = "0.90-1", ...)
 }
 \arguments{
 \item{container_name}{Name of the Sagemaker model container, e.g. "xgboost"}
 
-\item{repo_version}{Version of the model. Defaults to "latest".}
+\item{repo_version}{Version of the model. Caution: "latest" does not
+necessarily pull latest version.}
 
 \item{...}{Additional named arguments sent to the underlying API.}
 }

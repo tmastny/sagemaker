@@ -2,14 +2,23 @@
 % Please edit documentation in R/install.R
 \name{sagemaker_install}
 \alias{sagemaker_install}
+\alias{sagemaker_install_xgboost}
 \title{Installs Sagemaker Dependencies}
 \usage{
 sagemaker_install(...)
+
+sagemaker_install_xgboost(...)
 }
 \arguments{
 \item{...}{Additional named arguments sent to the underlying API.}
 }
 \description{
 Installs the Python package dependencies boto3, sagemaker, and awscli.
+These Python packages are required.
+
+Optionally, installs the Python xgboost package.
+This is only necessary if using \code{\link{sagemaker_load_model}}
+on an xgboost model.
+
 Interface to \code{\link[reticulate:py_install]{reticulate::py_install()}}.
 }

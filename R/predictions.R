@@ -85,7 +85,7 @@ try_loading_endpoint <- function(object) {
 #'
 #' @inheritParams sagemaker_deploy_endpoint
 #' @export
-predict.sagemaker <- function(object, new_data) {
+predict.sagemaker <- function(object, new_data, ...) {
 
   predictor <- try_loading_endpoint(object)
 
@@ -102,13 +102,99 @@ predict.sagemaker <- function(object, new_data) {
   new_data <- as.matrix(new_data)
   dimnames(new_data)[[2]] <- NULL
 
-  predictions <- predictor$predict(new_data)
+  predictions <- predictor$predict(new_data, ...)
 
-  predictions <- predictions %>%
-    stringr::str_split(pattern = ",", simplify = TRUE) %>%
-    as.numeric()
+  format_endpoint_predictions(predictions)
+}
 
-  predictions
+format_endpoint_predictions <- function(pred) {
+
+  # This formats two common types of endpoint return values.
+  #
+  #  1-dimensional string returns
+  #  (xgboost objective functions that return a class, probability, or numeric):
+  #    "1,2,3,4,6,0.324"
+  #
+  #  n-dimensional string returns
+  #  (xgboost `objective = "multi:softprob"` returns a num_class * input_rows matrix):
+  #
+  #     For three classes and two rows:
+  #        "[0.2, 0.7, 0.1],[0.9, 0.06, 0.4]"
+  #
+  # The function makes them valid json arrays and converts them to a data frame.
+
+  json_pred <- pred %>%
+    as.character() %>%
+    stringr::str_c("[", ., "]") %>%
+    jsonlite::parse_json()
+
+  width <- length(json_pred[[1]]) - 1
+
+  name <- ".pred"
+  if (width > 0) {
+    name <- paste0(".pred_", 0:width)
+  }
+
+  json_pred %>%
+    purrr::map(purrr::set_names, nm = name) %>%
+    tibble::tibble(.pred = .) %>%
+    tidyr::unnest_wider(.data$.pred, names_repair = "minimal") %>%
+    dplyr::mutate_all(as.numeric)
+}
+
+#' Make Predictions Locally
+#'
+#' This function generics predictions from the
+#' \code{xgboost.core.Booster} object returned
+#' from \code{\link{sagemaker_load_model}}.
+#'
+#' @inheritParams sagemaker_container
+#' @inheritParams predict.sagemaker
+#' @export
+predict.xgboost.core.Booster <- function(object, new_data, ...) {
+  xgb <- reticulate::import("xgboost")
+  blt <- reticulate::import_builtins()
+
+  new_data <- xgb$DMatrix(new_data)
+
+  # TODO: I thought type would be as simple as
+  #       object$predict_proba, it's not available:
+  #       https://github.com/awslabs/amazon-sagemaker-examples/issues/479
+  #
+  #       So some objective metrics only support class or probability.
+  #       For example, softmax only outputs class, while
+  #       softprob outputs probability.
+  #
+  #       To do this right, I would need to force
+  #       the user to select the probability outputs,
+  #       and convert them on the backend...
+
+  # parameters from Sagemaker xgboost container for consistency:
+  # https://github.com/aws/sagemaker-xgboost-container/blob/fc364c7c844859de1852acd526111ee22ac8e393/src/sagemaker_xgboost_container/algorithm_mode/serve.py#L119-L121
+  #
+  # `best_ntree_limit` ensures predictions are done with early stopping:
+  # https://stackoverflow.com/a/51985193/6637133
+  pred <- object$predict(
+    new_data,
+    ntree_limit = blt$getattr(object, "best_ntree_limit", 0L),
+    validate_features = FALSE,
+    ...
+  )
+
+  format_local_predictions(pred)
+}
+
+format_local_predictions <- function(pred) {
+  if (length(dim(pred)) > 1) {
+    pred_df <- tibble::as_tibble(pred) %>%
+      dplyr::mutate_all(as.numeric)
+
+    names(pred_df) <- paste0(".pred_", 0:(dim(pred)[2] - 1))
+
+    return(pred_df)
+  }
+
+  tibble::enframe(as.numeric(pred), NULL, ".pred")
 }
 
 #' Batch Predictions from Sagemaker Model

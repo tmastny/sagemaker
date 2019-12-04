@@ -37,6 +37,10 @@
 
 <meta property="og:title" content="Installs Sagemaker Dependencies — sagemaker_install" />
 <meta property="og:description" content="Installs the Python package dependencies boto3, sagemaker, and awscli.
+These Python packages are required.
+Optionally, installs the Python xgboost package.
+This is only necessary if using sagemaker_load_model
+on an xgboost model.
 Interface to reticulate::py_install()." />
 <meta name="twitter:card" content="summary" />
 
@@ -70,7 +74,7 @@ Interface to reticulate::py_install()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sagemaker</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -95,6 +99,9 @@ Interface to reticulate::py_install()." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/load-model.html">multi-class</a>
+    </li>
     <li>
       <a href="../articles/sagemaker-vs-sagemaker.html">Sagemaker API vs. Sagemaker R Package</a>
     </li>
@@ -126,10 +133,16 @@ Interface to reticulate::py_install()." />
 
     <div class="ref-description">
     <p>Installs the Python package dependencies boto3, sagemaker, and awscli.
-Interface to <code><a href='https://rdrr.io/pkg/reticulate/man/py_install.html'>reticulate::py_install()</a></code>.</p>
+These Python packages are required.</p>
+<p>Optionally, installs the Python xgboost package.
+This is only necessary if using <code><a href='sagemaker_load_model.html'>sagemaker_load_model</a></code>
+on an xgboost model.</p>
+<p>Interface to <code><a href='https://rdrr.io/pkg/reticulate/man/py_install.html'>reticulate::py_install()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sagemaker_install</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>sagemaker_install</span>(<span class='no'>...</span>)
+
+<span class='fu'>sagemaker_install_xgboost</span>(<span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

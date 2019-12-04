@@ -79,6 +79,7 @@ read_s3 <- function(s3_path, delim = ",", col_names = FALSE, ...) {
   s3_obj
 }
 
+#' @inheritParams readr::format_delim
 #' @rdname read_s3
 #' @export
 write_s3 <- function(x, s3_path, delim = ",", col_names = FALSE, ...) {

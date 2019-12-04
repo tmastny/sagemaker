@@ -2,6 +2,7 @@
 #'
 #' Parameter ranges for Sagemaker hyperparameter tuning.
 #'
+#' @param type Type of range for hyperparameter tuning.
 #' @param min Minimum value of range.
 #' @param max Maximum value of range.
 #' @param scaling \code{"Auto"}, \code{"Linear"}, \code{"Logarithmic"}, or
@@ -128,8 +129,8 @@ sagemaker_attach_tuner <- function(tuning_job_name) {
   tuner_df <- sagemaker_tuning_job_logs(tuning_job_name)
 
   model_name <- tuner_df %>%
-    dplyr::filter(final_objective_value == min(final_objective_value)) %>%
-    dplyr::pull(training_job_name)
+    dplyr::filter(.data$final_objective_value == min(.data$final_objective_value)) %>%
+    dplyr::pull(.data$training_job_name)
 
   tuner <- sagemaker$tuner$HyperparameterTuner$attach(tuning_job_name)
 
@@ -140,12 +141,12 @@ sagemaker_attach_tuner <- function(tuning_job_name) {
     purrr::set_names(NULL)
 
   best_tune <- tuner_df %>%
-    dplyr::filter(training_job_name == model_name) %>%
+    dplyr::filter(.data$training_job_name == model_name) %>%
     dplyr::select(dplyr::one_of(tuning_parameter_names))
 
   best_eval_metric <- tuner_df %>%
-    dplyr::filter(training_job_name == model_name) %>%
-    dplyr::pull(final_objective_value)
+    dplyr::filter(.data$training_job_name == model_name) %>%
+    dplyr::pull(.data$final_objective_value)
 
   model_obj <- list(
     model_name = model_name,

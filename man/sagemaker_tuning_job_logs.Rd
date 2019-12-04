@@ -8,18 +8,14 @@
 \usage{
 sagemaker_tuning_job_logs(x)
 
-\method{sagemaker_tuning_job_logs}{sagemaker}(object)
+\method{sagemaker_tuning_job_logs}{sagemaker}(x)
 
-\method{sagemaker_tuning_job_logs}{character}(tuning_job_name)
+\method{sagemaker_tuning_job_logs}{character}(x)
 }
 \arguments{
-\item{x}{Either \code{sagemaker} object or tuning job name.}
-
-\item{object}{The \code{sagemaker} model object created by
-\link{sagemaker_hyperparameter_tuner} or \link{sagemaker_attach_tuner}.}
-
-\item{tuning_job_name}{Name of the tuning job, typically something
-like \code{"xgboost-191114-2052"}.}
+\item{x}{Either the \code{sagemaker} model object created by
+\link{sagemaker_hyperparameter_tuner} or \link{sagemaker_attach_tuner}
+or the tuning job name.}
 }
 \description{
 Returns parameter and validation results from the tuning job.

@@ -6,3 +6,6 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^.Rhistory$
+^todo\.md$
+^RcmdNotes\.md$

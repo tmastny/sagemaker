@@ -22,6 +22,8 @@ sagemaker_continuous(min, max, scaling = "Auto")
 sagemaker_categorical(values)
 }
 \arguments{
+\item{type}{Type of range for hyperparameter tuning.}
+
 \item{min}{Minimum value of range.}
 
 \item{max}{Maximum value of range.}
