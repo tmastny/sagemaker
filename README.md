@@ -11,9 +11,7 @@ The sagemaker R package provides a simplified interface to the AWS
 Sagemaker API by:
 
 1.  adding sensible defaults so you can dive in quickly
-
 2.  creating helper functions to streamline model analysis
-
 3.  supporting `data.frame`s and
     [tibbles](https://github.com/tidyverse/tibble)
 
@@ -26,7 +24,7 @@ guide for examples\!
 Compare [the AWS Sagemaker API vs. the sagemaker R
 package](https://tmastny.github.io/sagemaker/articles/sagemaker-vs-sagemaker.html).
 
-The R package hides the details for later, and lets you get started
+The R package hides the details for later, so you can get started
 ASAP.
 
 [![](man/figures/side-by-side.png)](https://tmastny.github.io/sagemaker/articles/sagemaker-vs-sagemaker.html)
@@ -44,8 +42,9 @@ model <- sagemaker_hyperparameter_tuner(xgb, s3_split(train, validation))
 pred <- predict(model, new_data)
 ```
 
-Even download and load Sagemaker trained models into your R session:
-TODO: link to local models
+Even [download and
+load](https://tmastny.github.io/sagemaker/articles/load-model.html)
+Sagemaker trained models into your R session:
 
 ``` r
 local_model <- sagemaker_load_model(model)

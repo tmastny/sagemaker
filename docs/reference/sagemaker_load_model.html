@@ -96,7 +96,7 @@ Currently only supports xgboost models." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/load-model.html">multi-class</a>
+      <a href="../articles/load-model.html">Downloading Trained Sagemaker Models</a>
     </li>
     <li>
       <a href="../articles/sagemaker-vs-sagemaker.html">Sagemaker API vs. Sagemaker R Package</a>
@@ -135,27 +135,19 @@ Currently only supports xgboost models.</p>
     <pre class="usage"><span class='fu'>sagemaker_load_model</span>(<span class='no'>x</span>)
 
 <span class='co'># S3 method for sagemaker</span>
-<span class='fu'>sagemaker_load_model</span>(<span class='no'>object</span>)
+<span class='fu'>sagemaker_load_model</span>(<span class='no'>x</span>)
 
 <span class='co'># S3 method for character</span>
-<span class='fu'>sagemaker_load_model</span>(<span class='no'>training_job_name</span>)</pre>
+<span class='fu'>sagemaker_load_model</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>Either <code>sagemaker</code> object or training job name.</p></td>
-    </tr>
-    <tr>
-      <th>object</th>
-      <td><p>The <code>sagemaker</code> model object created by
-<a href='sagemaker_hyperparameter_tuner.html'>sagemaker_hyperparameter_tuner</a> or <a href='sagemaker_attach_tuner.html'>sagemaker_attach_tuner</a>.</p></td>
-    </tr>
-    <tr>
-      <th>training_job_name</th>
-      <td><p>The training job name. Typically something like
-<code>"xgboost-191114-2052-001-7b33b7a5"</code>.</p></td>
+      <td><p>Either the <code>sagemaker</code> model object created by
+<a href='sagemaker_hyperparameter_tuner.html'>sagemaker_hyperparameter_tuner</a> or <a href='sagemaker_attach_tuner.html'>sagemaker_attach_tuner</a>
+or the training job name.</p></td>
     </tr>
     </table>
 

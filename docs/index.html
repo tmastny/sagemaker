@@ -59,7 +59,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/load-model.html">multi-class</a>
+      <a href="articles/load-model.html">Downloading Trained Sagemaker Models</a>
     </li>
     <li>
       <a href="articles/sagemaker-vs-sagemaker.html">Sagemaker API vs. Sagemaker R Package</a>
@@ -89,16 +89,18 @@
 <!-- badges: end -->
 <p>The sagemaker R package provides a simplified interface to the AWS Sagemaker API by:</p>
 <ol>
-<li><p>adding sensible defaults so you can dive in quickly</p></li>
-<li><p>creating helper functions to streamline model analysis</p></li>
-<li><p>supporting <code>data.frame</code>s and <a href="https://github.com/tidyverse/tibble">tibbles</a></p></li>
+<li>adding sensible defaults so you can dive in quickly</li>
+<li>creating helper functions to streamline model analysis</li>
+<li>supporting <code>data.frame</code>s and <a href="https://github.com/tidyverse/tibble">tibbles</a>
+</li>
 </ol>
 <p>Check out the <a href="https://tmastny.github.io/sagemaker/articles/sagemaker.html">Get started</a> guide for examples!</p>
 <div id="less-boilerplate" class="section level2">
 <h2 class="hasAnchor">
 <a href="#less-boilerplate" class="anchor"></a>Less boilerplate</h2>
-<p>Compare the AWS Sagemaker API vs. to the sagemaker R package yourself with this <a href="https://tmastny.github.io/sagemaker/articles/sagemaker-vs-sagemaker.html">side-by-side comparsion</a> . The R package hides the details for later, and lets you get started ASAP.</p>
-<p><img src="reference/figures/side-by-side.png"></p>
+<p>Compare <a href="https://tmastny.github.io/sagemaker/articles/sagemaker-vs-sagemaker.html">the AWS Sagemaker API vs. the sagemaker R package</a>.</p>
+<p>The R package hides the details for later, so you can get started ASAP.</p>
+<p><a href="https://tmastny.github.io/sagemaker/articles/sagemaker-vs-sagemaker.html"><img src="reference/figures/side-by-side.png"></a></p>
 </div>
 <div id="easier-predictions" class="section level2">
 <h2 class="hasAnchor">
@@ -106,7 +108,7 @@
 <p>Get Sagemaker endpoint predictions with no string parsing or REST API management. Directly use <code>predict</code> on the Sagemaker model to get predictions that conform to the <a href="https://tidymodels.github.io/parsnip/reference/predict.model_fit.html">tidymodel</a> standard.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw"><a href="reference/sagemaker_hyperparameter_tuner.html">sagemaker_hyperparameter_tuner</a></span>(xgb, <span class="kw"><a href="reference/s3_split.html">s3_split</a></span>(train, validation))</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">pred &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(model, new_data)</a></code></pre></div>
-<p>Even download and load Sagemaker trained models into your R session: TODO: link to local models</p>
+<p>Even <a href="https://tmastny.github.io/sagemaker/articles/load-model.html">download and load</a> Sagemaker trained models into your R session:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">local_model &lt;-<span class="st"> </span><span class="kw"><a href="reference/sagemaker_load_model.html">sagemaker_load_model</a></span>(model)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">local_pred &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(local_model, new_data)</a></code></pre></div>
 </div>

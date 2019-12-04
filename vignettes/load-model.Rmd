@@ -2,7 +2,7 @@
 title: "Downloading Trained Sagemaker Models"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{multi-class}
+  %\VignetteIndexEntry{Downloading Trained Sagemaker Models}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

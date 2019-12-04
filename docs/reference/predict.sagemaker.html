@@ -95,7 +95,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/load-model.html">multi-class</a>
+      <a href="../articles/load-model.html">Downloading Trained Sagemaker Models</a>
     </li>
     <li>
       <a href="../articles/sagemaker-vs-sagemaker.html">Sagemaker API vs. Sagemaker R Package</a>
@@ -131,7 +131,7 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for sagemaker</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>object</span>, <span class='no'>new_data</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,6 +147,10 @@
 <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code> to make new predictions on.
 Columns must be in the same order as the training data.
 The outcome column must be excluded.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional named arguments sent to the underlying API.</p></td>
     </tr>
     </table>
 
