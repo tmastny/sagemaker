@@ -232,8 +232,8 @@ logs %>%
 
 # Multiclass probability
 
-For fun, let's also see train a model using `objective = "multi:softprob"`
-for comparsion.
+Let's also train a model using `objective = "multi:softprob"`
+to compare the output.
 
 ```{r}
 xgb_estimator2 <- sagemaker_xgb_estimator()
