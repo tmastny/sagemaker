@@ -10,7 +10,7 @@ sagemaker_tuning_job_logs(x)
 
 \method{sagemaker_tuning_job_logs}{sagemaker}(x)
 
-\method{sagemaker_tuning_job_logs}{character}(tuning_job_name)
+\method{sagemaker_tuning_job_logs}{character}(x)
 }
 \arguments{
 \item{x}{Either the \code{sagemaker} model object created by

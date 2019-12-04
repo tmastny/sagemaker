@@ -36,13 +36,13 @@ sagemaker_tuning_job_logs <- function(x) {
 #' @rdname sagemaker_tuning_job_logs
 #' @export
 sagemaker_tuning_job_logs.sagemaker <- function(x) {
-  sagemaker_tuning_job_logs(object$tuning_job_name)
+  sagemaker_tuning_job_logs(x$tuning_job_name)
 }
 
 #' @rdname sagemaker_tuning_job_logs
 #' @export
-sagemaker_tuning_job_logs.character <- function(tuning_job_name) {
-  tuner_stats <- sagemaker$HyperparameterTuningJobAnalytics(tuning_job_name)
+sagemaker_tuning_job_logs.character <- function(x) {
+  tuner_stats <- sagemaker$HyperparameterTuningJobAnalytics(x)
 
   tuner_stats$dataframe() %>%
     janitor::clean_names() %>%

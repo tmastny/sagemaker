@@ -35,7 +35,8 @@ Imports:
     jsonlite,
     tidyr,
     readr,
-    utils
+    utils,
+    rlang
 SystemRequirements:
     awscli,
     sagemaker,

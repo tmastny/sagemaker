@@ -6,23 +6,23 @@ Loading sagemaker
 Writing NAMESPACE
 ── Building ────────────────────────────────── sagemaker ──
 Setting env vars:
-  ● CFLAGS    : -Wall -pedantic -fdiagnostics-color=always
+● CFLAGS    : -Wall -pedantic -fdiagnostics-color=always
 ● CXXFLAGS  : -Wall -pedantic -fdiagnostics-color=always
 ● CXX11FLAGS: -Wall -pedantic -fdiagnostics-color=always
 ───────────────────────────────────────────────────────────
 ✔  checking for file ‘/Users/Tim/rpackages/sagemaker/DESCRIPTION’ ...
-─  preparing ‘sagemaker’: (3.4s)
+─  preparing ‘sagemaker’: (4.3s)
 ✔  checking DESCRIPTION meta-information ...
 ─  installing the package to build vignettes
-✔  creating vignettes (34.5s)
-─  checking for LF line-endings in source and make files and shell scripts
+✔  creating vignettes (33.3s)
+─  checking for LF line-endings in source and make files and shell scripts (420ms)
 ─  checking for empty or unneeded directories
 ─  looking to see if a ‘data/datalist’ file should be added
 ─  building ‘sagemaker_0.0.1.tar.gz’
-
+   
 ── Checking ────────────────────────────────── sagemaker ──
 Setting env vars:
-  ● _R_CHECK_CRAN_INCOMING_REMOTE_: FALSE
+● _R_CHECK_CRAN_INCOMING_REMOTE_: FALSE
 ● _R_CHECK_CRAN_INCOMING_       : FALSE
 ● _R_CHECK_FORCE_SUGGESTS_      : FALSE
 ── R CMD check ─────────────────────────────────────────────────────────────────
@@ -49,9 +49,7 @@ Setting env vars:
 * checking for future file timestamps ... OK
 * checking ‘build’ directory ... OK
 * checking DESCRIPTION meta-information ... OK
-* checking top-level files ... NOTE
-Non-standard file/directory found at top level:
-  ‘todo.md’
+* checking top-level files ... OK
 * checking for left-over files ... OK
 * checking index information ... OK
 * checking package subdirectories ... OK
@@ -62,224 +60,210 @@ Non-standard file/directory found at top level:
 * checking whether the package can be unloaded cleanly ... OK
 * checking whether the namespace can be loaded with stated dependencies ... OK
 * checking whether the namespace can be unloaded cleanly ... OK
-* checking dependencies in R code ... WARNING
-'::' or ':::' import not declared from: ‘readr’
-* checking S3 generic/method consistency ... WARNING
-sagemaker_download_model:
-  function(x, path)
-    sagemaker_download_model.character:
-  function(training_job_name, path)
-
-    sagemaker_download_model:
-  function(x, path)
-    sagemaker_download_model.sagemaker:
-  function(object, path)
-
-    sagemaker_load_model:
-  function(x)
-    sagemaker_load_model.character:
-  function(training_job_name)
-
-    sagemaker_load_model:
-  function(x)
-    sagemaker_load_model.sagemaker:
-  function(object)
-
-    sagemaker_tuning_job_logs:
-  function(x)
-    sagemaker_tuning_job_logs.character:
-  function(tuning_job_name)
-
-    sagemaker_tuning_job_logs:
-  function(x)
-    sagemaker_tuning_job_logs.sagemaker:
-  function(object)
-
-    predict:
-  function(object, ...)
-    predict.sagemaker:
-  function(object, new_data)
-
-    See section ‘Generic functions and methods’ in the ‘Writing R
-Extensions’ manual.
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
 * checking R code for possible problems ... NOTE
-format_endpoint_predictions: no visible binding for global variable ‘.’
-format_endpoint_predictions: no visible global function definition for
-‘tibble’
-format_endpoint_predictions: no visible binding for global variable
-‘.pred’
-print.sagemaker: no visible global function definition for
-‘capture.output’
-s3: no visible binding for global variable ‘.’
 sagemaker_attach_tuner: no visible binding for global variable
-‘final_objective_value’
+  ‘training_job_name’
 sagemaker_attach_tuner: no visible binding for global variable
-‘training_job_name’
-sagemaker_training_job_logs: no visible binding for global variable
-‘logs’
-sagemaker_training_job_logs: no visible binding for global variable
-‘iteration’
-sagemaker_training_job_logs: no visible global function definition for
-‘:=’
-sagemaker_training_job_logs: no visible binding for global variable ‘.’
+  ‘final_objective_value’
 Undefined global functions or variables:
-  . .pred := capture.output final_objective_value iteration logs tibble
-training_job_name
-Consider adding
-importFrom("utils", "capture.output")
-to your NAMESPACE file.
+  final_objective_value training_job_name
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
 * checking Rd cross-references ... OK
 * checking for missing documentation entries ... OK
 * checking for code/documentation mismatches ... OK
-* checking Rd \usage sections ... WARNING
-Undocumented arguments in documentation object 'read_s3'
-‘x’
-
-Undocumented arguments in documentation object 'sagemaker_download_model'
-‘path’
-
-Undocumented arguments in documentation object 'sagemaker_ranges'
-‘type’
-
-Functions with \usage entries need to have the appropriate \alias
-entries, and all their arguments documented.
-The \usage entries must correspond to syntactically valid R code.
-See chapter ‘Writing R documentation files’ in the ‘Writing R
-Extensions’ manual.
+* checking Rd \usage sections ... OK
 * checking Rd contents ... OK
 * checking for unstated dependencies in examples ... OK
 * checking contents of ‘data’ directory ... OK
 * checking data for non-ASCII characters ... OK
-* checking data for ASCII and uncompressed saves ... WARNING
-Warning: package needs dependence on R (>= 2.10)
+* checking data for ASCII and uncompressed saves ... OK
 * checking installed files from ‘inst/doc’ ... OK
 * checking files in ‘vignettes’ ... OK
 * checking examples ... OK
 * checking for unstated dependencies in ‘tests’ ... OK
 * checking tests ...
-Running ‘testthat.R’ [0m/16m]
-OK
-* checking for unstated dependencies in vignettes ... NOTE
-'::' or ':::' import not declared from: ‘rsample’
-'library' or 'require' calls not declared from:
-  ‘ggplot2’ ‘rsample’
+  Running ‘testthat.R’ [0m/16m]
+ ERROR
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+    1. jsonlite:::parse_string(txt, bigint_as_char)
+  
+  WARNING:sagemaker:Couldn't call 'get_role' to get Role ARN from role name tim.mastny2 to get Role path.
+  [16:44:37] WARNING: src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+  ...............................................!══ testthat results  ══════════════════════════════════════
+  [ OK: 14 | SKIPPED: 1 | WARNINGS: 0 | FAILED: 6 ]
+  1. Error: endpoint predictions work (@test-ac-endpoint-predictions.R#18) 
+  2. Error: one-dimensional endpoint formatting works (@test-prediction-formatting.R#5) 
+  3. Error: 2-dimensional endpoint formatting works (@test-prediction-formatting.R#14) 
+  4. Error: 5-dimensional endpoint formatting works (@test-prediction-formatting.R#27) 
+  5. Error: one-dimensional local and endpoint formatting match (@test-prediction-formatting.R#37) 
+  6. Error: 2-dimensional local and endpoint formatting match (@test-prediction-formatting.R#48) 
+  
+  Error: testthat unit tests failed
+  Execution halted
+* checking for unstated dependencies in vignettes ... OK
 * checking package vignettes in ‘inst/doc’ ... OK
 * checking re-building of vignette outputs ... OK
 * DONE
 
-Status: 4 WARNINGs, 3 NOTEs
+Status: 1 ERROR, 1 NOTE
 See
-‘/Users/Tim/rpackages/sagemaker.Rcheck/00check.log’
+  ‘/Users/Tim/rpackages/sagemaker.Rcheck/00check.log’
 for details.
 
-
 ── R CMD check results ──────────────────────────────────── sagemaker 0.0.1 ────
-Duration: 17m 28.1s
+Duration: 17m 4.2s
 
-❯ checking dependencies in R code ... WARNING
-'::' or ':::' import not declared from: ‘readr’
-
-❯ checking S3 generic/method consistency ... WARNING
-sagemaker_download_model:
-  function(x, path)
-    sagemaker_download_model.character:
-  function(training_job_name, path)
-
-    sagemaker_download_model:
-  function(x, path)
-    sagemaker_download_model.sagemaker:
-  function(object, path)
-
-    sagemaker_load_model:
-  function(x)
-    sagemaker_load_model.character:
-  function(training_job_name)
-
-    sagemaker_load_model:
-  function(x)
-    sagemaker_load_model.sagemaker:
-  function(object)
-
-    sagemaker_tuning_job_logs:
-  function(x)
-    sagemaker_tuning_job_logs.character:
-  function(tuning_job_name)
-
-    sagemaker_tuning_job_logs:
-  function(x)
-    sagemaker_tuning_job_logs.sagemaker:
-  function(object)
-
-    predict:
-  function(object, ...)
-    predict.sagemaker:
-  function(object, new_data)
-
-    See section ‘Generic functions and methods’ in the ‘Writing R
-Extensions’ manual.
-
-❯ checking Rd \usage sections ... WARNING
-Undocumented arguments in documentation object 'read_s3'
-‘x’
-
-Undocumented arguments in documentation object 'sagemaker_download_model'
-‘path’
-
-Undocumented arguments in documentation object 'sagemaker_ranges'
-‘type’
-
-Functions with \usage entries need to have the appropriate \alias
-entries, and all their arguments documented.
-The \usage entries must correspond to syntactically valid R code.
-See chapter ‘Writing R documentation files’ in the ‘Writing R
-Extensions’ manual.
-
-❯ checking data for ASCII and uncompressed saves ... WARNING
-Warning: package needs dependence on R (>= 2.10)
-
-❯ checking top-level files ... NOTE
-Non-standard file/directory found at top level:
-  ‘todo.md’
+❯ checking tests ...
+  See below...
 
 ❯ checking R code for possible problems ... NOTE
-format_endpoint_predictions: no visible binding for global variable ‘.’
-format_endpoint_predictions: no visible global function definition for
-‘tibble’
-format_endpoint_predictions: no visible binding for global variable
-‘.pred’
-print.sagemaker: no visible global function definition for
-‘capture.output’
-s3: no visible binding for global variable ‘.’
-sagemaker_attach_tuner: no visible binding for global variable
-‘final_objective_value’
-sagemaker_attach_tuner: no visible binding for global variable
-‘training_job_name’
-sagemaker_training_job_logs: no visible binding for global variable
-‘logs’
-sagemaker_training_job_logs: no visible binding for global variable
-‘iteration’
-sagemaker_training_job_logs: no visible global function definition for
-‘:=’
-sagemaker_training_job_logs: no visible binding for global variable ‘.’
-Undefined global functions or variables:
-  . .pred := capture.output final_objective_value iteration logs tibble
-training_job_name
-Consider adding
-importFrom("utils", "capture.output")
-to your NAMESPACE file.
+  sagemaker_attach_tuner: no visible binding for global variable
+    ‘training_job_name’
+  sagemaker_attach_tuner: no visible binding for global variable
+    ‘final_objective_value’
+  Undefined global functions or variables:
+    final_objective_value training_job_name
 
-❯ checking for unstated dependencies in vignettes ... NOTE
-'::' or ':::' import not declared from: ‘rsample’
-'library' or 'require' calls not declared from:
-  ‘ggplot2’ ‘rsample’
+── Test failures ───────────────────────────────────────────────── testthat ────
 
-0 errors ✔ | 4 warnings ✖ | 3 notes ✖
-Error: R CMD check found WARNINGs
+> library(testthat)
+> library(sagemaker)
+> 
+> test_check("sagemaker")
+Loading required package: dplyr
+
+Attaching package: 'dplyr'
+
+The following object is masked from 'package:testthat':
+
+    matches
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+
+Attaching package: 'recipes'
+
+The following object is masked from 'package:stats':
+
+    step
+
+WARNING:sagemaker:Using already existing model: xgboost-191114-2052-001-7b33b7a5
+.....................................!WARNING:sagemaker:Using already existing model: xgboost-191114-2052-001-7b33b7a5
+
+-------------------------------------------------------------------------------------------------!── 1. Error: endpoint predictions work (@test-ac-endpoint-p
+parse error: trailing garbage
+                          10.2579030991,8.10296821594,10.027586937,9.2
+                     (right here) ------^
+Backtrace:
+  1. stats::predict(model, sagemaker::abalone[1:100, -1])
+  2. sagemaker:::predict.sagemaker(...)
+  3. sagemaker:::format_endpoint_predictions(predictions)
+  4. base::as.character(.)
+ 12. stringr::str_c(., "[", .data, "]")
+ 13. jsonlite::parse_json(.)
+ 14. jsonlite:::parse_and_simplify(...)
+ 15. jsonlite:::parseJSON(txt, bigint_as_char)
+  1. jsonlite:::parse_string(txt, bigint_as_char)
+
+── 2. Error: one-dimensional endpoint formatting works (@te
+parse error: trailing garbage
+                                      1,2,3,4[]
+                     (right here) ------^
+Backtrace:
+  1. testthat::expect_equal(expected_tibble, format_endpoint_predictions(return_string))
+  4. sagemaker:::format_endpoint_predictions(return_string)
+  5. base::as.character(.)
+ 13. stringr::str_c(., "[", .data, "]")
+ 14. jsonlite::parse_json(.)
+ 15. jsonlite:::parse_and_simplify(...)
+ 16. jsonlite:::parseJSON(txt, bigint_as_char)
+  1. jsonlite:::parse_string(txt, bigint_as_char)
+
+── 3. Error: 2-dimensional endpoint formatting works (@test
+parse error: trailing garbage
+                                  [1,1],[2,2][]
+                     (right here) ------^
+Backtrace:
+  1. testthat::expect_equal(expected_num_class_2, format_endpoint_predictions(return_string_num_class_2))
+  4. sagemaker:::format_endpoint_predictions(return_string_num_class_2)
+  5. base::as.character(.)
+ 13. stringr::str_c(., "[", .data, "]")
+ 14. jsonlite::parse_json(.)
+ 15. jsonlite:::parse_and_simplify(...)
+ 16. jsonlite:::parseJSON(txt, bigint_as_char)
+  1. jsonlite:::parse_string(txt, bigint_as_char)
+
+── 4. Error: 5-dimensional endpoint formatting works (@test
+parse error: trailing garbage
+                            [1,1,1,1,1],[2,2,2,2,2][]
+                     (right here) ------^
+Backtrace:
+  1. testthat::expect_equal(expected_num_class_5, format_endpoint_predictions(return_string_num_class_5))
+  4. sagemaker:::format_endpoint_predictions(return_string_num_class_5)
+  5. base::as.character(.)
+ 13. stringr::str_c(., "[", .data, "]")
+ 14. jsonlite::parse_json(.)
+ 15. jsonlite:::parse_and_simplify(...)
+ 16. jsonlite:::parseJSON(txt, bigint_as_char)
+  1. jsonlite:::parse_string(txt, bigint_as_char)
+
+── 5. Error: one-dimensional local and endpoint formatting 
+parse error: trailing garbage
+                                      1,2,3,4[]
+                     (right here) ------^
+Backtrace:
+  1. testthat::expect_equal(expected_tibble, format_endpoint_predictions(return_string))
+  4. sagemaker:::format_endpoint_predictions(return_string)
+  5. base::as.character(.)
+ 13. stringr::str_c(., "[", .data, "]")
+ 14. jsonlite::parse_json(.)
+ 15. jsonlite:::parse_and_simplify(...)
+ 16. jsonlite:::parseJSON(txt, bigint_as_char)
+  1. jsonlite:::parse_string(txt, bigint_as_char)
+
+── 6. Error: 2-dimensional local and endpoint formatting ma
+parse error: trailing garbage
+                                  [1,1],[2,2][]
+                     (right here) ------^
+Backtrace:
+  1. testthat::expect_equal(expected_tibble, format_endpoint_predictions(return_string))
+  4. sagemaker:::format_endpoint_predictions(return_string)
+  5. base::as.character(.)
+ 13. stringr::str_c(., "[", .data, "]")
+ 14. jsonlite::parse_json(.)
+ 15. jsonlite:::parse_and_simplify(...)
+ 16. jsonlite:::parseJSON(txt, bigint_as_char)
+  1. jsonlite:::parse_string(txt, bigint_as_char)
+
+WARNING:sagemaker:Couldn't call 'get_role' to get Role ARN from role name tim.mastny2 to get Role path.
+[16:44:37] WARNING: src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+...............................................!══ testthat results  ══════════════════════════════════════
+[ OK: 14 | SKIPPED: 1 | WARNINGS: 0 | FAILED: 6 ]
+1. Error: endpoint predictions work (@test-ac-endpoint-predictions.R#18) 
+2. Error: one-dimensional endpoint formatting works (@test-prediction-formatting.R#5) 
+3. Error: 2-dimensional endpoint formatting works (@test-prediction-formatting.R#14) 
+4. Error: 5-dimensional endpoint formatting works (@test-prediction-formatting.R#27) 
+5. Error: one-dimensional local and endpoint formatting match (@test-prediction-formatting.R#37) 
+6. Error: 2-dimensional local and endpoint formatting match (@test-prediction-formatting.R#48) 
+
+Error: testthat unit tests failed
+Execution halted
+
+1 error ✖ | 0 warnings ✔ | 1 note ✖
+Error: R CMD check found ERRORs
 Execution halted
 
 Exited with status 1.

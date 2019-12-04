@@ -125,7 +125,7 @@ format_endpoint_predictions <- function(pred) {
 
   json_pred <- pred %>%
     as.character() %>%
-    stringr::str_c("[", .data, "]") %>%
+    stringr::str_c("[", ., "]") %>%
     jsonlite::parse_json()
 
   width <- length(json_pred[[1]]) - 1

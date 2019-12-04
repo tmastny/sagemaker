@@ -141,12 +141,12 @@ sagemaker_attach_tuner <- function(tuning_job_name) {
     purrr::set_names(NULL)
 
   best_tune <- tuner_df %>%
-    dplyr::filter(training_job_name == model_name) %>%
+    dplyr::filter(.data$training_job_name == model_name) %>%
     dplyr::select(dplyr::one_of(tuning_parameter_names))
 
   best_eval_metric <- tuner_df %>%
-    dplyr::filter(training_job_name == model_name) %>%
-    dplyr::pull(final_objective_value)
+    dplyr::filter(.data$training_job_name == model_name) %>%
+    dplyr::pull(.data$final_objective_value)
 
   model_obj <- list(
     model_name = model_name,

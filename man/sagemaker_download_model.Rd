@@ -16,6 +16,8 @@ sagemaker_download_model(x, path)
 \item{x}{Either the \code{sagemaker} model object created by
 \link{sagemaker_hyperparameter_tuner} or \link{sagemaker_attach_tuner}
 or the training job name.}
+
+\item{path}{A file path.}
 }
 \description{
 Downloads model artifact from S3.
