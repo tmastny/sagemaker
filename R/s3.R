@@ -72,7 +72,7 @@ read_s3 <- function(s3_path, delim = ",", col_names = FALSE, ...) {
   object_string <- object_bytes$decode('utf-8')
 
   s3_obj <- readr::read_delim(
-    object_string, delim = delim, col_names = FALSE, ...
+    object_string, delim = delim, col_names = col_names, ...
   )
   file$close()
 
