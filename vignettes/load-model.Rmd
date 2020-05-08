@@ -278,10 +278,8 @@ highest probability for each row (variable) of the tibble.
 ```{r}
 pred2_class <- pred2 %>%
   mutate(variable = row_number()) %>%
-  pivot_longer(
-    .pred_0:.pred_9, names_to = c("name", ".pred"), 
-    names_sep = "_", names_ptypes = list(name = character(), .pred = numeric())
-  ) %>%
+  pivot_longer(.pred_0:.pred_9, names_to = "name") %>%
+  separate(name, c(NA, ".pred"), sep = "_", convert = TRUE) %>%
   group_by(variable) %>%
   filter(value == max(value)) %>%
   ungroup() %>%
