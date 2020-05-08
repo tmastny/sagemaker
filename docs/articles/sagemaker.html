@@ -85,7 +85,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="sagemaker_files/header-attrs-2.1/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>sagemaker</h1>
@@ -117,76 +117,76 @@
 <h2 class="hasAnchor">
 <a href="#dataset" class="anchor"></a>Dataset</h2>
 <p>I’ll be building a regression model on the built-in abalone dataset, taken from <a href="https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data">UCI dataset database</a>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(sagemaker)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rsample)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Loading required package: tidyr</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; Attaching package: 'dplyr'</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; The following objects are masked from 'package:stats':</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt;     filter, lag</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt; The following objects are masked from 'package:base':</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt;     intersect, setdiff, setequal, union</span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyr)</a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16">sagemaker<span class="op">::</span>abalone</a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">#&gt; # A tibble: 4,177 x 11</span></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt;    rings length diameter height whole_weight shucked_weight viscera_weight</span></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt;  1    15  0.455    0.365  0.095        0.514         0.224          0.101 </span></a>
-<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt;  2     7  0.35     0.265  0.09         0.226         0.0995         0.0485</span></a>
-<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co">#&gt;  3     9  0.53     0.42   0.135        0.677         0.256          0.142 </span></a>
-<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="co">#&gt;  4    10  0.44     0.365  0.125        0.516         0.216          0.114 </span></a>
-<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="co">#&gt;  5     7  0.33     0.255  0.08         0.205         0.0895         0.0395</span></a>
-<a class="sourceLine" id="cb1-25" data-line-number="25"><span class="co">#&gt;  6     8  0.425    0.3    0.095        0.352         0.141          0.0775</span></a>
-<a class="sourceLine" id="cb1-26" data-line-number="26"><span class="co">#&gt;  7    20  0.53     0.415  0.15         0.778         0.237          0.142 </span></a>
-<a class="sourceLine" id="cb1-27" data-line-number="27"><span class="co">#&gt;  8    16  0.545    0.425  0.125        0.768         0.294          0.150 </span></a>
-<a class="sourceLine" id="cb1-28" data-line-number="28"><span class="co">#&gt;  9     9  0.475    0.37   0.125        0.509         0.216          0.112 </span></a>
-<a class="sourceLine" id="cb1-29" data-line-number="29"><span class="co">#&gt; 10    19  0.55     0.44   0.15         0.894         0.314          0.151 </span></a>
-<a class="sourceLine" id="cb1-30" data-line-number="30"><span class="co">#&gt; # … with 4,167 more rows, and 4 more variables: shell_weight &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb1-31" data-line-number="31"><span class="co">#&gt; #   sex_F &lt;dbl&gt;, sex_I &lt;dbl&gt;, sex_M &lt;dbl&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(sagemaker)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rsample)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">#&gt; Loading required package: tidyr</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co">#&gt; </span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co">#&gt; </span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co">#&gt;     filter, lag</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="co">#&gt; </span></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyr)</span>
+<span id="cb1-15"><a href="#cb1-15"></a></span>
+<span id="cb1-16"><a href="#cb1-16"></a>sagemaker<span class="op">::</span>abalone</span>
+<span id="cb1-17"><a href="#cb1-17"></a><span class="co">#&gt; # A tibble: 4,177 x 11</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a><span class="co">#&gt;    rings length diameter height whole_weight shucked_weight viscera_weight</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a><span class="co">#&gt;  1    15  0.455    0.365  0.095        0.514         0.224          0.101 </span></span>
+<span id="cb1-21"><a href="#cb1-21"></a><span class="co">#&gt;  2     7  0.35     0.265  0.09         0.226         0.0995         0.0485</span></span>
+<span id="cb1-22"><a href="#cb1-22"></a><span class="co">#&gt;  3     9  0.53     0.42   0.135        0.677         0.256          0.142 </span></span>
+<span id="cb1-23"><a href="#cb1-23"></a><span class="co">#&gt;  4    10  0.44     0.365  0.125        0.516         0.216          0.114 </span></span>
+<span id="cb1-24"><a href="#cb1-24"></a><span class="co">#&gt;  5     7  0.33     0.255  0.08         0.205         0.0895         0.0395</span></span>
+<span id="cb1-25"><a href="#cb1-25"></a><span class="co">#&gt;  6     8  0.425    0.3    0.095        0.352         0.141          0.0775</span></span>
+<span id="cb1-26"><a href="#cb1-26"></a><span class="co">#&gt;  7    20  0.53     0.415  0.15         0.778         0.237          0.142 </span></span>
+<span id="cb1-27"><a href="#cb1-27"></a><span class="co">#&gt;  8    16  0.545    0.425  0.125        0.768         0.294          0.150 </span></span>
+<span id="cb1-28"><a href="#cb1-28"></a><span class="co">#&gt;  9     9  0.475    0.37   0.125        0.509         0.216          0.112 </span></span>
+<span id="cb1-29"><a href="#cb1-29"></a><span class="co">#&gt; 10    19  0.55     0.44   0.15         0.894         0.314          0.151 </span></span>
+<span id="cb1-30"><a href="#cb1-30"></a><span class="co">#&gt; # … with 4,167 more rows, and 4 more variables: shell_weight &lt;dbl&gt;,</span></span>
+<span id="cb1-31"><a href="#cb1-31"></a><span class="co">#&gt; #   sex_F &lt;dbl&gt;, sex_I &lt;dbl&gt;, sex_M &lt;dbl&gt;</span></span></code></pre></div>
 <p>The built-in hyperparameter tuning methods with AWS Sagemaker requires a train/validation split. Cross-validation is not supported out of the box.</p>
 <p>We can quickly split the data with <a href="https://github.com/tidymodels/rsample">rsample</a>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">abalone_split &lt;-<span class="st"> </span>rsample<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rsample/man/initial_split.html">initial_split</a></span>(sagemaker<span class="op">::</span>abalone)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>abalone_split &lt;-<span class="st"> </span>rsample<span class="op">::</span><span class="kw"><a href="https://tidymodels.github.io/rsample/reference/initial_split.html">initial_split</a></span>(sagemaker<span class="op">::</span>abalone)</span></code></pre></div>
 <p>The training data needs to be uploaded to an S3 bucket that AWS Sagemaker has read/write permission to. For the typical AWS Sagemaker role, this could be any bucket with <code>sagemaker</code> included in the name.</p>
 <p>We’ll use the <code><a href="../reference/read_s3.html">sagemaker::write_s3</a></code> helper to upload tibbles or <code>data.frame</code>s to S3 as a csv.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/read_s3.html">write_s3</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/rsample/man/as.data.frame.rsplit.html">analysis</a></span>(abalone_split), <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-train.csv"</span>))</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="../reference/read_s3.html">write_s3</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/rsample/man/as.data.frame.rsplit.html">assessment</a></span>(abalone_split), <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-test.csv"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw"><a href="../reference/read_s3.html">write_s3</a></span>(<span class="kw"><a href="https://tidymodels.github.io/rsample/reference/as.data.frame.rsplit.html">analysis</a></span>(abalone_split), <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-train.csv"</span>))</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="kw"><a href="../reference/read_s3.html">write_s3</a></span>(<span class="kw"><a href="https://tidymodels.github.io/rsample/reference/as.data.frame.rsplit.html">assessment</a></span>(abalone_split), <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-test.csv"</span>))</span></code></pre></div>
 <p>You can also set a default bucket with <code><a href="https://rdrr.io/r/base/options.html">options(sagemaker.default.bucket = "bucket_name")</a></code> for <code><a href="../reference/s3_bucket.html">sagemaker::s3_bucket</a></code>.</p>
 <p>Then we’ll save the paths to use in tuning:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">split &lt;-<span class="st"> </span><span class="kw"><a href="../reference/s3_split.html">s3_split</a></span>(</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="dt">s3_train =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-train.csv"</span>),</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="dt">s3_validation =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-test.csv"</span>)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>split &lt;-<span class="st"> </span><span class="kw"><a href="../reference/s3_split.html">s3_split</a></span>(</span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="dt">s3_train =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-train.csv"</span>),</span>
+<span id="cb4-3"><a href="#cb4-3"></a>  <span class="dt">s3_validation =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-test.csv"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4"></a>)</span></code></pre></div>
 </div>
 <div id="hyperparameters" class="section level2">
 <h2 class="hasAnchor">
 <a href="#hyperparameters" class="anchor"></a>Hyperparameters</h2>
 <p>Now we’ll define ranges to tune over:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">ranges &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">  <span class="dt">max_depth =</span> <span class="kw"><a href="../reference/sagemaker_ranges.html">sagemaker_integer</a></span>(<span class="dv">3</span>, <span class="dv">20</span>),</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="dt">colsample_bytree =</span> <span class="kw"><a href="../reference/sagemaker_ranges.html">sagemaker_continuous</a></span>(<span class="dv">0</span>, <span class="dv">1</span>),</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">  <span class="dt">subsample =</span> <span class="kw"><a href="../reference/sagemaker_ranges.html">sagemaker_continuous</a></span>(<span class="dv">0</span>, <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>ranges &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</span>
+<span id="cb5-2"><a href="#cb5-2"></a>  <span class="dt">max_depth =</span> <span class="kw"><a href="../reference/sagemaker_ranges.html">sagemaker_integer</a></span>(<span class="dv">3</span>, <span class="dv">20</span>),</span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="dt">colsample_bytree =</span> <span class="kw"><a href="../reference/sagemaker_ranges.html">sagemaker_continuous</a></span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb5-4"><a href="#cb5-4"></a>  <span class="dt">subsample =</span> <span class="kw"><a href="../reference/sagemaker_ranges.html">sagemaker_continuous</a></span>(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb5-5"><a href="#cb5-5"></a>)</span></code></pre></div>
 </div>
 <div id="training" class="section level2">
 <h2 class="hasAnchor">
 <a href="#training" class="anchor"></a>Training</h2>
 <p>Then we kick off the training jobs.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">tune &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sagemaker_hyperparameter_tuner.html">sagemaker_hyperparameter_tuner</a></span>(</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">  <span class="kw"><a href="../reference/sagemaker_estimator.html">sagemaker_xgb_estimator</a></span>(), split, ranges, <span class="dt">max_jobs =</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">)</a></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">tune</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; Name: xgboost-191114-1954-002-e66e00d3 </span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; Tuning Strategy: Random </span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; Evaluation Metric: rmse , 2.17373 </span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt;  </span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; Best hyperparameters:</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;   colsample_bytree subsample max_depth</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; 1            0.908     0.410        14</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>tune &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sagemaker_hyperparameter_tuner.html">sagemaker_hyperparameter_tuner</a></span>(</span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="kw"><a href="../reference/sagemaker_estimator.html">sagemaker_xgb_estimator</a></span>(), split, ranges, <span class="dt">max_jobs =</span> <span class="dv">10</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>tune</span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="co">#&gt; Name: xgboost-191114-1954-002-e66e00d3 </span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="co">#&gt; Tuning Strategy: Random </span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="co">#&gt; Evaluation Metric: rmse , 2.17373 </span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="co">#&gt;  </span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="co">#&gt; Best hyperparameters:</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="co">#&gt;   colsample_bytree subsample max_depth</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="co">#&gt; 1            0.908     0.410        14</span></span></code></pre></div>
 </div>
 </div>
 <div id="analysis" class="section level1">
@@ -196,27 +196,27 @@
 <h2 class="hasAnchor">
 <a href="#tuning-1" class="anchor"></a>Tuning</h2>
 <p>We can get more details about the tuning jobs by looking at the logs:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">logs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sagemaker_tuning_job_logs.html">sagemaker_tuning_job_logs</a></span>(tune)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">logs <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>()</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; Observations: 10</span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; Variables: 9</span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; $ final_objective_value         &lt;dbl&gt; 2.22218, 2.28891, 2.27633, 2.30395…</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; $ training_elapsed_time_seconds &lt;dbl&gt; 63, 61, 63, 72, 62, 47, 54, 63, 62…</span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt; $ training_end_time             &lt;dttm&gt; 2019-11-15 02:10:46, 2019-11-15 0…</span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt; $ training_job_name             &lt;chr&gt; "xgboost-191114-1954-010-1308e18b"…</span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt; $ training_job_status           &lt;chr&gt; "Completed", "Completed", "Complet…</span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; $ training_start_time           &lt;dttm&gt; 2019-11-15 02:09:43, 2019-11-15 0…</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt; $ colsample_bytree              &lt;dbl&gt; 0.6487743, 0.4756056, 0.6429051, 0…</span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt; $ max_depth                     &lt;dbl&gt; 8, 19, 19, 16, 4, 4, 14, 15, 14, 6</span></a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt; $ subsample                     &lt;dbl&gt; 0.93328062, 0.33505527, 0.90047042…</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>logs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sagemaker_tuning_job_logs.html">sagemaker_tuning_job_logs</a></span>(tune)</span>
+<span id="cb8-2"><a href="#cb8-2"></a>logs <span class="op">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>()</span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="co">#&gt; Rows: 10</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="co">#&gt; Columns: 9</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="co">#&gt; $ final_objective_value         &lt;dbl&gt; 2.22218, 2.28891, 2.27633, 2.30395, 2.1…</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt; $ training_elapsed_time_seconds &lt;dbl&gt; 63, 61, 63, 72, 62, 47, 54, 63, 62, 61</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt; $ training_end_time             &lt;dttm&gt; 2019-11-15 02:10:46, 2019-11-15 02:10:…</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt; $ training_job_name             &lt;chr&gt; "xgboost-191114-1954-010-1308e18b", "xg…</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt; $ training_job_status           &lt;chr&gt; "Completed", "Completed", "Completed", …</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt; $ training_start_time           &lt;dttm&gt; 2019-11-15 02:09:43, 2019-11-15 02:09:…</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt; $ colsample_bytree              &lt;dbl&gt; 0.6487743, 0.4756056, 0.6429051, 0.8303…</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt; $ max_depth                     &lt;dbl&gt; 8, 19, 19, 16, 4, 4, 14, 15, 14, 6</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt; $ subsample                     &lt;dbl&gt; 0.93328062, 0.33505527, 0.90047042, 0.0…</span></span></code></pre></div>
 <p>From here, we can investigate the training deeper:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">logs <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(final_objective_value, colsample_bytree<span class="op">:</span>subsample) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span>(colsample_bytree<span class="op">:</span>subsample) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(value, final_objective_value)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span>name, <span class="dt">scales =</span> <span class="st">"free_x"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>logs <span class="op">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(final_objective_value, colsample_bytree<span class="op">:</span>subsample) <span class="op">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="st">  </span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span>(colsample_bytree<span class="op">:</span>subsample) <span class="op">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(value, final_objective_value)) <span class="op">+</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span>name, <span class="dt">scales =</span> <span class="st">"free_x"</span>)</span></code></pre></div>
 <p><img src="sagemaker_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 </div>
 <div id="training-1" class="section level2">
@@ -224,26 +224,26 @@
 <a href="#training-1" class="anchor"></a>Training</h2>
 <p>We can also see the individual jobs logs, to track the difference between the train/validation set. This might be <a href="https://medium.com/data-design/xgboost-hi-im-gamma-what-can-i-do-for-you-and-the-tuning-of-regularization-a42ea17e6ab6">useful</a> for advanced model tuning.</p>
 <p>Note that <code>tune$model_name</code> is the name of the best model found during training.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">job_logs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sagemaker_training_job_logs.html">sagemaker_training_job_logs</a></span>(tune<span class="op">$</span>model_name)</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">job_logs</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; # A tibble: 98 x 3</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt;    iteration `train:rmse` `validation:rmse`</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt;        &lt;dbl&gt;        &lt;dbl&gt;             &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;  1         0         9.04              9.06</span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;  2         1         8.21              8.24</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  3         2         7.47              7.50</span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;  4         3         6.80              6.84</span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;  5         4         6.21              6.25</span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;  6         5         5.67              5.72</span></a>
-<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt;  7         6         5.20              5.26</span></a>
-<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt;  8         7         4.78              4.85</span></a>
-<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt;  9         8         4.40              4.49</span></a>
-<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; 10         9         4.07              4.18</span></a>
-<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt; # … with 88 more rows</span></a></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">job_logs <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span>(<span class="st">`</span><span class="dt">train:rmse</span><span class="st">`</span><span class="op">:</span><span class="st">`</span><span class="dt">validation:rmse</span><span class="st">`</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(iteration, value, <span class="dt">color =</span> name)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>job_logs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sagemaker_training_job_logs.html">sagemaker_training_job_logs</a></span>(tune<span class="op">$</span>model_name)</span>
+<span id="cb10-2"><a href="#cb10-2"></a>job_logs</span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="co">#&gt; # A tibble: 98 x 3</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="co">#&gt;    iteration `train:rmse` `validation:rmse`</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="co">#&gt;        &lt;dbl&gt;        &lt;dbl&gt;             &lt;dbl&gt;</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="co">#&gt;  1         0         9.04              9.06</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="co">#&gt;  2         1         8.21              8.24</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="co">#&gt;  3         2         7.47              7.50</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="co">#&gt;  4         3         6.80              6.84</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="co">#&gt;  5         4         6.21              6.25</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="co">#&gt;  6         5         5.67              5.72</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="co">#&gt;  7         6         5.20              5.26</span></span>
+<span id="cb10-13"><a href="#cb10-13"></a><span class="co">#&gt;  8         7         4.78              4.85</span></span>
+<span id="cb10-14"><a href="#cb10-14"></a><span class="co">#&gt;  9         8         4.40              4.49</span></span>
+<span id="cb10-15"><a href="#cb10-15"></a><span class="co">#&gt; 10         9         4.07              4.18</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a><span class="co">#&gt; # … with 88 more rows</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>job_logs <span class="op">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="st">  </span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span>(<span class="st">`</span><span class="dt">train:rmse</span><span class="st">`</span><span class="op">:</span><span class="st">`</span><span class="dt">validation:rmse</span><span class="st">`</span>) <span class="op">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(iteration, value, <span class="dt">color =</span> name)) <span class="op">+</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>()</span></code></pre></div>
 <p><img src="sagemaker_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
 </div>
 </div>
@@ -255,30 +255,32 @@
 <h2 class="hasAnchor">
 <a href="#real-time" class="anchor"></a>Real-time</h2>
 <p>Real-time opens a persistent web-endpoint for predictions. Deploying takes a few minutes.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="../reference/sagemaker_deploy_endpoint.html">sagemaker_deploy_endpoint</a></span>(tune)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw"><a href="../reference/sagemaker_deploy_endpoint.html">sagemaker_deploy_endpoint</a></span>(tune)</span></code></pre></div>
 <p>Then make new predictions on tibbles or <code>data.frame</code>s, using the standard <code>predict</code> generic.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">pred &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(tune, sagemaker<span class="op">::</span>abalone[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dv">-1</span>])</a></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(pred)</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt;  NULL</span></a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>pred &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(tune, sagemaker<span class="op">::</span>abalone[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dv">-1</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(pred)</span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="co">#&gt; Rows: 100</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="co">#&gt; Columns: 1</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="co">#&gt; $ .pred &lt;dbl&gt; 10.257903, 8.102968, 10.027587, 9.213963, 6.185315, 7.296525, 1…</span></span></code></pre></div>
 <p>Once deployed, the endpoint has a subsecond latency.</p>
 <p>Make sure to delete the endpoint when you are done to avoid charges.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="../reference/sagemaker_deploy_endpoint.html">sagemaker_delete_endpoint</a></span>(tune)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw"><a href="../reference/sagemaker_deploy_endpoint.html">sagemaker_delete_endpoint</a></span>(tune)</span></code></pre></div>
 </div>
 <div id="batch" class="section level2">
 <h2 class="hasAnchor">
 <a href="#batch" class="anchor"></a>Batch</h2>
 <p>You can also make batch predictions from data saved in S3. The batch method will write the predictions as a csv in an S3 folder.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">s3_output_path &lt;-<span class="st"> </span><span class="kw"><a href="../reference/batch_predict.html">batch_predict</a></span>(</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2">  tune, </a>
-<a class="sourceLine" id="cb16-3" data-line-number="3">  <span class="dt">s3_input =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-inference.csv"</span>),</a>
-<a class="sourceLine" id="cb16-4" data-line-number="4">  <span class="dt">s3_output =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone_predictions"</span>)</a>
-<a class="sourceLine" id="cb16-5" data-line-number="5">)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>s3_output_path &lt;-<span class="st"> </span><span class="kw"><a href="../reference/batch_predict.html">batch_predict</a></span>(</span>
+<span id="cb16-2"><a href="#cb16-2"></a>  tune, </span>
+<span id="cb16-3"><a href="#cb16-3"></a>  <span class="dt">s3_input =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone-inference.csv"</span>),</span>
+<span id="cb16-4"><a href="#cb16-4"></a>  <span class="dt">s3_output =</span> <span class="kw"><a href="../reference/s3.html">s3</a></span>(<span class="kw"><a href="../reference/s3_bucket.html">s3_bucket</a></span>(), <span class="st">"abalone_predictions"</span>)</span>
+<span id="cb16-5"><a href="#cb16-5"></a>)</span></code></pre></div>
 <p>We can use the <code><a href="../reference/read_s3.html">sagemaker::read_s3</a></code> method to easily read csv data from S3.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="../reference/read_s3.html">read_s3</a></span>(s3_output_path) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>()</a>
-<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="co">#&gt; Observations: 100</span></a>
-<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="co">#&gt; Variables: 1</span></a>
-<a class="sourceLine" id="cb17-5" data-line-number="5"><span class="co">#&gt; $ X1 &lt;dbl&gt; 10.257903, 8.102968, 10.027587, 9.213963, 6.185315, 7.296525,…</span></a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw"><a href="../reference/read_s3.html">read_s3</a></span>(s3_output_path) <span class="op">%&gt;%</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>()</span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="co">#&gt; Rows: 100</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="co">#&gt; Columns: 1</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="co">#&gt; $ X1 &lt;dbl&gt; 10.257903, 8.102968, 10.027587, 9.213963, 6.185315, 7.296525, 13.5…</span></span></code></pre></div>
 </div>
 </div>
   </div>
@@ -291,20 +293,23 @@
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#introduction">Introduction</a></li>
       <li>
-<a href="#tuning">Tuning</a><ul class="nav nav-pills nav-stacked">
+<a href="#tuning">Tuning</a>
+      <ul class="nav nav-pills nav-stacked">
 <li><a href="#dataset">Dataset</a></li>
       <li><a href="#hyperparameters">Hyperparameters</a></li>
       <li><a href="#training">Training</a></li>
       </ul>
 </li>
       <li>
-<a href="#analysis">Analysis</a><ul class="nav nav-pills nav-stacked">
+<a href="#analysis">Analysis</a>
+      <ul class="nav nav-pills nav-stacked">
 <li><a href="#tuning-1">Tuning</a></li>
       <li><a href="#training-1">Training</a></li>
       </ul>
 </li>
       <li>
-<a href="#predictions">Predictions</a><ul class="nav nav-pills nav-stacked">
+<a href="#predictions">Predictions</a>
+      <ul class="nav nav-pills nav-stacked">
 <li><a href="#real-time">Real-time</a></li>
       <li><a href="#batch">Batch</a></li>
       </ul>
