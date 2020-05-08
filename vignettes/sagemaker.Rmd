@@ -193,7 +193,7 @@ pred <- predict(tune, sagemaker::abalone[1:100, -1])
 ```
 
 ```{r include = FALSE}
-pred <- sagemaker::abalone_pred$X1
+pred <- sagemaker::abalone_pred$.pred
 ```
 
 ```{r}
