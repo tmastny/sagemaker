@@ -13,7 +13,8 @@
 #' @inheritParams sagemaker_deploy_endpoint
 #' @export
 sagemaker_install <- function(...) {
-  reticulate::py_install(c("boto3", "sagemaker", "awscli"), ...)
+
+  reticulate::py_install(c("boto3", "sagemaker", "awscli"), pip = TRUE, ...)
 }
 
 #' @rdname sagemaker_install
