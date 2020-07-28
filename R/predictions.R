@@ -259,16 +259,6 @@ batch_predict <- function(
   s3_predictions_path
 }
 
-quietly_attach_estimator <- function(training_job_name) {
-  reticulate::py_capture_output({
-    estimator <- sagemaker$estimator$Estimator$attach(
-      training_job_name = training_job_name
-    )
-  })
-
-  estimator
-}
-
 # https://docs.aws.amazon.com/sagemaker/latest/dg/xgboost-tuning.html
 objective_metric_type <- function(objective_metric) {
   objective_metric_optimization <- list(

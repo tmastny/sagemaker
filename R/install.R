@@ -14,7 +14,9 @@
 #' @export
 sagemaker_install <- function(...) {
 
-  reticulate::py_install(c("boto3", "sagemaker", "awscli"), pip = TRUE, ...)
+  reticulate::py_install(
+    c("boto3", "sagemaker", "awscli", "sagemaker-tidymodels"), pip = TRUE, ...
+  )
 }
 
 #' @rdname sagemaker_install

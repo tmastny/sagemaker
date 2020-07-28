@@ -40,4 +40,5 @@ Imports:
 SystemRequirements:
     awscli,
     sagemaker,
-    boto3
+    boto3,
+    sagemaker-tidymodels

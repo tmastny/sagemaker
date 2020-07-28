@@ -96,3 +96,52 @@ sagemaker_xgb_estimator <- function(
     ...
   )
 }
+
+#' @rdname sagemaker_estimator
+#' @export
+sagemaker_tidymodels <- function(
+  entry_point,
+  instance_type = "ml.m4.xlarge",
+  container = "tmastny/sagemaker-tidymodels:latest",
+  s3_output = s3(s3_bucket(), "models/"),
+  ...
+) {
+  sagemaker_tidymodels$Tidymodels(
+    entry_point = entry_point,
+    train_instance_type = instance_type,
+    role = sagemaker_get_execution_role(),
+    image_name = container,
+    output_path = s3_output,
+    ...
+  )
+}
+
+
+
+#' Attach an Existing Sagemaker Model
+#'
+#' @description
+#' Attaches and loads an existing Sagemaker Model.
+#' This is useful to make new predictions.
+#'
+#' Returns the same object as \link{sagemaker_estimator}.
+#'
+#' @param tuning_job_name Name of the model/training job, typically something
+#' like \code{"xgboost-191114-2052"}.
+#' @export
+sagemaker_attach_model <- function(training_job_name) {
+
+  # let python class be R class.
+  # then dispatch predict
+  quietly_attach_estimator(training_job_name)
+}
+
+quietly_attach_estimator <- function(training_job_name) {
+  reticulate::py_capture_output({
+    estimator <- sagemaker$estimator$Estimator$attach(
+      training_job_name = training_job_name
+    )
+  })
+
+  estimator
+}

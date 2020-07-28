@@ -7,6 +7,9 @@ sagemaker <- NULL
   # using superassignment to update global reference to python packages
   boto3 <<- reticulate::import("boto3", delay_load = TRUE)
   sagemaker <<- reticulate::import("sagemaker", delay_load = TRUE)
+  sm_tidymodels <<- reticulate::import(
+    "sagemaker_tidymodels", delay_load = TRUE
+  )
 }
 
 utils::globalVariables(".")
